@@ -6,6 +6,7 @@
  */
 
 import './components/countdown-timer/index.js'
+import './components/pwd-app/index.js'
 
 /**
  * Define template.
@@ -94,8 +95,22 @@ template.innerHTML = `
       background-color: #6699CC;
       border-color: #6699CC;
     }
+
+    #pwd-application {
+      position: relative;
+    }
+
+    #pwd-dock {
+      height: 48px;
+      width: 100%;
+      background-color: yellow;
+      position: absolute;
+      bottom: 0%;
+    }
   </style>
   <div id="pwd-application">
+    <div id="pwd-dock">
+    </div>
   </div>
 `
 
@@ -119,7 +134,8 @@ customElements.define('pwd-application',
         .appendChild(template.content.cloneNode(true))
 
       /* PWD application properties */
-
+      this._pwd = this.shadowRoot.querySelector('#pwd-app')
+      this._pwdDock = this.shadowRoot.querySelector('#pwd-dock')
 
       /* Initiates the nickname screen */
       
