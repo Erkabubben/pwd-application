@@ -7,6 +7,7 @@
 
 import './components/countdown-timer/index.js'
 import './components/pwd-app/index.js'
+import './components/pwd-chat/index.js'
 
 /**
  * Define template.
@@ -110,6 +111,7 @@ template.innerHTML = `
   </style>
   <div id="pwd-application">
     <div id="pwd-dock">
+      <button></button>
     </div>
   </div>
 `
