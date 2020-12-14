@@ -1,5 +1,5 @@
 /**
- * The pwd-app web component module.
+ * The pwd-window web component module.
  *
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
@@ -11,15 +11,23 @@
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
+    #pwd-window {
+      position: absolute;
+      width: 640px;
+      height: 480px;
+      background-color: red;
+      left: 0px;
+      top: 0px;
+    }
   </style>
-  <div id="pwd-app">
+  <div id="pwd-window">
   </div>
 `
 
 /**
  * Define custom element.
  */
-customElements.define('pwd-app',
+customElements.define('pwd-window',
   /**
    *
    */
@@ -36,6 +44,7 @@ customElements.define('pwd-app',
         .appendChild(template.content.cloneNode(true))
 
       /* Set up properties */
+
 
     }
 

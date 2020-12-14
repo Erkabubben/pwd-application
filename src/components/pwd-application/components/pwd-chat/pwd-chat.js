@@ -1,5 +1,5 @@
 /**
- * The chat web component module.
+ * The pwd-chat web component module.
  *
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
@@ -13,9 +13,11 @@ template.innerHTML = `
   <style>
     #pwd-chat {
       position: absolute;
-      width: 480px;
-      height: 640px;
+      width: 640px;
+      height: 480px;
       background-color: red;
+      left: 0px;
+      top: 0px;
     }
   </style>
   <div id="pwd-chat">

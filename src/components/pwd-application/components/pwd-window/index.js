@@ -1,2 +1,2 @@
 // It is best practice to have a index.js as root of the component.
-import './pwd-app.js'
+import './pwd-window.js'

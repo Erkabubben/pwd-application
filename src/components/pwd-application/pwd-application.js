@@ -4,9 +4,12 @@
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
  */
+const pathToModule = import.meta.url
+const imagesPath = new URL('./images/', pathToModule)
+const componentsPath = new URL('./components/', pathToModule)
 
 import './components/countdown-timer/index.js'
-import './components/pwd-app/index.js'
+import './components/pwd-window/index.js'
 import './components/pwd-chat/index.js'
 
 /**
@@ -101,6 +104,13 @@ template.innerHTML = `
       position: relative;
     }
 
+    #pwd-window-container {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      background-color: blue;
+    }
+
     #pwd-dock {
       height: 48px;
       width: 100%;
@@ -108,10 +118,28 @@ template.innerHTML = `
       position: absolute;
       bottom: 0%;
     }
+
+    #pwd-dock button {
+      height: 48px;
+      width: 48px;
+      margin: 0px;
+      border-radius: 3px;
+      padding: 0;
+      box-shadow: 2px 2px 2px black;
+      background-color: none;
+      border: 1px outset #336699;
+    }
+
+    #pwd-dock button img {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
   </style>
   <div id="pwd-application">
+    <div id="pwd-window-container"></div>
     <div id="pwd-dock">
-      <button></button>
     </div>
   </div>
 `
@@ -136,11 +164,28 @@ customElements.define('pwd-application',
         .appendChild(template.content.cloneNode(true))
 
       /* PWD application properties */
-      this._pwd = this.shadowRoot.querySelector('#pwd-app')
-      this._pwdDock = this.shadowRoot.querySelector('#pwd-dock')
+      this._pwd = this.shadowRoot.querySelector('#pwd-application')
+      this._windowContainer = this.shadowRoot.querySelector('#pwd-window-container')
+      this._dock = this.shadowRoot.querySelector('#pwd-dock')
+      this._applications = ['pwd-chat']
+      //this._windows = []
 
-      /* Initiates the nickname screen */
-      
+      /* Initiates the dock */
+      this._applications.forEach(app => {
+        const newApp = document.createElement('button')
+        const newAppIcon = document.createElement('img')
+        newAppIcon.setAttribute('src', componentsPath + app + '/img/icon.png')
+        newApp.appendChild(newAppIcon)
+        newApp.setAttribute('value', app)
+        newApp.addEventListener('click', event => {
+          if (event.button === 0) {
+            //this._windows.push(newApp)
+            const newWindow = document.createElement('pwd-window')
+            this._windowContainer.appendChild(newWindow)
+          }
+        })
+        this._dock.appendChild(newApp)
+      })
     }
 
     /**
