@@ -4,6 +4,9 @@
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
  */
+const pathToModule = import.meta.url
+const imagesPath = new URL('./images/', pathToModule)
+const componentsOfParentPath = new URL('../', pathToModule)
 
 /**
  * Define template.
@@ -16,8 +19,6 @@ template.innerHTML = `
     }
     #pwd-window {
       position: absolute;
-      width: 640px;
-      height: 480px;
       background-color: grey;
       border: 2px outset black;
     }
@@ -27,17 +28,30 @@ template.innerHTML = `
       height: 24px;
       background-color: darkgrey;
     }
+    div#header img {
+      height: 100%;
+    }
+    div#app {
+      position: absolute;
+      top: 24px;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
     button#closebutton {
       position: absolute;
       right: 0px;
     }
   </style>
-  <style id="pos">
-  </style>
+  <style id="pos"></style>
+  <style id="size"></style>
   <div id="pwd-window">
     <div id="header">
-    <button id="closebutton">X</button>
+      <img>
+      <button id="closebutton">X</button>
     </div>
+    <div id="app"><slot name="app"></slot></div>
+    
   </div>
 `
 
@@ -62,8 +76,12 @@ customElements.define('pwd-window',
 
       /* Set up properties */
       this.header = this.shadowRoot.querySelector('div#header')
+      this.icon = this.shadowRoot.querySelector('div#header img')
       this._stylePos = this.shadowRoot.querySelector('style#pos')
+      this._styleSize = this.shadowRoot.querySelector('style#size')
       this._closeButton = this.shadowRoot.querySelector('#closebutton')
+      this._appSlot = this.shadowRoot.querySelector('slot')
+      //this._headerTitle = this.shadowRoot.querySelector('h1#headertitle')
 
       this._closeButton.addEventListener('click', event => {
         this.parentElement.removeChild(this)
@@ -72,33 +90,8 @@ customElements.define('pwd-window',
       this.x = 0
       this.y = 0
 
-
-
-      /*this._header.addEventListener('click', event => {
-        if (event.button === 0) {
-          this._isDragged = true
-          this._mouseBeginDragX = event.clientX
-          this._mouseBeginDragY = event.clientY
-        }
-      })
-      this.addEventListener('mousemove', event => {
-        console.log('!!!')
-        if (this._isDragged === true) {
-          console.log('???')
-          const newPosStyle = document.createElement('style')
-          const mouseX = this._mouseBeginDragX - event.clientX
-          const mouseY = this._mouseBeginDragY - event.clientY
-          this._mouseBeginDragX = event.clientX
-          this._mouseBeginDragY = event.clientY
-          newPosStyle.setAttribute('id', 'pos')
-          newPosStyle.textContent = `#pwd-window {
-                                        left: ` + mouseX + `px;
-                                        top: ` + mouseY + `px;
-                                      }`
-          this.shadowRoot.removeChild(this._posStyle)
-          this._posStyle = this.shadowRoot.appendChild(newPosStyle)
-        }
-      })*/
+      this.width = 0
+      this.height = 0
     }
 
     /**
@@ -107,16 +100,41 @@ customElements.define('pwd-window',
      * @returns {string[]} A string array of attributes to monitor.
      */
     static get observedAttributes () {
-      return ['isDragged']
+      return []
     }
 
     SetPosition (x, y) {
-      this._stylePos.textContent = `#pwd-window {
-        left: ` + (x) + `px;
-        top: ` + (y) + `px;
+      this._stylePos.textContent =
+      `#pwd-window {
+        left: ` + x + `px;
+        top: ` + y + `px;
       }`
+
       this.x = x
       this.y = y
+    }
+
+    SetSize (width, height) {
+      this.width = width
+      this.height = height
+      this._styleSize.textContent = `#pwd-window {
+        width: ` + width + `px;
+        height: ` + (height + 24) + `px;
+      }
+      div#app {
+        width: ` + width + `px;
+        height: ` + height + `px;
+      }
+      `
+    }
+
+    SetApp (app) {
+      const newAppElement = document.createElement(app)
+      this._appSlot.appendChild(newAppElement)
+      this.icon.setAttribute('src', componentsOfParentPath + '/' + app + '/img/icon.png')
+      //this._headerTitle.textContent = ''
+      console.log(componentsOfParentPath + '/' + app + '/img/icon.png')
+      this.SetSize(newAppElement.width, newAppElement.height)
     }
 
     /**

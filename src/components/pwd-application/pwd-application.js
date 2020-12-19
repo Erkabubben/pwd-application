@@ -142,8 +142,7 @@ template.innerHTML = `
   </style>
   <div id="pwd-application">
     <div id="pwd-window-container"></div>
-    <div id="pwd-dock">
-    </div>
+    <div id="pwd-dock"></div>
   </div>
 `
 
@@ -175,20 +174,21 @@ customElements.define('pwd-application',
 
       /* Initiates the dock */
       this._applications.forEach(app => {
-        const newApp = document.createElement('button')
-        const newAppIcon = document.createElement('img')
-        newAppIcon.setAttribute('src', componentsPath + app + '/img/icon.png')
-        newApp.appendChild(newAppIcon)
-        newApp.setAttribute('value', app)
-        newApp.addEventListener('click', event => {
+        const newAppIcon = document.createElement('button')
+        const newAppIconImg = document.createElement('img')
+        newAppIconImg.setAttribute('src', componentsPath + app + '/img/icon.png')
+        newAppIcon.appendChild(newAppIconImg)
+        newAppIcon.setAttribute('value', app)
+        newAppIcon.addEventListener('click', event => {
           if (event.button === 0) {
             const newWindow = document.createElement('pwd-window')
             newWindow.SetPosition(320, 200)
             this.dragElement(newWindow)
             this._windowContainer.appendChild(newWindow)
+            newWindow.SetApp(app)
           }
         })
-        this._dock.appendChild(newApp)
+        this._dock.appendChild(newAppIcon)
       })
     }
 

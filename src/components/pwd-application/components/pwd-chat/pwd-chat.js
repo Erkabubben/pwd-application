@@ -14,13 +14,13 @@ template.innerHTML = `
     #pwd-chat {
       position: absolute;
       width: 640px;
-      height: 480px;
+      height: 456px;
       background-color: red;
-      left: 0px;
-      top: 0px;
     }
   </style>
+  <style id="size"></style>
   <div id="pwd-chat">
+    <h1>THE LINNAEUS CHAT</h1>
   </div>
 `
 
@@ -45,6 +45,10 @@ customElements.define('pwd-chat',
 
       /* Set up properties */
       this._pwdChat = this.shadowRoot.querySelector('#pwd-chat')
+      this.width = 800
+      this.height = 600
+      this._styleSize = this.shadowRoot.querySelector('style#size')
+      this.SetSize(this.width, this.height)
     }
 
     /**
@@ -54,6 +58,15 @@ customElements.define('pwd-chat',
      */
     static get observedAttributes () {
       return []
+    }
+
+    SetSize (width, height) {
+      this.width = width
+      this.height = height
+      this._styleSize.textContent = `#pwd-chat {
+        width: ` + this.width + `px;
+        height: ` + this.height + `px;
+      }`
     }
 
     /**
