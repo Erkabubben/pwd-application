@@ -11,16 +11,28 @@
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
+    :host {
+      margin: 0px;
+    }
     #pwd-window {
       position: absolute;
       width: 640px;
       height: 480px;
-      background-color: red;
-      left: 0px;
-      top: 0px;
+      background-color: grey;
+      border: 2px outset black;
+    }
+    div#header {
+      position: absolute;
+      width: 100%;
+      height: 24px;
+      background-color: darkgrey;
     }
   </style>
+  <style id="pos">
+  </style>
   <div id="pwd-window">
+    <div id="header">
+    </div>
   </div>
 `
 
@@ -44,8 +56,42 @@ customElements.define('pwd-window',
         .appendChild(template.content.cloneNode(true))
 
       /* Set up properties */
+      this._isDragged = false;
+      this._mouseBeginDragX = 0
+      this._mouseBeginDragY = 0
+      this._header = this.shadowRoot.querySelector('div#header')
+      this._stylePos = this.shadowRoot.querySelector('style#pos')
+
+      this.x = 0
+      this.y = 0
 
 
+
+      /*this._header.addEventListener('click', event => {
+        if (event.button === 0) {
+          this._isDragged = true
+          this._mouseBeginDragX = event.clientX
+          this._mouseBeginDragY = event.clientY
+        }
+      })
+      this.addEventListener('mousemove', event => {
+        console.log('!!!')
+        if (this._isDragged === true) {
+          console.log('???')
+          const newPosStyle = document.createElement('style')
+          const mouseX = this._mouseBeginDragX - event.clientX
+          const mouseY = this._mouseBeginDragY - event.clientY
+          this._mouseBeginDragX = event.clientX
+          this._mouseBeginDragY = event.clientY
+          newPosStyle.setAttribute('id', 'pos')
+          newPosStyle.textContent = `#pwd-window {
+                                        left: ` + mouseX + `px;
+                                        top: ` + mouseY + `px;
+                                      }`
+          this.shadowRoot.removeChild(this._posStyle)
+          this._posStyle = this.shadowRoot.appendChild(newPosStyle)
+        }
+      })*/
     }
 
     /**
@@ -54,7 +100,16 @@ customElements.define('pwd-window',
      * @returns {string[]} A string array of attributes to monitor.
      */
     static get observedAttributes () {
-      return []
+      return ['isDragged']
+    }
+
+    SetPosition (x, y) {
+      this._stylePos.textContent = `#pwd-window {
+        left: ` + (x) + `px;
+        top: ` + (y) + `px;
+      }`
+      this.x = x
+      this.y = y
     }
 
     /**
@@ -72,7 +127,12 @@ customElements.define('pwd-window',
      * @param {*} newValue - The new value.
      */
     attributeChangedCallback (name, oldValue, newValue) {
-
+      /*if (name === 'isDragged') {
+        console.log('GRAAAH!')
+        this.addEventListener('mousemove', (event) => {
+          console.log('ISDRAGGED!')
+        })
+      }*/
     }
 
     /**

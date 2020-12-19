@@ -109,14 +109,17 @@ template.innerHTML = `
       height: 100%;
       width: 100%;
       background-color: blue;
+      overflow: hidden;
     }
 
     #pwd-dock {
       height: 48px;
       width: 100%;
-      background-color: yellow;
+      background-color: rgba(100, 100, 100, 8);
+      background-opacity: 50%;
       position: absolute;
       bottom: 0%;
+      overflow: hidden;
     }
 
     #pwd-dock button {
@@ -181,11 +184,52 @@ customElements.define('pwd-application',
           if (event.button === 0) {
             //this._windows.push(newApp)
             const newWindow = document.createElement('pwd-window')
+            //newWindow._header.addEventListener('click', (event) => {
+            //  console.log('WAAAH!')
+            //})
+            this.dragElement(newWindow)
+            newWindow.setAttribute('isDragged', '1')
             this._windowContainer.appendChild(newWindow)
           }
         })
         this._dock.appendChild(newApp)
       })
+    }
+
+    dragElement(elmnt) {
+      var mouseDiffX = 0, mouseDiffY = 0
+      if (elmnt._header != null) {
+        // if present, the header is where you move the DIV from:
+        elmnt._header.onmousedown = dragMouseDown;
+      } else {
+        // otherwise, move the DIV from anywhere inside the DIV:
+        elmnt.onmousedown = dragMouseDown;
+      }
+    
+      function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        mouseDiffX = e.clientX - elmnt.x
+        mouseDiffY = e.clientY - elmnt.y
+        console.log(elmnt.offsetLeft, elmnt.offsetTop)
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+      }
+    
+      function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // set the element's new position:
+        elmnt.SetPosition(e.clientX - mouseDiffX, e.clientY - mouseDiffY)
+      }
+    
+      function closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
     }
 
     /**
@@ -196,6 +240,8 @@ customElements.define('pwd-application',
     static get observedAttributes () {
       return []
     }
+
+    
 
     /**
      * Called after the element is inserted into the DOM.
