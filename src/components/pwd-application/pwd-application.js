@@ -186,7 +186,7 @@ customElements.define('pwd-application',
             this.dragElement(newWindow)
             this._windowContainer.appendChild(newWindow)
             newWindow.SetApp(app)
-            newWindow.addEventListener('click', event => {
+            newWindow.addEventListener('mousedown', event => {
               this._windowContainer.appendChild(newWindow)
             })
           }

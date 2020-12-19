@@ -11,7 +11,7 @@
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
-    #pwd-chat {
+    #pwd-app {
       position: absolute;
       width: 640px;
       height: 456px;
@@ -19,7 +19,7 @@ template.innerHTML = `
     }
   </style>
   <style id="size"></style>
-  <div id="pwd-chat">
+  <div id="pwd-app">
     <h1>THE LINNAEUS CHAT</h1>
   </div>
 `
@@ -44,10 +44,11 @@ customElements.define('pwd-chat',
         .appendChild(template.content.cloneNode(true))
 
       /* Set up properties */
-      this._pwdChat = this.shadowRoot.querySelector('#pwd-chat')
+      this._pwdChat = this.shadowRoot.querySelector('#pwd-app')
+      this._styleSize = this.shadowRoot.querySelector('style#size')
       this.width = 800
       this.height = 600
-      this._styleSize = this.shadowRoot.querySelector('style#size')
+
       this.SetSize(this.width, this.height)
     }
 
@@ -60,10 +61,17 @@ customElements.define('pwd-chat',
       return []
     }
 
+    /**
+     * Sets the size of the app, ensuring that the width/height properties and
+     * the width/height set in the CSS element are always the same.
+     *
+     * @param {number} width - The app's width in pixels.
+     * @param {number} height - The app's height in pixels.
+     */
     SetSize (width, height) {
       this.width = width
       this.height = height
-      this._styleSize.textContent = `#pwd-chat {
+      this._styleSize.textContent = `#pwd-app {
         width: ` + this.width + `px;
         height: ` + this.height + `px;
       }`

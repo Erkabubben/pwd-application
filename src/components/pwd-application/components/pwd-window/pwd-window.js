@@ -114,18 +114,25 @@ customElements.define('pwd-window',
       this.y = y
     }
 
+    /**
+     * Sets the size of the window and its contained app, ensuring that the width/height
+     * properties and the width/height set in the CSS element are always the same.
+     *
+     * @param {number} width - The app's width in pixels.
+     * @param {number} height - The app's height in pixels.
+     */
     SetSize (width, height) {
       this.width = width
       this.height = height
-      this._styleSize.textContent = `#pwd-window {
+      this._styleSize.textContent =
+      `#pwd-window {
         width: ` + width + `px;
         height: ` + (height + 24) + `px;
       }
       div#app {
         width: ` + width + `px;
         height: ` + height + `px;
-      }
-      `
+      }`
     }
 
     SetApp (app) {
