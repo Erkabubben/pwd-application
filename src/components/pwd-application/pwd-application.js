@@ -182,13 +182,9 @@ customElements.define('pwd-application',
         newApp.setAttribute('value', app)
         newApp.addEventListener('click', event => {
           if (event.button === 0) {
-            //this._windows.push(newApp)
             const newWindow = document.createElement('pwd-window')
-            //newWindow._header.addEventListener('click', (event) => {
-            //  console.log('WAAAH!')
-            //})
+            newWindow.SetPosition(320, 200)
             this.dragElement(newWindow)
-            newWindow.setAttribute('isDragged', '1')
             this._windowContainer.appendChild(newWindow)
           }
         })
@@ -198,9 +194,9 @@ customElements.define('pwd-application',
 
     dragElement(elmnt) {
       var mouseDiffX = 0, mouseDiffY = 0
-      if (elmnt._header != null) {
+      if (elmnt.header != null) {
         // if present, the header is where you move the DIV from:
-        elmnt._header.onmousedown = dragMouseDown;
+        elmnt.header.onmousedown = dragMouseDown;
       } else {
         // otherwise, move the DIV from anywhere inside the DIV:
         elmnt.onmousedown = dragMouseDown;
@@ -212,7 +208,6 @@ customElements.define('pwd-application',
         // get the mouse cursor position at startup:
         mouseDiffX = e.clientX - elmnt.x
         mouseDiffY = e.clientY - elmnt.y
-        console.log(elmnt.offsetLeft, elmnt.offsetTop)
         document.onmouseup = closeDragElement;
         // call a function whenever the cursor moves:
         document.onmousemove = elementDrag;

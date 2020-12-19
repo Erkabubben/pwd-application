@@ -27,11 +27,16 @@ template.innerHTML = `
       height: 24px;
       background-color: darkgrey;
     }
+    button#closebutton {
+      position: absolute;
+      right: 0px;
+    }
   </style>
   <style id="pos">
   </style>
   <div id="pwd-window">
     <div id="header">
+    <button id="closebutton">X</button>
     </div>
   </div>
 `
@@ -56,11 +61,13 @@ customElements.define('pwd-window',
         .appendChild(template.content.cloneNode(true))
 
       /* Set up properties */
-      this._isDragged = false;
-      this._mouseBeginDragX = 0
-      this._mouseBeginDragY = 0
-      this._header = this.shadowRoot.querySelector('div#header')
+      this.header = this.shadowRoot.querySelector('div#header')
       this._stylePos = this.shadowRoot.querySelector('style#pos')
+      this._closeButton = this.shadowRoot.querySelector('#closebutton')
+
+      this._closeButton.addEventListener('click', event => {
+        this.parentElement.removeChild(this)
+      })
 
       this.x = 0
       this.y = 0
