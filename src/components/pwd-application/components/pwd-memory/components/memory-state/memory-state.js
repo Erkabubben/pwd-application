@@ -55,9 +55,15 @@ customElements.define('memory-state',
         '1',
         '2',
         '3',
-        '4'
+        '4',
+        '5',
+        '6',
+        '7',
+        '8'
       ]
+      this._startingCardsAmount = 0
 
+      this.InitiateGame('4x4')
     }
 
     InheritStyle (styleElement) {
@@ -68,7 +74,51 @@ customElements.define('memory-state',
     }
 
     InitiateGame (gridSize) {
+      if (gridSize === '2x2') {
+        this._startingCardsAmount = 4
+      } else if (gridSize === '4x2') {
+        this._startingCardsAmount = 8
+      } else if (gridSize === '4x4') {
+        this._startingCardsAmount = 16
+      }
 
+      let cardMotifs = this._cardMotifs.slice()
+      
+      cardMotifs = this.Shuffle(cardMotifs)
+      console.log(cardMotifs)
+
+      let cards = []
+
+      for (let i = 0; i < (this._startingCardsAmount / 2); i++) {
+        const element = cardMotifs[i];
+        cards.push(element)
+        cards.push(element)
+      }
+
+      cards = this.Shuffle(cards)
+
+      console.log(cards)
+    }
+
+    /**
+     * Shuffles the array of playing cards in place.
+     *
+     * @param {PlayingCard[]} playingCards - The array of PlayingCard objects to shuffle.
+     * @returns {PlayingCard[]} The shuffled array of PlayingCard objects.
+     */
+    Shuffle (playingCards) {
+      let i = playingCards.length
+      let j
+      let x
+
+      while (i) {
+        j = (Math.random() * i) | 0 // using bitwise OR 0 to floor a number
+        x = playingCards[--i]
+        playingCards[i] = playingCards[j]
+        playingCards[j] = x
+      }
+
+      return playingCards
     }
 
     /**
