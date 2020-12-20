@@ -38,7 +38,7 @@ template.innerHTML = `
       user-select: none;
     }
 
-    #memory-question, #memory-nickname, #memory-message, #memory-highscore {
+    #memory-question, #nickname-state, #memory-message, #memory-highscore {
       border-radius: 32px;
       background-color: #3399FF;
       border: 16px outset #336699;

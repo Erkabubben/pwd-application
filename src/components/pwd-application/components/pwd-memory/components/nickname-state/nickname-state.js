@@ -1,5 +1,5 @@
 /**
- * The quiz-nickname web component module.
+ * The nickname-state web component module.
  *
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
@@ -11,7 +11,7 @@
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
-    #quiz-nickname {
+    #nickname-state {
       background-color: white;
       position: absolute;
       top: 50%;
@@ -19,8 +19,8 @@ template.innerHTML = `
       transform: translate(-50%, -50%);
     }
   </style>
-  <div id="quiz-nickname">
-    <h1>Welcome to the quiz!<br></h1>
+  <div id="nickname-state">
+    <h1>Welcome to the MEMORY!<br></h1>
     <h2>Please enter your nickname.</h2>
     <form>
       <input type="text" id="nickname">
@@ -33,7 +33,7 @@ template.innerHTML = `
 /**
  * Define custom element.
  */
-customElements.define('quiz-nickname',
+customElements.define('nickname-state',
   /**
    *
    */
@@ -50,7 +50,7 @@ customElements.define('quiz-nickname',
         .appendChild(template.content.cloneNode(true))
 
       /* Nickname screen properties */
-      this._quizNickname = this.shadowRoot.querySelector('#quiz-nickname')
+      this._nicknameState = this.shadowRoot.querySelector('#nickname-state')
       this._button = this.shadowRoot.querySelector('button')
       this._input = this.shadowRoot.querySelector('input')
 
@@ -72,7 +72,14 @@ customElements.define('quiz-nickname',
      * @returns {string[]} A string array of attributes to monitor.
      */
     static get observedAttributes () {
-      return ['style', 'nickname']
+      return ['nickname']
+    }
+
+    InheritStyle (styleElement) {
+      const style = document.createElement('style')
+      style.id = 'inherited'
+      style.innerHTML = styleElement.innerHTML
+      this.shadowRoot.appendChild(style)
     }
 
     /**
@@ -90,13 +97,7 @@ customElements.define('quiz-nickname',
      * @param {*} newValue - The new value.
      */
     attributeChangedCallback (name, oldValue, newValue) {
-      /* Inherit style from parent element */
-      if (name === 'style') {
-        const style = document.createElement('style')
-        style.innerHTML = newValue
-        this.shadowRoot.appendChild(style)
-      }
-      /* Sets the previous nickname as the default value when returning from the quiz */
+      /* Sets the previous nickname as the default value when returning from the memory */
       if (name === 'nickname') {
         this._input.setAttribute('value', this.getAttribute('nickname'))
       }

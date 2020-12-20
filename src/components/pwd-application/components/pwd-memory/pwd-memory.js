@@ -1,9 +1,12 @@
 /**
- * The pwd-chat web component module.
+ * The pwd-memory web component module.
  *
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
  */
+
+import './components/nickname-state/index.js'
+import './components/memory-state/index.js'
 
 /**
  * Define template.
@@ -14,6 +17,14 @@ template.innerHTML = `
     #pwd-app {
       position: absolute;
       background-color: green;
+    }
+    #nickname-state {
+      border-radius: 32px;
+      background-color: #3399FF;
+      border: 16px outset #336699;
+      padding: 16px;
+      width: min-width(480px);
+      height: min-content;
     }
   </style>
   <style id="size"></style>
@@ -55,28 +66,37 @@ customElements.define('pwd-memory',
       this.totalTime = 0
 
       /* Initiates the nickname screen */
-      this.DisplayNicknameScreen()
+      this.DisplayNicknameState()
     }
 
     /**
      * Displays the start screen where the user is asked to input a nickname.
      */
-    DisplayNicknameScreen () {
+    DisplayNicknameState () {
       /* Resets the user's total time and removes any previously displayed screen or message */
       this.totalTime = 0
       if (this.currentScreen !== null) {
         this._pwdApp.removeChild(this.currentScreen)
       }
       /* Creates a new nickname screen with inherited CSS style */
-      const memoryNickname = document.createElement('memoryNickname')
-      memoryNickname.setAttribute('style', this.shadowRoot.querySelector('style').textContent)
-      memoryNickname.setAttribute('nickname', this.userNickname)
-      this.currentScreen = this._pwdApp.appendChild(memoryNickname)
+      const nicknameState = document.createElement('nickname-state')
+      nicknameState.InheritStyle(this.shadowRoot.querySelector('style'))
+      nicknameState.setAttribute('nickname', this.userNickname)
+      this.currentScreen = this._pwdApp.appendChild(nicknameState)
       /* Starts the game when a valid nickname has been submitted */
       this.currentScreen.addEventListener('nicknameSet', (e) => {
         this.userNickname = e.detail
         this.totalTime = 0
+        this.DisplayMemoryGameState()
       })
+    }
+
+    DisplayMemoryGameState() {
+      this._pwdApp.removeChild(this.currentScreen)
+      /* Creates a new Memory state with inherited CSS style */
+      const memoryState = document.createElement('memory-state')
+      memoryState.InheritStyle(this.shadowRoot.querySelector('style'))
+      this.currentScreen = this._pwdApp.appendChild(memoryState)
     }
 
     /**
