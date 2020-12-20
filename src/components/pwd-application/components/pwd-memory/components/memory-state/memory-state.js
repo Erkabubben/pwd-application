@@ -4,7 +4,10 @@
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
  */
-
+const pathToModule = import.meta.url
+const componentsOfParentPath = new URL('../', pathToModule)
+const imagesPath = new URL('./components/flipping-tile/images/', pathToModule)
+import './components/flipping-tile/index.js'
 
 /**
  * Define template.
@@ -21,6 +24,8 @@ template.innerHTML = `
     }
   </style>
   <div id="memory-state">
+    <flipping-tile><img src="` + imagesPath + `1.png"></flipping-tile>
+    <flipping-tile><img src="` + imagesPath + `2.png"></flipping-tile>
   </div>
 `
 
@@ -43,8 +48,15 @@ customElements.define('memory-state',
       this.attachShadow({ mode: 'open' })
         .appendChild(template.content.cloneNode(true))
 
-      /* Nickname screen properties */
+      /* Memory state properties */
       this._memoryState = this.shadowRoot.querySelector('#memory-state')
+      this._cardMotifs = [
+        '0',
+        '1',
+        '2',
+        '3',
+        '4'
+      ]
 
     }
 
@@ -53,6 +65,10 @@ customElements.define('memory-state',
       style.id = 'inherited'
       style.innerHTML = styleElement.innerHTML
       this.shadowRoot.appendChild(style)
+    }
+
+    InitiateGame (gridSize) {
+
     }
 
     /**
@@ -68,7 +84,7 @@ customElements.define('memory-state',
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
-      this._input.focus() // Sets the text input to have focus from the start
+      
     }
 
     /**
@@ -79,10 +95,7 @@ customElements.define('memory-state',
      * @param {*} newValue - The new value.
      */
     attributeChangedCallback (name, oldValue, newValue) {
-      /* Sets the previous nickname as the default value when returning from the quiz */
-      if (name === 'nickname') {
-        this._input.setAttribute('value', this.getAttribute('nickname'))
-      }
+
     }
 
     /**

@@ -66,7 +66,8 @@ customElements.define('pwd-memory',
       this.totalTime = 0
 
       /* Initiates the nickname screen */
-      this.DisplayNicknameState()
+      //this.DisplayNicknameState()
+      this.DisplayMemoryGameState()
     }
 
     /**
@@ -92,7 +93,9 @@ customElements.define('pwd-memory',
     }
 
     DisplayMemoryGameState() {
-      this._pwdApp.removeChild(this.currentScreen)
+      if (this.currentScreen !== null) {
+        this._pwdApp.removeChild(this.currentScreen)
+      }
       /* Creates a new Memory state with inherited CSS style */
       const memoryState = document.createElement('memory-state')
       memoryState.InheritStyle(this.shadowRoot.querySelector('style'))
