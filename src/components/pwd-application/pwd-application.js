@@ -11,6 +11,7 @@ const componentsPath = new URL('./components/', pathToModule)
 import './components/countdown-timer/index.js'
 import './components/pwd-window/index.js'
 import './components/pwd-chat/index.js'
+import './components/pwd-memory/index.js'
 
 /**
  * Define template.
@@ -37,7 +38,7 @@ template.innerHTML = `
       user-select: none;
     }
 
-    #quiz-question, #quiz-nickname, #quiz-message, #quiz-highscore {
+    #memory-question, #memory-nickname, #memory-message, #memory-highscore {
       border-radius: 32px;
       background-color: #3399FF;
       border: 16px outset #336699;
@@ -169,7 +170,10 @@ customElements.define('pwd-application',
       this._pwd = this.shadowRoot.querySelector('#pwd-application')
       this._windowContainer = this.shadowRoot.querySelector('#pwd-window-container')
       this._dock = this.shadowRoot.querySelector('#pwd-dock')
-      this._applications = ['pwd-chat']
+      this._applications = [
+        'pwd-chat',
+        'pwd-memory'
+      ]
       //this._windows = []
 
       /* Initiates the dock */
