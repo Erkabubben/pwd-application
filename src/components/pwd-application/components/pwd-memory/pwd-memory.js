@@ -26,6 +26,14 @@ template.innerHTML = `
       width: min-width(480px);
       height: min-content;
     }
+    #memory-state {
+      border-radius: 32px;
+      background-color: #3399FF;
+      border: 16px outset #336699;
+      padding: 16px;
+      width: 100%;
+      height: 100%;
+    }
   </style>
   <style id="size"></style>
   <div id="pwd-app">

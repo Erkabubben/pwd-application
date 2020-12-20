@@ -24,11 +24,11 @@ template.innerHTML = `
     }
   </style>
   <div id="memory-state">
-    <flipping-tile><img src="` + imagesPath + `1.png"></flipping-tile>
-    <flipping-tile><img src="` + imagesPath + `2.png"></flipping-tile>
+
   </div>
 `
-
+//    <flipping-tile><img src="` + imagesPath + `1.png"></flipping-tile>
+//    <flipping-tile><img src="` + imagesPath + `2.png"></flipping-tile>
 /**
  * Define custom element.
  */
@@ -62,6 +62,8 @@ customElements.define('memory-state',
         '8'
       ]
       this._startingCardsAmount = 0
+      this._lineLength = 0
+      this._linesAmount = 0
 
       this.InitiateGame('4x4')
     }
@@ -74,13 +76,11 @@ customElements.define('memory-state',
     }
 
     InitiateGame (gridSize) {
-      if (gridSize === '2x2') {
-        this._startingCardsAmount = 4
-      } else if (gridSize === '4x2') {
-        this._startingCardsAmount = 8
-      } else if (gridSize === '4x4') {
-        this._startingCardsAmount = 16
-      }
+
+      this._lineLength = gridSize.charAt(0)
+      this._linesAmount = gridSize.charAt(2)
+
+      this._startingCardsAmount = this._lineLength * this._linesAmount
 
       let cardMotifs = this._cardMotifs.slice()
       
@@ -97,7 +97,20 @@ customElements.define('memory-state',
 
       cards = this.Shuffle(cards)
 
-      console.log(cards)
+      for (let i = 0; i < this._linesAmount; i++) {
+        const line = i
+        var newCardLine = document.createElement('div')
+        for (let j = 0; j < this._lineLength; j++) {
+          const card = j
+          var newCard = document.createElement('flipping-tile')
+          var newCardImg = document.createElement('img')
+          newCardImg.setAttribute('src', imagesPath + cards.pop() + '.png')
+          newCard.appendChild(newCardImg)
+          newCard.flipTile()
+          newCardLine.appendChild(newCard)
+        }
+        this._memoryState.appendChild(newCardLine)
+      }
     }
 
     /**
