@@ -74,6 +74,7 @@ customElements.define('memory-state',
       this._amountOfCardsOfPairFlipped = 0
       this._cardsOfPair1 = -1
       this._cardsOfPair2 = -1
+      this._cardsPairTimeout = 0
 
       this.InitiateGame('4x4')
     }
@@ -116,7 +117,8 @@ customElements.define('memory-state',
           const newCard = document.createElement('flipping-tile')
           const newCardImg = document.createElement('img')
           //newCard.setAttribute('backsideColor', 'red')
-          newCardImg.setAttribute('src', imagesPath + cards.pop() + '.png')
+          newCard.motif = cards.pop()
+          newCardImg.setAttribute('src', imagesPath + newCard.motif + '.png')
           newCard.appendChild(newCardImg)
           newCard.flipTile()
           newCard.row = i
@@ -176,6 +178,7 @@ customElements.define('memory-state',
       document.addEventListener('keydown', this.keyDownFunction)
       document.addEventListener('keyup', () => { document.addEventListener('keydown', this.keyDownFunction) } )
       
+
     }
 
     UpdateCardFocus () {
@@ -199,6 +202,19 @@ customElements.define('memory-state',
         this._amountOfCardsOfPairFlipped++
         this._cardsOfPair2 = card.cardID
         card.flipTile()
+        let card1 = this._activeCards[this._cardsOfPair1]
+        let card2 = this._activeCards[this._cardsOfPair2]
+        if (card1.motif !== card2.motif) {
+          this._cardsPairTimeout = setTimeout(() => {
+            card1.flipTile()
+            card2.flipTile()
+            this._amountOfCardsOfPairFlipped = 0
+            clearTimeout(this._cardsPairTimeout)
+          }, 1500)
+        } else {
+          this._amountOfCardsOfPairFlipped = 0
+        }
+
       }
     }
 

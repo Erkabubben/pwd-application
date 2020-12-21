@@ -103,6 +103,7 @@ customElements.define('flipping-tile',
       this.column = 0
       this.row = 0
       this.cardID = 0
+      this.motif = 0
 
       //this._div.setAttribute('tabindex', 0)
       this.updateImageSrcAttribute()
