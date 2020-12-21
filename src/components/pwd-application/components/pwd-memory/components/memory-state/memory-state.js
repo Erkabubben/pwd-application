@@ -71,6 +71,10 @@ customElements.define('memory-state',
       this._cardsColumnRowToID = {}
       this._cardsIDToColumnRow = {}
 
+      this._amountOfCardsOfPairFlipped = 0
+      this._cardsOfPair1 = -1
+      this._cardsOfPair2 = -1
+
       this.InitiateGame('4x4')
     }
 
@@ -87,8 +91,6 @@ customElements.define('memory-state',
       this._linesAmount = gridSize.charAt(2)
 
       this._startingCardsAmount = this._lineLength * this._linesAmount
-
-      console.log(this._lineLength, this._linesAmount, this._startingCardsAmount)
 
       let cardMotifs = this._cardMotifs.slice()
       
@@ -113,6 +115,7 @@ customElements.define('memory-state',
         for (let j = 0; j < this._lineLength; j++) {
           const newCard = document.createElement('flipping-tile')
           const newCardImg = document.createElement('img')
+          //newCard.setAttribute('backsideColor', 'red')
           newCardImg.setAttribute('src', imagesPath + cards.pop() + '.png')
           newCard.appendChild(newCardImg)
           newCard.flipTile()
@@ -121,11 +124,11 @@ customElements.define('memory-state',
           newCard.cardID = k
           newCard.addEventListener('click', event => {
             if (event.button === 0) {
-              newCard.flipTile()
               this._selectedCardColumn = newCard.column
               this._selectedCardRow = newCard.row
               this._selectedCard = newCard.cardID
               this.UpdateCardFocus()
+              this.FlipCard()
             }
           })
           newCardLine.appendChild(newCard)
@@ -164,8 +167,8 @@ customElements.define('memory-state',
         this.UpdateCardFocus()
         if (event.keyCode === 13) {
           event.preventDefault()
-          this._activeCards[this._selectedCard].flipTile()
           this.UpdateCardFocus()
+          this.FlipCard()
         }
         document.removeEventListener('keydown', this.keyDownFunction )
       }
@@ -183,6 +186,19 @@ customElements.define('memory-state',
         } else {
           card._div.removeAttribute('part')
         }
+      }
+    }
+
+    FlipCard () {
+      let card = this._activeCards[this._selectedCard]
+      if (this._amountOfCardsOfPairFlipped === 0 && card.hasAttribute('flipped')) {
+        this._amountOfCardsOfPairFlipped++
+        this._cardsOfPair1 = card.cardID
+        card.flipTile()
+      } else if (this._amountOfCardsOfPairFlipped === 1 && card.hasAttribute('flipped')) {
+        this._amountOfCardsOfPairFlipped++
+        this._cardsOfPair2 = card.cardID
+        card.flipTile()
       }
     }
 

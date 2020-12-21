@@ -61,11 +61,11 @@ template.innerHTML = `
       display: none;
     }
     flipping-tile::part(focus) {
-      box-shadow: 0px 0px 8px 8px yellow;
+      box-shadow: 0px 0px 2px 8px grey;
     }
   </style>
   <style id="backsideStyle">
-    flipping-tile::part(flipped) {
+    div.backsideUp {
       background-color: yellow;
     }
   </style>
@@ -134,12 +134,12 @@ customElements.define('flipping-tile',
     updateImageSrcAttribute () {
       // Set tile to show backside
       if (this.hasAttribute('flipped')) {
-        this._div.setAttribute('part', 'flipped')
+        this._div.classList.add('backsideUp')
         this._slot.setAttribute('part', 'hide')
         this._backside.setAttribute('part', 'show')
       // Set tile to show front
       } else {
-        this._div.removeAttribute('part')
+        this._div.classList.remove('backsideUp')
         this._backside.setAttribute('part', 'hide')
         this._slot.setAttribute('part', 'show')
       }
@@ -176,9 +176,9 @@ customElements.define('flipping-tile',
       })*/
       // Change backside color if backsideColor attribute has been set
       if (this.hasAttribute('backsideColor')) {
-        this._backsideStyle.textContent = `flipping-tile::part(flipped) {
+        this._backsideStyle.textContent = `div.backsideUp {
                                               background-color: ` + this.getAttribute('backsideColor') + `;
-                                            }`
+                                          }`
       }
       // Change backside image if backsideImage attribute has been set
       if (this.hasAttribute('backsideImage')) {
