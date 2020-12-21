@@ -105,6 +105,7 @@ customElements.define('memory-state',
 
       cards = this.Shuffle(cards)
 
+
       let k = 0
       for (let i = 0; i < this._linesAmount; i++) {
         const line = i
@@ -121,10 +122,10 @@ customElements.define('memory-state',
           newCard.addEventListener('click', event => {
             if (event.button === 0) {
               newCard.flipTile()
-              //this._selectedCard = newCard.cardID
               this._selectedCardColumn = newCard.column
               this._selectedCardRow = newCard.row
-              this.UpdateCardFocus() 
+              this._selectedCard = newCard.cardID
+              this.UpdateCardFocus()
             }
           })
           newCardLine.appendChild(newCard)
@@ -152,15 +153,19 @@ customElements.define('memory-state',
           event.preventDefault()
           this._selectedCardRow = (this._selectedCardRow + 1) % this._linesAmount
         } else if (event.keyCode === 38 || event.keyCode === 87) {  // Up arrowkey
+          event.preventDefault()
           this._selectedCardRow = (this._selectedCardRow - 1)
           if (this._selectedCardRow < 0) {
             this._selectedCardRow = this._linesAmount - 1
           }
         }
-        
+
+        this._selectedCard = this._cardsColumnRowToID[this._selectedCardColumn + ',' + this._selectedCardRow]
         this.UpdateCardFocus()
         if (event.keyCode === 13) {
-
+          event.preventDefault()
+          this._activeCards[this._selectedCard].flipTile()
+          this.UpdateCardFocus()
         }
         document.removeEventListener('keydown', this.keyDownFunction )
       }
@@ -171,7 +176,6 @@ customElements.define('memory-state',
     }
 
     UpdateCardFocus () {
-      this._selectedCard = this._cardsColumnRowToID[this._selectedCardColumn + ',' + this._selectedCardRow]
       for (let i = 0; i < this._activeCards.length; i++) {
         const card = this._activeCards[i];
         if (card.cardID == this._selectedCard) {
