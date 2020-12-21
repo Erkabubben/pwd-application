@@ -64,6 +64,12 @@ customElements.define('memory-state',
       this._startingCardsAmount = 0
       this._lineLength = 0
       this._linesAmount = 0
+      this._selectedCard = 0
+      this._selectedCardRow = 0
+      this._selectedCardColumn = 0
+      this._activeCards = []
+      this._cardsColumnRowToID = {}
+      this._cardsIDToColumnRow = {}
 
       this.InitiateGame('4x4')
     }
@@ -82,6 +88,8 @@ customElements.define('memory-state',
 
       this._startingCardsAmount = this._lineLength * this._linesAmount
 
+      console.log(this._lineLength, this._linesAmount, this._startingCardsAmount)
+
       let cardMotifs = this._cardMotifs.slice()
       
       cardMotifs = this.Shuffle(cardMotifs)
@@ -97,19 +105,80 @@ customElements.define('memory-state',
 
       cards = this.Shuffle(cards)
 
+      let k = 0
       for (let i = 0; i < this._linesAmount; i++) {
         const line = i
-        var newCardLine = document.createElement('div')
+        const newCardLine = document.createElement('div')
         for (let j = 0; j < this._lineLength; j++) {
-          const card = j
-          var newCard = document.createElement('flipping-tile')
-          var newCardImg = document.createElement('img')
+          const newCard = document.createElement('flipping-tile')
+          const newCardImg = document.createElement('img')
           newCardImg.setAttribute('src', imagesPath + cards.pop() + '.png')
           newCard.appendChild(newCardImg)
           newCard.flipTile()
+          newCard.row = i
+          newCard.column = j
+          newCard.cardID = k
+          newCard.addEventListener('click', event => {
+            if (event.button === 0) {
+              newCard.flipTile()
+              //this._selectedCard = newCard.cardID
+              this._selectedCardColumn = newCard.column
+              this._selectedCardRow = newCard.row
+              this.UpdateCardFocus() 
+            }
+          })
           newCardLine.appendChild(newCard)
+          this._activeCards.push(newCard)
+          this._cardsColumnRowToID[j + ',' + i] = k
+          this._cardsIDToColumnRow[k] = j + ',' + i
+          k++
         }
         this._memoryState.appendChild(newCardLine)
+      }
+
+      this.UpdateCardFocus() 
+
+      this.keyDownFunction = (event) => {
+        if (event.keyCode === 39 || event.keyCode === 68) {  // Right arrowkey
+          event.preventDefault()
+          this._selectedCardColumn = (this._selectedCardColumn + 1) % this._lineLength
+        } else if (event.keyCode === 37 || event.keyCode === 65) {  // Left arrowkey
+          event.preventDefault()
+          this._selectedCardColumn = (this._selectedCardColumn - 1)
+          if (this._selectedCardColumn < 0) {
+            this._selectedCardColumn = this._lineLength - 1
+          }
+        } else if (event.keyCode === 40 || event.keyCode === 83) {  // Down arrowkey
+          event.preventDefault()
+          this._selectedCardRow = (this._selectedCardRow + 1) % this._linesAmount
+        } else if (event.keyCode === 38 || event.keyCode === 87) {  // Up arrowkey
+          this._selectedCardRow = (this._selectedCardRow - 1)
+          if (this._selectedCardRow < 0) {
+            this._selectedCardRow = this._linesAmount - 1
+          }
+        }
+        
+        this.UpdateCardFocus()
+        if (event.keyCode === 13) {
+
+        }
+        document.removeEventListener('keydown', this.keyDownFunction )
+      }
+
+      document.addEventListener('keydown', this.keyDownFunction)
+      document.addEventListener('keyup', () => { document.addEventListener('keydown', this.keyDownFunction) } )
+      
+    }
+
+    UpdateCardFocus () {
+      this._selectedCard = this._cardsColumnRowToID[this._selectedCardColumn + ',' + this._selectedCardRow]
+      for (let i = 0; i < this._activeCards.length; i++) {
+        const card = this._activeCards[i];
+        if (card.cardID == this._selectedCard) {
+          card._div.setAttribute('part', 'focus')
+        } else {
+          card._div.removeAttribute('part')
+        }
       }
     }
 
@@ -164,7 +233,9 @@ customElements.define('memory-state',
     /**
      * Called after the element has been removed from the DOM.
      */
-    disconnectedCallback () {}
+    disconnectedCallback () {
+      document.removeEventListener('keydown', this.keyDownFunction )
+    }
 
     /**
      * Run the specified instance property

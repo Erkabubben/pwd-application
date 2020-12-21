@@ -60,6 +60,9 @@ template.innerHTML = `
     flipping-tile::part(hide) {
       display: none;
     }
+    flipping-tile::part(focus) {
+      box-shadow: 0px 0px 8px 8px yellow;
+    }
   </style>
   <style id="backsideStyle">
     flipping-tile::part(flipped) {
@@ -97,7 +100,11 @@ customElements.define('flipping-tile',
       this._backside = this._div.querySelector('img#backside')
       this._backsideStyle = this.shadowRoot.querySelector('#backsideStyle')
 
-      this._div.setAttribute('tabindex', 0)
+      this.column = 0
+      this.row = 0
+      this.cardID = 0
+
+      //this._div.setAttribute('tabindex', 0)
       this.updateImageSrcAttribute()
     }
 
@@ -142,7 +149,7 @@ customElements.define('flipping-tile',
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
-      // Flips the tile upon being clicked
+      /*// Flips the tile upon being clicked
       this.addEventListener('click', event => {
         if (event.button === 0 && !this._div.classList.contains('inactive')) {
           this.flipTile()
@@ -166,7 +173,7 @@ customElements.define('flipping-tile',
             this._div.classList.add('hidden')
           }
         }
-      })
+      })*/
       // Change backside color if backsideColor attribute has been set
       if (this.hasAttribute('backsideColor')) {
         this._backsideStyle.textContent = `flipping-tile::part(flipped) {

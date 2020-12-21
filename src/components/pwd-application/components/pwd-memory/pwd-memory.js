@@ -28,7 +28,7 @@ template.innerHTML = `
     }
     #memory-state {
       border-radius: 32px;
-      background-color: #3399FF;
+      background-color: white;
       border: 16px outset #336699;
       padding: 16px;
       width: 100%;
