@@ -23,13 +23,12 @@ template.innerHTML = `
       transform: translate(-50%, -50%);
     }
     #game-area {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      border: black solid 3px;
-      transform: translate(-50%, -50%);
-      width: 800px;
-      height: 600px;
+      
+      width: 75%;
+      height: 100%;
+    }
+    #game-area div {
+      margin: auto;
     }
   </style>
   <div id="memory-state">
@@ -130,9 +129,9 @@ customElements.define('memory-state',
         for (let j = 0; j < this._lineLength; j++) {
           const newCard = document.createElement('flipping-tile')
           const newCardImg = document.createElement('img')
-          //newCard.setAttribute('backsideColor', 'red')
-          newCard.motif = cards.pop()
+          newCard.setAttribute('backsideColor', 'yellow')
           newCard.SetSize(64, 64)
+          newCard.motif = cards.pop()
           newCardImg.setAttribute('src', imagesPath + newCard.motif + '.png')
           newCard.appendChild(newCardImg)
           newCard.flipTile()
@@ -190,8 +189,12 @@ customElements.define('memory-state',
         document.removeEventListener('keydown', this.keyDownFunction )
       }
 
+      this.keyUpFunction = (event) => {
+        document.addEventListener('keydown', this.keyDownFunction)
+      }
+
       document.addEventListener('keydown', this.keyDownFunction)
-      document.addEventListener('keyup', () => { document.addEventListener('keydown', this.keyDownFunction) } )
+      document.addEventListener('keyup', this.keyUpFunction)
       
 
     }
@@ -290,7 +293,8 @@ customElements.define('memory-state',
      * Called after the element has been removed from the DOM.
      */
     disconnectedCallback () {
-      document.removeEventListener('keydown', this.keyDownFunction )
+      document.removeEventListener('keydown', this.keyDownFunction)
+      document.removeEventListener('keyup', this.keyUpFunction)
     }
 
     /**

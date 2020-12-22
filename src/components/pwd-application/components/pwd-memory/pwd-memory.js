@@ -7,6 +7,7 @@
 
 import './components/nickname-state/index.js'
 import './components/memory-state/index.js'
+import './components/message-state/index.js'
 
 /**
  * Define template.
@@ -72,10 +73,11 @@ customElements.define('pwd-memory',
       this.currentScreen = null
       this.userNickname = ''
       this.totalTime = 0
+      this.gameType = ''
 
       /* Initiates the nickname screen */
       //this.DisplayNicknameState()
-      this.DisplayMemoryGameState()
+      this.DisplayNicknameState()
     }
 
     /**
@@ -94,8 +96,9 @@ customElements.define('pwd-memory',
       this.currentScreen = this._pwdApp.appendChild(nicknameState)
       /* Starts the game when a valid nickname has been submitted */
       this.currentScreen.addEventListener('nicknameSet', (e) => {
-        this.userNickname = e.detail
+        this.userNickname = e.detail.nickname
         this.totalTime = 0
+        this.gameType = e.detail.game
         this.DisplayMemoryGameState()
       })
     }
@@ -108,10 +111,28 @@ customElements.define('pwd-memory',
       const memoryState = document.createElement('memory-state')
       memoryState.InheritStyle(this.shadowRoot.querySelector('style'))
       this.currentScreen = this._pwdApp.appendChild(memoryState)
-      this.currentScreen.InitiateGame('4x4')
+      this.currentScreen.InitiateGame(this.gameType)
       this.currentScreen.addEventListener('allpairsfound', (event) => {
-        this.DisplayNicknameState()
+        this.DisplayTimedMessage('CONGRATULATIONS!!', 3000, (e) => { this.DisplayNicknameState() })
       })
+    }
+
+    /**
+     * Displays a timed message and then calls a function after a set amount of milliseconds.
+     *
+     * @param {string} message - The message to be displayed.
+     * @param {number} time - The time in milliseconds before the function will be called.
+     * @param {Function} fn - The function to be called after the message has expired.
+     */
+    async DisplayTimedMessage (message, time, fn) {
+      this._pwdApp.removeChild(this.currentScreen)
+      /* Creates a new message screen with inherited CSS style */
+      const messageState = document.createElement('message-state')
+      messageState.setAttribute('message', message)
+      messageState.setAttribute('limit', time)
+      messageState.InheritStyle(this.shadowRoot.querySelector('style'))
+      this.currentScreen = this._pwdApp.appendChild(messageState)
+      this.currentScreen.addEventListener('messagetimerzero', fn)
     }
 
     /**

@@ -18,12 +18,18 @@ template.innerHTML = `
       left: 50%;
       transform: translate(-50%, -50%);
     }
+
+    ::part(selected) {
+      box-shadow: 0px 0px 2px 8px grey;
+    }
   </style>
   <div id="nickname-state">
     <h1>Welcome to the MEMORY!<br></h1>
     <h2>Please enter your nickname.</h2>
     <form>
-      <input type="text" id="nickname">
+      <input type="text" id="nickname" class="selectable" autocomplete="off">
+      <br><br>
+      <div id="alternatives"></div><br>
       <br><br>
       <button type="button">Start!</button> 
     </form>
@@ -53,17 +59,89 @@ customElements.define('nickname-state',
       this._nicknameState = this.shadowRoot.querySelector('#nickname-state')
       this._button = this.shadowRoot.querySelector('button')
       this._input = this.shadowRoot.querySelector('input')
+      this._alternatives = this.shadowRoot.querySelector('#alternatives')
+
+      let gameTypes = ['2x2', '4x2', '4x4']
+
+      gameTypes.forEach(element => {
+        const newAlternative = document.createElement('button')
+        newAlternative.setAttribute('value', element)
+        newAlternative.textContent = element
+        newAlternative.classList.add('selectable')
+        this._alternatives.appendChild(newAlternative)
+        newAlternative.addEventListener('click', (event) => { // Checks if the mouse has been clicked
+          event.preventDefault()
+          if (this._input.value.length > 2) this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: { nickname: this._input.value, game: newAlternative.value }}))
+        })
+        /*const newAlternative = document.createElement('input')
+        newAlternative.setAttribute('type', 'radio')
+        newAlternative.setAttribute('name', 'alternatives')
+        newAlternative.setAttribute('id', element)
+        newAlternative.setAttribute('value', element)
+        const newAlternativeLabel = document.createElement('label')
+        newAlternativeLabel.textContent = element
+        this._alternatives.appendChild(newAlternative)
+        this._alternatives.appendChild(newAlternativeLabel)
+        this._alternatives.appendChild(document.createElement('br'))*/
+      })
+
+      this._selectedElement = 0
+      this._selectables = this._nicknameState.querySelectorAll('.selectable')
+      this._selectables[this._selectedElement].setAttribute('part', 'selected')
+
+      this.keyDownFunction = (event) => {
+        let selectedBefore = this._selectedElement
+        if (event.keyCode === 40 || (event.keyCode === 13 && this._selectedElement === 0)) {  // Down arrowkey
+          event.preventDefault()
+          this._selectables[this._selectedElement].removeAttribute('part')
+          this._selectedElement++
+          if (this._selectedElement >= this._selectables.length) {
+            this._selectedElement = 0
+          } else if (this._selectedElement < 0 ) {
+            this._selectedElement = (this._selectables.length - 1)
+          }
+          this._selectables[this._selectedElement].setAttribute('part', 'selected')
+        } else if (event.keyCode === 38) {  // Up arrowkey
+          event.preventDefault()
+          this._selectables[this._selectedElement].removeAttribute('part')
+          this._selectedElement--
+          if (this._selectedElement >= this._selectables.length) {
+            this._selectedElement = 0
+          } else if (this._selectedElement < 0 ) {
+            this._selectedElement = (this._selectables.length - 1)
+          }
+          this._selectables[this._selectedElement].setAttribute('part', 'selected')
+        } else if (event.keyCode === 13 && this._selectedElement !== 0) { // Enter when button is selected...
+          event.preventDefault()
+          if (this._input.value.length > 2) { // ...and a valid nickname is set.
+            this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: { nickname: this._input.value, game: this._selectables[this._selectedElement].value }}))
+          }
+        }
+        // Focus or blur text input field depending on wether it is selected
+        if (this._selectedElement === 0) {
+          this._selectables[0].focus()
+        } else {
+          this._selectables[0].blur()
+        }
+      }
+
+      this.keyUpFunction = (event) => {
+        document.addEventListener('keydown', this.keyDownFunction)
+      }
+
+      document.addEventListener('keydown', this.keyDownFunction)
+      document.addEventListener('keyup', this.keyUpFunction)
 
       /* Event listeners for determining when a nickname has been submitted */
-      this._input.addEventListener('keydown', (event) => { // Checks if the Enter button has been pressed
+      /*this._input.addEventListener('keydown', (event) => { // Checks if the Enter button has been pressed
         if (event.keyCode === 13) {
           event.preventDefault()
           this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
         }
-      })
-      this._button.addEventListener('click', () => { // Checks if the mouse has been clicked
-        if (this._input.value.length > 2) this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
-      })
+      })*/
+      //this._button.addEventListener('click', () => { // Checks if the mouse has been clicked
+      //  if (this._input.value.length > 2) this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
+      //})
     }
 
     /**
@@ -106,7 +184,10 @@ customElements.define('nickname-state',
     /**
      * Called after the element has been removed from the DOM.
      */
-    disconnectedCallback () {}
+    disconnectedCallback () {
+      document.removeEventListener('keydown', this.keyDownFunction)
+      document.removeEventListener('keyup', this.keyUpFunction)
+    }
 
     /**
      * Run the specified instance property
