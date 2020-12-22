@@ -18,8 +18,6 @@ template.innerHTML = `
       display: inline-block;
     }
     div {
-      width: 128px;
-      height: 128px;
       background-color: white;
       border-radius: 8px;
       border: solid black 3px;
@@ -74,6 +72,12 @@ template.innerHTML = `
     </slot>
     <img id="backside" src="` + imagesPath + `lnu-symbol.png">
   </div>
+  <style id="size">
+    div {
+      width: 128px;
+      height: 128px;
+    }
+  </style>
   `
 
 /**
@@ -100,6 +104,10 @@ customElements.define('flipping-tile',
       this._backside = this._div.querySelector('img#backside')
       this._backsideStyle = this.shadowRoot.querySelector('#backsideStyle')
 
+      this._styleSize = this.shadowRoot.querySelector('style#size')
+      this.width = 0
+      this.height = 0
+
       this.column = 0
       this.row = 0
       this.cardID = 0
@@ -112,6 +120,22 @@ customElements.define('flipping-tile',
     HideAndInactivate () {
       this._div.classList.add('inactive')
       this._div.classList.add('hidden')
+    }
+
+    /**
+     * Sets the size of the tile, ensuring that the width/height properties and
+     * the width/height set in the CSS element are always the same.
+     *
+     * @param {number} width - The width in pixels.
+     * @param {number} height - The height in pixels.
+     */
+    SetSize (width, height) {
+      this.width = width
+      this.height = height
+      this._styleSize.textContent = `div {
+        width: ` + this.width + `px;
+        height: ` + this.height + `px;
+      }`
     }
 
     /**

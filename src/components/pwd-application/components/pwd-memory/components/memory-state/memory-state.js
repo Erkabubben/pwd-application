@@ -98,6 +98,8 @@ customElements.define('memory-state',
       this.shadowRoot.appendChild(style)
     }
 
+
+
     InitiateGame (gridSize) {
 
       this._lineLength = gridSize.charAt(0)
@@ -130,6 +132,7 @@ customElements.define('memory-state',
           const newCardImg = document.createElement('img')
           //newCard.setAttribute('backsideColor', 'red')
           newCard.motif = cards.pop()
+          newCard.SetSize(64, 64)
           newCardImg.setAttribute('src', imagesPath + newCard.motif + '.png')
           newCard.appendChild(newCardImg)
           newCard.flipTile()
