@@ -73,6 +73,7 @@ customElements.define('nickname-state',
           event.preventDefault()
           if (this._input.value.length > 2) this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: { nickname: this._input.value, game: newAlternative.value }}))
         })
+        this._alternatives.appendChild(document.createElement('br'))
         /*const newAlternative = document.createElement('input')
         newAlternative.setAttribute('type', 'radio')
         newAlternative.setAttribute('name', 'alternatives')

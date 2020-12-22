@@ -174,7 +174,6 @@ customElements.define('pwd-application',
         'pwd-chat',
         'pwd-memory'
       ]
-      //this._windows = []
 
       /* Initiates the dock */
       this._applications.forEach(app => {

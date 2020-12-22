@@ -45,6 +45,7 @@ customElements.define('pwd-chat',
 
       /* Set up properties */
       this._pwdChat = this.shadowRoot.querySelector('#pwd-app')
+      this.name = 'Chat'
       this._styleSize = this.shadowRoot.querySelector('style#size')
       this.width = 800
       this.height = 600

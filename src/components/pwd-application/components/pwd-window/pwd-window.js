@@ -31,6 +31,16 @@ template.innerHTML = `
     div#header img {
       height: 100%;
     }
+    div#header p {
+      margin: 0px;
+      padding-left: 4px;
+      display: inline;
+      user-select: none;
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
+      font-weight: bold;
+    }
     div#app {
       position: absolute;
       top: 24px;
@@ -48,6 +58,7 @@ template.innerHTML = `
   <div id="pwd-window">
     <div id="header">
       <img>
+      <p id="headertitle">HEJ!</p>
       <button id="closebutton">X</button>
     </div>
     <div id="app"><slot name="app"></slot></div>
@@ -81,7 +92,7 @@ customElements.define('pwd-window',
       this._styleSize = this.shadowRoot.querySelector('style#size')
       this._closeButton = this.shadowRoot.querySelector('#closebutton')
       this._appSlot = this.shadowRoot.querySelector('slot')
-      //this._headerTitle = this.shadowRoot.querySelector('h1#headertitle')
+      this._headerTitle = this.shadowRoot.querySelector('p#headertitle')
 
       this._closeButton.addEventListener('click', event => {
         this.parentElement.removeChild(this)
@@ -139,7 +150,7 @@ customElements.define('pwd-window',
       const newAppElement = document.createElement(app)
       this._appSlot.appendChild(newAppElement)
       this.icon.setAttribute('src', componentsOfParentPath + '/' + app + '/img/icon.png')
-      //this._headerTitle.textContent = ''
+      this._headerTitle.textContent = newAppElement.name
       console.log(componentsOfParentPath + '/' + app + '/img/icon.png')
       this.SetSize(newAppElement.width, newAppElement.height)
     }

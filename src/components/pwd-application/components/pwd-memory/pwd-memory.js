@@ -63,6 +63,7 @@ customElements.define('pwd-memory',
 
       /* Set up general pwd-app properties */
       this._pwdApp = this.shadowRoot.querySelector('#pwd-app')
+      this.name = 'Memory'
       this._styleSize = this.shadowRoot.querySelector('style#size')
       this.width = 800
       this.height = 600
