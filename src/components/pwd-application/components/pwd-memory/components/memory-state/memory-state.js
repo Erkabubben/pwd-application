@@ -22,9 +22,18 @@ template.innerHTML = `
       left: 50%;
       transform: translate(-50%, -50%);
     }
+    #game-area {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border: black solid 3px;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 600px;
+    }
   </style>
   <div id="memory-state">
-
+    <div id="game-area"></div>
   </div>
 `
 //    <flipping-tile><img src="` + imagesPath + `1.png"></flipping-tile>
@@ -50,6 +59,7 @@ customElements.define('memory-state',
 
       /* Memory state properties */
       this._memoryState = this.shadowRoot.querySelector('#memory-state')
+      this._gameArea = this.shadowRoot.querySelector('#game-area')
       this._cardMotifs = [
         '0',
         '1',
@@ -76,7 +86,9 @@ customElements.define('memory-state',
       this._cardsOfPair2 = -1
       this._cardsPairTimeout = 0
 
-      this.InitiateGame('4x4')
+      this._pairsFound = 0
+
+      
     }
 
     InheritStyle (styleElement) {
@@ -139,7 +151,7 @@ customElements.define('memory-state',
           this._cardsIDToColumnRow[k] = j + ',' + i
           k++
         }
-        this._memoryState.appendChild(newCardLine)
+        this._gameArea.appendChild(newCardLine)
       }
 
       this.UpdateCardFocus() 
@@ -204,17 +216,22 @@ customElements.define('memory-state',
         card.flipTile()
         let card1 = this._activeCards[this._cardsOfPair1]
         let card2 = this._activeCards[this._cardsOfPair2]
-        if (card1.motif !== card2.motif) {
+        if (card1.motif !== card2.motif) {  // Cards do not match
           this._cardsPairTimeout = setTimeout(() => {
             card1.flipTile()
             card2.flipTile()
             this._amountOfCardsOfPairFlipped = 0
             clearTimeout(this._cardsPairTimeout)
           }, 1500)
-        } else {
+        } else {  // Cards are a valid pair
           this._amountOfCardsOfPairFlipped = 0
+          card1.HideAndInactivate()
+          card2.HideAndInactivate()
+          this._pairsFound++
+          if (this._pairsFound === (this._startingCardsAmount / 2)) {
+            this.dispatchEvent(new window.CustomEvent('allpairsfound', { detail: '' }))
+          }
         }
-
       }
     }
 

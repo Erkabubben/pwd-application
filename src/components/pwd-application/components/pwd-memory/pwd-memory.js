@@ -108,6 +108,10 @@ customElements.define('pwd-memory',
       const memoryState = document.createElement('memory-state')
       memoryState.InheritStyle(this.shadowRoot.querySelector('style'))
       this.currentScreen = this._pwdApp.appendChild(memoryState)
+      this.currentScreen.InitiateGame('4x4')
+      this.currentScreen.addEventListener('allpairsfound', (event) => {
+        this.DisplayNicknameState()
+      })
     }
 
     /**

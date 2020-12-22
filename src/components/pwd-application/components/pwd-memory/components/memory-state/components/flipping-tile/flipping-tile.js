@@ -109,6 +109,11 @@ customElements.define('flipping-tile',
       this.updateImageSrcAttribute()
     }
 
+    HideAndInactivate () {
+      this._div.classList.add('inactive')
+      this._div.classList.add('hidden')
+    }
+
     /**
      * Watches the listed attributes for changes on the element.
      *
