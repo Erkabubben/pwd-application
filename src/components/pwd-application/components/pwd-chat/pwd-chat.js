@@ -6,6 +6,7 @@
  */
 
 import './components/chat-nickname-state/index.js'
+import './components/chat-state/index.js'
 /**
  * Define template.
  */
@@ -17,6 +18,12 @@ template.innerHTML = `
       width: 640px;
       height: 456px;
       background-color: red;
+    }
+    #chat-state {
+      background-color: blue;
+      padding: 16px;
+      width: 100%;
+      height: 100%;
     }
   </style>
   <style id="size"></style>
@@ -88,8 +95,18 @@ customElements.define('pwd-chat',
       this.currentScreen.addEventListener('nicknameSet', (e) => {
         this.userNickname = e.detail.nickname
         this.totalTime = 0
-        //this.DisplayMemoryGameState()
+        this.DisplayChatState()
       })
+    }
+
+    DisplayChatState() {
+      if (this.currentScreen !== null) {
+        this._pwdApp.removeChild(this.currentScreen)
+      }
+      /* Creates a new Chat state with inherited CSS style */
+      const chatState = document.createElement('chat-state')
+      chatState.InheritStyle(this.shadowRoot.querySelector('style'))
+      this.currentScreen = this._pwdApp.appendChild(chatState)
     }
 
     /**

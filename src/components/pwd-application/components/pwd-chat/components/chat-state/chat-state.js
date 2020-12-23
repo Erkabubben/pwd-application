@@ -1,5 +1,5 @@
 /**
- * The chat-nickname-state web component module.
+ * The chat-state web component module.
  *
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
@@ -11,8 +11,8 @@
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
-    #chat-nickname-state {
-      background-color: white;
+    #chat-state {
+      background-color: grey;
       position: absolute;
       top: 50%;
       left: 50%;
@@ -23,15 +23,13 @@ template.innerHTML = `
       box-shadow: 0px 0px 2px 8px grey;
     }
   </style>
-  <div id="chat-nickname-state">
+  <div id="chat-state">
     <h1>Welcome to the CHAT!<br></h1>
-    <h2>Please enter your nickname.</h2>
     <form>
       <input type="text" id="nickname" class="selectable" autocomplete="off">
       <br><br>
-      <div id="alternatives"></div><br>
       <br><br>
-      <button type="button">Start!</button> 
+      <button type="button">Send</button> 
     </form>
   </div>
 `
@@ -39,7 +37,7 @@ template.innerHTML = `
 /**
  * Define custom element.
  */
-customElements.define('chat-nickname-state',
+customElements.define('chat-state',
   /**
    *
    */
@@ -56,10 +54,9 @@ customElements.define('chat-nickname-state',
         .appendChild(template.content.cloneNode(true))
 
       /* Nickname screen properties */
-      this._chatNicknameState = this.shadowRoot.querySelector('#chat-nickname-state')
+      this._chatState = this.shadowRoot.querySelector('#chat-state')
       this._button = this.shadowRoot.querySelector('button')
       this._input = this.shadowRoot.querySelector('input')
-      this._alternatives = this.shadowRoot.querySelector('#alternatives')
 
       //this._selectedElement = 0
       //this._selectables = this._chatNicknameState.querySelectorAll('.selectable')
