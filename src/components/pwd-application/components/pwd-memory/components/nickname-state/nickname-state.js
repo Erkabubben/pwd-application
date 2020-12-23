@@ -4,6 +4,8 @@
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
  */
+const pathToModule = import.meta.url
+const imagesOfParentPath = new URL('../../img/', pathToModule)
 
 /**
  * Define template.
@@ -17,6 +19,11 @@ template.innerHTML = `
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+    }
+
+    img {
+      margin: auto;
+      display: block;
     }
 
     h1 {
@@ -36,6 +43,7 @@ template.innerHTML = `
     form input {
       display: block;
       margin: auto;
+      font-size: 1.15em;
     }
 
     form p {
@@ -65,9 +73,10 @@ template.innerHTML = `
     }
   </style>
   <div id="nickname-state">
-    <h1>MEMORY</h1>
+    <br>
+    <img src="` + imagesOfParentPath + `logo.png">
+    <br>
     <form>
-      <br>
       <p>Enter a nickname: </p>
       <input type="text" id="nickname" class="selectable" autocomplete="off">
       <br><br>

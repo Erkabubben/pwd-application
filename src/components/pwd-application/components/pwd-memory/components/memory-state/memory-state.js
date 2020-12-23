@@ -150,6 +150,7 @@ customElements.define('memory-state',
           const newCard = document.createElement('flipping-tile')
           const newCardImg = document.createElement('img')
           newCard.setAttribute('backsideColor', 'yellow')
+          newCard.setAttribute('backsideImage', 'backside')
           newCard.SetSize(this.cardSizes[gridSize], this.cardSizes[gridSize])
           newCard.motif = cards.pop()
           newCardImg.setAttribute('src', imagesPath + newCard.motif + '.jpg')

@@ -4,6 +4,9 @@
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
  */
+const pathToModule = import.meta.url
+const imagesPath = new URL('./img/', pathToModule)
+const imagesOfParentPath = new URL('../../img/', pathToModule)
 
 /**
  * Define template.
@@ -12,11 +15,45 @@ const template = document.createElement('template')
 template.innerHTML = `
   <style>
     #chat-nickname-state {
-      background-color: white;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+    }
+
+    form {
+      margin: auto;
+      font-family: Verdana;
+      color: white;
+      width: 50%;
+    }
+
+    form input {
+      display: block;
+      margin: auto;
+      font-size: 1.15em;
+    }
+
+    form p {
+      display: block;
+      text-align: center;
+    }
+
+    form button {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 1.15em;
+      font-family: Verdana;
+      color: white;
+      font-weight: bold;
+      background-color: #444444;
+      border: 2px outset #444444;
+    }
+
+    form button:hover {
+      background-color: #999999;
+      border-color: #999999;
     }
 
     ::part(selected) {
@@ -24,13 +61,13 @@ template.innerHTML = `
     }
   </style>
   <div id="chat-nickname-state">
-    <h1>Welcome to the CHAT!<br></h1>
-    <h2>Please enter your nickname.</h2>
     <form>
+      <br>
+      <img src="` + imagesOfParentPath + `icon.png">
+      <p>Enter a nickname: </p>
       <input type="text" id="nickname" class="selectable" autocomplete="off">
       <br><br>
       <div id="alternatives"></div><br>
-      <br><br>
       <button type="button">Start!</button> 
     </form>
   </div>

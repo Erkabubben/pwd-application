@@ -23,18 +23,21 @@ template.innerHTML = `
       border: solid black 2px;
       transition: box-shadow 0.5s;
       position: relative;
+      overflow: hidden;
     }
     div:focus  {      
       box-shadow: 0px 0px 8px 8px grey;
     }
     div.hidden, div.inactive.hidden {      
-      border: dashed grey 3px;
-      background-color: white;
+      border-style: dashed;
+      border-color: grey;
+      opacity: 0.5;
       user-select: none;
     }
 
     div.inactive {
-      border: dotted grey 3px;
+      border-style: dotted;
+      border-color: grey;
     }
 
     div.hidden img, div.hidden ::slotted(img) {
@@ -51,7 +54,6 @@ template.innerHTML = `
       left: 50%;
       transform: translate(-50%, -50%);
       user-select: none;
-      overflow: hidden;
     }
     flipping-tile::part(show) {
       display: block;
@@ -213,7 +215,7 @@ customElements.define('flipping-tile',
       }
       // Change backside image if backsideImage attribute has been set
       if (this.hasAttribute('backsideImage')) {
-        this._backside.setAttribute('src', imagesPath + this.getAttribute('backsideImage') + '.png')
+        this._backside.setAttribute('src', imagesPath + this.getAttribute('backsideImage') + '.jpg')
       }
     }
 

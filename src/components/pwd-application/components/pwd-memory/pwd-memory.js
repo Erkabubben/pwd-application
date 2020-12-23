@@ -11,7 +11,7 @@ import './components/message-state/index.js'
 
 const pathToModule = import.meta.url
 const imagesPath = new URL('./img/', pathToModule)
-const componentsPath = new URL('./components/', pathToModule)
+
 /**
  * Define template.
  */

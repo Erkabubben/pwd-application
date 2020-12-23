@@ -4,9 +4,12 @@
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
  */
-
 import './components/chat-nickname-state/index.js'
 import './components/chat-state/index.js'
+
+const pathToModule = import.meta.url
+const imagesPath = new URL('./img/', pathToModule)
+const componentsPath = new URL('./components/', pathToModule)
 /**
  * Define template.
  */
@@ -19,16 +22,19 @@ template.innerHTML = `
       height: 456px;
       background-color: red;
     }
-    #chat-state {
-      background-color: white;
-      padding: 16px;
-      width: 100%;
-      height: 100%;
+    #chat-nickname-state, #chat-state {
+        font-family: Verdana;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+        background-image: url("`+ imagesPath +`nickname-bg.jpg");
+    }
+    p, h1, h2, img {
+      user-select: none;
     }
   </style>
   <style id="size"></style>
   <div id="pwd-app">
-    <h1>THE LINNAEUS CHAT</h1>
   </div>
 `
 
@@ -55,8 +61,8 @@ customElements.define('pwd-chat',
       this._pwdApp = this.shadowRoot.querySelector('#pwd-app')
       this.name = 'Chat'
       this._styleSize = this.shadowRoot.querySelector('style#size')
-      this.width = 800
-      this.height = 600
+      this.width = 480
+      this.height = 480
 
       this.SetSize(this.width, this.height)
 
