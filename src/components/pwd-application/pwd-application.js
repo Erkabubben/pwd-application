@@ -5,13 +5,14 @@
  * @version 1.0.0
  */
 const pathToModule = import.meta.url
-const imagesPath = new URL('./images/', pathToModule)
+const imagesPath = new URL('./img/', pathToModule)
 const componentsPath = new URL('./components/', pathToModule)
 
 import './components/countdown-timer/index.js'
 import './components/pwd-window/index.js'
 import './components/pwd-chat/index.js'
 import './components/pwd-memory/index.js'
+import './components/pwd-unity/index.js'
 
 /**
  * Define template.
@@ -50,7 +51,7 @@ template.innerHTML = `
     #pwd-application {
       width: 100%;
       height: 800px;
-      background-color: grey;
+      background-image: url("` + imagesPath + `mosaic.jpg");
       position: relative;
       display: block;
       border: 0px outset red;
@@ -109,7 +110,6 @@ template.innerHTML = `
       position: relative;
       height: 100%;
       width: 100%;
-      background-color: blue;
       overflow: hidden;
     }
 
@@ -172,7 +172,8 @@ customElements.define('pwd-application',
       this._dock = this.shadowRoot.querySelector('#pwd-dock')
       this._applications = [
         'pwd-chat',
-        'pwd-memory'
+        'pwd-memory',
+        'pwd-unity'
       ]
 
       /* Initiates the dock */
@@ -190,7 +191,7 @@ customElements.define('pwd-application',
             this._windowContainer.appendChild(newWindow)
             newWindow.SetApp(app)
             newWindow.addEventListener('mousedown', event => {
-              this._windowContainer.appendChild(newWindow)
+              //this._windowContainer.appendChild(newWindow)
             })
           }
         })

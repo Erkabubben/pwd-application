@@ -1,11 +1,14 @@
 /**
- * The pwd-chat web component module.
+ * The pwd-unity web component module.
  *
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
  */
 
-import './components/chat-nickname-state/index.js'
+const pathToModule = import.meta.url
+//const componentsOfParentPath = new URL('../', pathToModule)
+const gamePath = new URL('./game/index.html', pathToModule)
+
 /**
  * Define template.
  */
@@ -16,19 +19,19 @@ template.innerHTML = `
       position: absolute;
       width: 640px;
       height: 456px;
-      background-color: red;
     }
   </style>
   <style id="size"></style>
   <div id="pwd-app">
-    <h1>THE LINNAEUS CHAT</h1>
+    <iframe src="` + gamePath + `" style="width:800px; height:600px">
   </div>
 `
 
+//<iframe src="` + gamePath + `" style="width:800px; height:600px">
 /**
  * Define custom element.
  */
-customElements.define('pwd-chat',
+customElements.define('pwd-unity',
   /**
    *
    */
@@ -45,20 +48,13 @@ customElements.define('pwd-chat',
         .appendChild(template.content.cloneNode(true))
 
       /* Set up properties */
-      this._pwdApp = this.shadowRoot.querySelector('#pwd-app')
-      this.name = 'Chat'
+      this._pwdChat = this.shadowRoot.querySelector('#pwd-app')
+      this.name = 'Bounce Dungeon'
       this._styleSize = this.shadowRoot.querySelector('style#size')
       this.width = 800
-      this.height = 600
+      this.height = 580
 
       this.SetSize(this.width, this.height)
-
-      /* Set up app-specific properties */
-      this.currentScreen = null
-      this.userNickname = ''
-
-      /* Initiates the nickname screen */
-      this.DisplayNicknameState()
     }
 
     /**
@@ -68,28 +64,6 @@ customElements.define('pwd-chat',
      */
     static get observedAttributes () {
       return []
-    }
-
-    /**
-     * Displays the start screen where the user is asked to input a nickname.
-     */
-    DisplayNicknameState () {
-      /* Resets the user's total time and removes any previously displayed screen or message */
-      this.totalTime = 0
-      if (this.currentScreen !== null) {
-        this._pwdApp.removeChild(this.currentScreen)
-      }
-      /* Creates a new nickname screen with inherited CSS style */
-      const nicknameState = document.createElement('chat-nickname-state')
-      nicknameState.InheritStyle(this.shadowRoot.querySelector('style'))
-      nicknameState.setAttribute('nickname', this.userNickname)
-      this.currentScreen = this._pwdApp.appendChild(nicknameState)
-      /* Starts the game when a valid nickname has been submitted */
-      this.currentScreen.addEventListener('nicknameSet', (e) => {
-        this.userNickname = e.detail.nickname
-        this.totalTime = 0
-        //this.DisplayMemoryGameState()
-      })
     }
 
     /**
