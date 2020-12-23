@@ -23,16 +23,34 @@ template.innerHTML = `
       transform: translate(-50%, -50%);
     }
     #game-area {
-      
-      width: 75%;
+      position: absolute;
+      width: 80%;
       height: 100%;
+      left: 0px;
+      top: 0px;
     }
-    #game-area div {
-      margin: auto;
+    #cards-area {
+      width: max-content;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #ui-area {
+      position: absolute;
+      background-color: #222222;
+      width: 20%;
+      height: 100%;
+      right: 0px;
+      top: 0px;
+      border: 4px outset #222222;
     }
   </style>
   <div id="memory-state">
-    <div id="game-area"></div>
+    <div id="game-area">
+      <div id="cards-area"></div>
+    </div>
+    <div id="ui-area"></div>
   </div>
 `
 //    <flipping-tile><img src="` + imagesPath + `1.png"></flipping-tile>
@@ -59,6 +77,7 @@ customElements.define('memory-state',
       /* Memory state properties */
       this._memoryState = this.shadowRoot.querySelector('#memory-state')
       this._gameArea = this.shadowRoot.querySelector('#game-area')
+      this._cardsArea = this.shadowRoot.querySelector('#cards-area')
       this._cardMotifs = [
         '0',
         '1',
@@ -153,7 +172,7 @@ customElements.define('memory-state',
           this._cardsIDToColumnRow[k] = j + ',' + i
           k++
         }
-        this._gameArea.appendChild(newCardLine)
+        this._cardsArea.appendChild(newCardLine)
       }
 
       this.UpdateCardFocus() 

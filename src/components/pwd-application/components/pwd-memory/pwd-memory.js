@@ -24,7 +24,7 @@ template.innerHTML = `
     }
     #nickname-state, #memory-state {
       font-family: Verdana;
-      padding: 16px;
+      padding: 0px;
       width: 100%;
       height: 100%;
       background-image: url("`+ imagesPath +`wallpaper.jpg");
