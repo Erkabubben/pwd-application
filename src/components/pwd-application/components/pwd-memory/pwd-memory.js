@@ -35,7 +35,6 @@ template.innerHTML = `
   </style>
   <style id="size"></style>
   <div id="pwd-app">
-    <h1>MEMORY</h1>
   </div>
 `
 

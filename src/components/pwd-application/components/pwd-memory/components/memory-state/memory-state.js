@@ -78,27 +78,28 @@ customElements.define('memory-state',
       this._memoryState = this.shadowRoot.querySelector('#memory-state')
       this._gameArea = this.shadowRoot.querySelector('#game-area')
       this._cardsArea = this.shadowRoot.querySelector('#cards-area')
-      this._cardMotifs = [
-        '0',
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8'
-      ]
+      this._cardMotifs = ['0','1','2','3','4','5','6','7','8','9',
+        '10','11','12','13','14','15','16','17','18']
+
+      this.cardSizes = {
+        '2x2': 256,
+        '4x2': 128,
+        '4x4': 96,
+        '6x6': 80
+      }
+
       this._startingCardsAmount = 0
       this._lineLength = 0
       this._linesAmount = 0
+
       this._selectedCard = 0
       this._selectedCardRow = 0
       this._selectedCardColumn = 0
+
       this._activeCards = []
       this._cardsColumnRowToID = {}
       this._cardsIDToColumnRow = {}
-
+    
       this._amountOfCardsOfPairFlipped = 0
       this._cardsOfPair1 = -1
       this._cardsOfPair2 = -1
@@ -106,7 +107,7 @@ customElements.define('memory-state',
 
       this._pairsFound = 0
 
-      
+      this.cardSize = 96
     }
 
     InheritStyle (styleElement) {
@@ -149,9 +150,9 @@ customElements.define('memory-state',
           const newCard = document.createElement('flipping-tile')
           const newCardImg = document.createElement('img')
           newCard.setAttribute('backsideColor', 'yellow')
-          newCard.SetSize(64, 64)
+          newCard.SetSize(this.cardSizes[gridSize], this.cardSizes[gridSize])
           newCard.motif = cards.pop()
-          newCardImg.setAttribute('src', imagesPath + newCard.motif + '.png')
+          newCardImg.setAttribute('src', imagesPath + newCard.motif + '.jpg')
           newCard.appendChild(newCardImg)
           newCard.flipTile()
           newCard.row = i

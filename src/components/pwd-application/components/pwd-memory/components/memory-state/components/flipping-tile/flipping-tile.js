@@ -14,13 +14,13 @@ const template = document.createElement('template')
 template.innerHTML = `
   <style>
     :host {
-      margin: 6px;
+      margin: 2px;
       display: inline-block;
     }
     div {
       background-color: white;
       border-radius: 8px;
-      border: solid black 3px;
+      border: solid black 2px;
       transition: box-shadow 0.5s;
       position: relative;
     }
@@ -43,14 +43,15 @@ template.innerHTML = `
     }
 
     img, ::slotted(img) {
-      max-width: 90%;
-      max-height: 90%;
+      max-width: 100%;
+      max-height: 100%;
       display: block;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       user-select: none;
+      overflow: hidden;
     }
     flipping-tile::part(show) {
       display: block;
@@ -59,7 +60,7 @@ template.innerHTML = `
       display: none;
     }
     flipping-tile::part(focus) {
-      box-shadow: 0px 0px 2px 8px grey;
+      box-shadow: 0px 0px 2px 2px yellow;
     }
   </style>
   <style id="backsideStyle">

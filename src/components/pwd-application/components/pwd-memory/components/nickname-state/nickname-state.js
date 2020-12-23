@@ -101,7 +101,7 @@ customElements.define('nickname-state',
       this._input = this.shadowRoot.querySelector('input')
       this._alternatives = this.shadowRoot.querySelector('#alternatives')
 
-      let gameTypes = ['2x2', '4x2', '4x4']
+      let gameTypes = ['2x2', '4x2', '4x4', '6x6']
 
       gameTypes.forEach(element => {
         const newAlternative = document.createElement('button')
@@ -114,16 +114,6 @@ customElements.define('nickname-state',
           if (this._input.value.length > 2) this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: { nickname: this._input.value, game: newAlternative.value }}))
         })
         this._alternatives.appendChild(document.createElement('br'))
-        /*const newAlternative = document.createElement('input')
-        newAlternative.setAttribute('type', 'radio')
-        newAlternative.setAttribute('name', 'alternatives')
-        newAlternative.setAttribute('id', element)
-        newAlternative.setAttribute('value', element)
-        const newAlternativeLabel = document.createElement('label')
-        newAlternativeLabel.textContent = element
-        this._alternatives.appendChild(newAlternative)
-        this._alternatives.appendChild(newAlternativeLabel)
-        this._alternatives.appendChild(document.createElement('br'))*/
       })
 
       this._selectedElement = 0
@@ -172,17 +162,6 @@ customElements.define('nickname-state',
 
       document.addEventListener('keydown', this.keyDownFunction)
       document.addEventListener('keyup', this.keyUpFunction)
-
-      /* Event listeners for determining when a nickname has been submitted */
-      /*this._input.addEventListener('keydown', (event) => { // Checks if the Enter button has been pressed
-        if (event.keyCode === 13) {
-          event.preventDefault()
-          this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
-        }
-      })*/
-      //this._button.addEventListener('click', () => { // Checks if the mouse has been clicked
-      //  if (this._input.value.length > 2) this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
-      //})
     }
 
     /**
