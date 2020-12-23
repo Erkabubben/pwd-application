@@ -106,6 +106,7 @@ customElements.define('pwd-chat',
       /* Creates a new Chat state with inherited CSS style */
       const chatState = document.createElement('chat-state')
       chatState.InheritStyle(this.shadowRoot.querySelector('style'))
+      chatState.userNickname = this.userNickname
       this.currentScreen = this._pwdApp.appendChild(chatState)
     }
 

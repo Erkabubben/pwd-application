@@ -18,18 +18,22 @@ template.innerHTML = `
       left: 50%;
       transform: translate(-50%, -50%);
     }
-
+    #messages {
+      height: 75%;
+    }
+    form {
+      height: 25%;
+    }
     ::part(selected) {
       box-shadow: 0px 0px 2px 8px grey;
     }
   </style>
   <div id="chat-state">
-    <h1>Welcome to the CHAT!<br></h1>
+    <div id="messages"></div><p></p>
     <form>
-      <input type="text" id="nickname" class="selectable" autocomplete="off">
-      <br><br>
-      <br><br>
-      <button type="button">Send</button> 
+      <input type="textarea" id="messageinput" class="selectable" autocomplete="off">
+      <br>
+      <button type="button" id="sendbutton">Send</button> 
     </form>
   </div>
 `
@@ -53,10 +57,13 @@ customElements.define('chat-state',
       this.attachShadow({ mode: 'open' })
         .appendChild(template.content.cloneNode(true))
 
-      /* Nickname screen properties */
+      /* Chat screen properties */
       this._chatState = this.shadowRoot.querySelector('#chat-state')
-      this._button = this.shadowRoot.querySelector('button')
-      this._input = this.shadowRoot.querySelector('input')
+      this._messages = this.shadowRoot.querySelector('#messages')
+      this._sendbutton = this.shadowRoot.querySelector('#sendbutton')
+      this._messageInput = this.shadowRoot.querySelector('#messageinput')
+
+      this.userNickname = ''
 
       //this._selectedElement = 0
       //this._selectables = this._chatNicknameState.querySelectorAll('.selectable')
@@ -69,9 +76,12 @@ customElements.define('chat-state',
           this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
         }
       })*/
-      this._button.addEventListener('click', () => { // Checks if the mouse has been clicked
-        if (this._input.value.length > 2) this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
-      })
+
+
+      this.serverURL = 'wss://cscloud6-127.lnu.se/socket/'
+      this.webSocket = 0
+
+
     }
 
     /**
@@ -94,7 +104,39 @@ customElements.define('chat-state',
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
-      this._input.focus() // Sets the text input to have focus from the start
+      this._messageInput.focus() // Sets the text input to have focus from the start
+
+      this.webSocket = new WebSocket(this.serverURL);
+
+      this._sendbutton.addEventListener('click', () => { // Checks if the Send button has been clicked
+        if (this._messageInput.value.length > 0) {
+          let newMessageJSON = {
+            type: 'message',
+            username: this.userNickName,
+            data: this._messageInput.value,
+            channel: 'my, not so secret, channel',
+            key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+          }
+          let newMessageString = JSON.stringify(newMessageJSON)
+          this.webSocket.send(newMessageJSON)
+        }
+      })
+      
+      this.webSocket.onopen = (event) => {
+        console.log('WEBSOCKET IS OPEN')
+        console.log(this.webSocket.readyState)
+      }
+
+      this.webSocket.onclose = (event) => {
+        console.log('WEBSOCKET IS CLOSED')
+        console.log(this.webSocket.readyState)
+      }
+
+      this.webSocket.onmessage = (event) => {
+        let received_msg = event.data
+        let msgJSON = JSON.parse(received_msg)
+        console.log(msgJSON)
+      }
     }
 
     /**
@@ -105,18 +147,14 @@ customElements.define('chat-state',
      * @param {*} newValue - The new value.
      */
     attributeChangedCallback (name, oldValue, newValue) {
-      /* Sets the previous nickname as the default value when returning from the memory */
-      if (name === 'nickname') {
-        this._input.setAttribute('value', this.getAttribute('nickname'))
-      }
+
     }
 
     /**
      * Called after the element has been removed from the DOM.
      */
     disconnectedCallback () {
-      document.removeEventListener('keydown', this.keyDownFunction)
-      document.removeEventListener('keyup', this.keyUpFunction)
+      this.webSocket.close()
     }
 
     /**
