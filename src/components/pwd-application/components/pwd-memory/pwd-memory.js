@@ -9,6 +9,9 @@ import './components/nickname-state/index.js'
 import './components/memory-state/index.js'
 import './components/message-state/index.js'
 
+const pathToModule = import.meta.url
+const imagesPath = new URL('./img/', pathToModule)
+const componentsPath = new URL('./components/', pathToModule)
 /**
  * Define template.
  */
@@ -19,21 +22,15 @@ template.innerHTML = `
       position: absolute;
       background-color: green;
     }
-    #nickname-state {
-      border-radius: 32px;
-      background-color: #3399FF;
-      border: 16px outset #336699;
-      padding: 16px;
-      width: min-width(480px);
-      height: min-content;
-    }
-    #memory-state {
-      border-radius: 32px;
-      background-color: white;
-      border: 16px outset #336699;
+    #nickname-state, #memory-state {
+      font-family: Verdana;
       padding: 16px;
       width: 100%;
       height: 100%;
+      background-image: url("`+ imagesPath +`wallpaper.jpg");
+    }
+    p, h1, h2 {
+      user-select: none;
     }
   </style>
   <style id="size"></style>

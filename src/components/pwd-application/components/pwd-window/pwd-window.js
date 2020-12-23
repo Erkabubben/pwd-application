@@ -50,7 +50,7 @@ template.innerHTML = `
       height: 100%;
       overflow: hidden;
     }
-    button#closebutton {
+    #closebutton {
       position: absolute;
       right: 0px;
       font-family: Verdana;
@@ -58,21 +58,20 @@ template.innerHTML = `
       color: white;
       width: 24px;
       height: 100%;
-      background-color: #555555;
-      border: 1px outset #555555;
+      background-color: #444444;
+      border: 2px outset #444444;
       padding: 0px;
     }
 
-    button#closebutton:hover {
+    #closebutton:hover {
       background-color: #999999;
       border-color: #999999;
     }
 
-    button#closebutton:active {
-      background-color: #999999;
-      border-color: #999999;
+    #closebutton:active {
       transform: translate(1px, 1px);
       box-shadow: none;
+      border-style: inset;
     }
   </style>
   <style id="pos"></style>

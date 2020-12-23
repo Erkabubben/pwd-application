@@ -19,19 +19,59 @@ template.innerHTML = `
       transform: translate(-50%, -50%);
     }
 
+    h1 {
+      color: orange;
+      font-weight: bold;
+      font-size: 96px;
+      text-align: center;
+    }
+
+    form {
+      margin: auto;
+      font-family: Verdana;
+      color: white;
+      width: 50%;
+    }
+
+    form input {
+      display: block;
+      margin: auto;
+    }
+
+    form p {
+      display: block;
+      text-align: center;
+    }
+
+    form button {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 1.15em;
+      font-family: Verdana;
+      color: white;
+      font-weight: bold;
+      background-color: #444444;
+      border: 2px outset #444444;
+    }
+
+    form button:hover {
+      background-color: #999999;
+      border-color: #999999;
+    }
+
     ::part(selected) {
-      box-shadow: 0px 0px 2px 8px grey;
+      box-shadow: 0px 0px 1px 4px yellow;
     }
   </style>
   <div id="nickname-state">
-    <h1>Welcome to the MEMORY!<br></h1>
-    <h2>Please enter your nickname.</h2>
+    <h1>MEMORY</h1>
     <form>
+      <br>
+      <p>Enter a nickname: </p>
       <input type="text" id="nickname" class="selectable" autocomplete="off">
       <br><br>
       <div id="alternatives"></div><br>
-      <br><br>
-      <button type="button">Start!</button> 
     </form>
   </div>
 `
