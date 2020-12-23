@@ -23,7 +23,7 @@ template.innerHTML = `
   </style>
   <style id="size"></style>
   <div id="pwd-app">
-    <iframe src="` + gamePath + `" style="width:800px; height:600px">
+    <iframe src="` + gamePath + `" style="width:800px; height:600px" frameBorder="0" tabindex="0">
   </div>
 `
 
@@ -55,6 +55,10 @@ customElements.define('pwd-unity',
       this.height = 580
 
       this.SetSize(this.width, this.height)
+      //this._pwdChat.querySelector('iframe').setAttribute('tabindex', 0)
+      //this._pwdChat.querySelector('iframe').focus()
+      //this._pwdChat.querySelector('iframe').contentWindow.document.body.focus()
+      //document.querySelector('#unity-container').focus()
     }
 
     /**
@@ -86,7 +90,7 @@ customElements.define('pwd-unity',
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
-
+      
     }
 
     /**

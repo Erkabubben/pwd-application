@@ -49,7 +49,7 @@ template.innerHTML = `
     }
 
     #pwd-application {
-      width: 100%;
+      max-width: 1280px;
       height: 800px;
       background-image: url("` + imagesPath + `mosaic.jpg");
       position: relative;
@@ -57,49 +57,30 @@ template.innerHTML = `
       border: 0px outset red;
     }
 
-    form {
-      text-align: center;
-      font-family: Verdana;
-      user-select: none;
-    }
-
-    form input {
-      font-size: 1.5em;
-      background-color: #336699;
-      border: 6px inset #336699;
-      border-radius: 8px;
-      margin: 8px;
-    }
-
-    form input:focus, form input:hover {
-      background-color: #6699CC;
-      border-color: #6699CC;
-    }
-
     div#alternatives {
       text-align: left;
     }
 
     button {
-      background-color: #336699;
-      border: 6px outset #336699;
+      background-color: rgba(0, 0, 0, 0);
+      border: 6px outset #333333;
       font-family: Verdana;
       font-size: 1.25em;
       border-radius: 16px;
       padding: 0.25em;
       margin: 12px;
-      box-shadow: 2px 2px 2px black;
+      box-shadow: 1px 1px 1px black;
     }
 
     button:active {
-      border: 6px outset #336699;
-      transform: translate(2px, 2px);
+      border: 6px outset #333333;
+      transform: translate(1px, 1px);
       box-shadow: 0px 0px 0px black;
     }
 
     button:hover {
-      background-color: #6699CC;
-      border-color: #6699CC;
+      background-color: #999999;
+      border-color: #999999;
     }
 
     #pwd-application {
@@ -116,7 +97,7 @@ template.innerHTML = `
     #pwd-dock {
       height: 48px;
       width: 100%;
-      background-color: rgba(100, 100, 100, 8);
+      background-color: #333333;
       background-opacity: 50%;
       position: absolute;
       bottom: 0%;
@@ -129,9 +110,9 @@ template.innerHTML = `
       margin: 0px;
       border-radius: 3px;
       padding: 0;
-      box-shadow: 2px 2px 2px black;
+      box-shadow: none;
       background-color: none;
-      border: 1px outset #336699;
+      border: 0px outset #333333;
     }
 
     #pwd-dock button img {

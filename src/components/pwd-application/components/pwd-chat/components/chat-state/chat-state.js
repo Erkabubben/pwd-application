@@ -20,6 +20,7 @@ template.innerHTML = `
     }
     #messages {
       height: 75%;
+      width: 100%;
     }
     form {
       height: 25%;
@@ -31,7 +32,7 @@ template.innerHTML = `
   <div id="chat-state">
     <div id="messages"></div><p></p>
     <form>
-      <input type="textarea" id="messageinput" class="selectable" autocomplete="off">
+      <input type="textarea" Rows="5" id="messageinput" class="selectable" autocomplete="off">
       <br>
       <button type="button" id="sendbutton">Send</button> 
     </form>
@@ -62,7 +63,8 @@ customElements.define('chat-state',
       this._messages = this.shadowRoot.querySelector('#messages')
       this._sendbutton = this.shadowRoot.querySelector('#sendbutton')
       this._messageInput = this.shadowRoot.querySelector('#messageinput')
-
+      
+      this.messageAPIKey = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
       this.userNickname = ''
 
       //this._selectedElement = 0
@@ -76,6 +78,12 @@ customElements.define('chat-state',
           this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
         }
       })*/
+
+      this._messageInput.addEventListener('keydown', (event) => { // Checks if the Enter button has been pressed
+        if (event.keyCode === 13) {
+          event.preventDefault()
+        }
+      })
 
 
       this.serverURL = 'wss://cscloud6-127.lnu.se/socket/'
@@ -112,13 +120,14 @@ customElements.define('chat-state',
         if (this._messageInput.value.length > 0) {
           let newMessageJSON = {
             type: 'message',
-            username: this.userNickName,
+            username: this.userNickname,
             data: this._messageInput.value,
             channel: 'my, not so secret, channel',
-            key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+            key: this.messageAPIKey
           }
           let newMessageString = JSON.stringify(newMessageJSON)
-          this.webSocket.send(newMessageJSON)
+          this.webSocket.send(newMessageString)
+          this._messageInput.value = ''
         }
       })
       
@@ -136,6 +145,15 @@ customElements.define('chat-state',
         let received_msg = event.data
         let msgJSON = JSON.parse(received_msg)
         console.log(msgJSON)
+        let newMessageDiv = document.createElement('div')
+        newMessageDiv.setAttribute('id', 'message')
+        let newMessageHeader = document.createElement('h2')
+        newMessageHeader.textContent = msgJSON.username
+        let newMessageText = document.createElement('p')
+        newMessageText.textContent = msgJSON.data
+        newMessageDiv.appendChild(newMessageHeader)
+        newMessageDiv.appendChild(newMessageText)
+        this._messages.appendChild(newMessageDiv)
       }
     }
 

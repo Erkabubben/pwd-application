@@ -20,7 +20,7 @@ template.innerHTML = `
       background-color: red;
     }
     #chat-state {
-      background-color: blue;
+      background-color: white;
       padding: 16px;
       width: 100%;
       height: 100%;
@@ -93,7 +93,8 @@ customElements.define('pwd-chat',
       this.currentScreen = this._pwdApp.appendChild(nicknameState)
       /* Starts the game when a valid nickname has been submitted */
       this.currentScreen.addEventListener('nicknameSet', (e) => {
-        this.userNickname = e.detail.nickname
+        this.userNickname = e.detail
+        console.log(this.userNickname)
         this.totalTime = 0
         this.DisplayChatState()
       })

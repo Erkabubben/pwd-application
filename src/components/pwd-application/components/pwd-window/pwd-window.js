@@ -19,14 +19,14 @@ template.innerHTML = `
     }
     #pwd-window {
       position: absolute;
-      background-color: grey;
-      border: 2px outset black;
+      background-color: #333333;
+      border: 2px outset #333333;
     }
     div#header {
       position: absolute;
       width: 100%;
       height: 24px;
-      background-color: darkgrey;
+      background-color: #333333;
     }
     div#header img {
       height: 100%;
@@ -39,7 +39,9 @@ template.innerHTML = `
       position: absolute;
       top: 50%;
       transform: translate(0, -50%);
+      font-family: Verdana;
       font-weight: bold;
+      color: white;
     }
     div#app {
       position: absolute;
@@ -51,6 +53,26 @@ template.innerHTML = `
     button#closebutton {
       position: absolute;
       right: 0px;
+      font-family: Verdana;
+      font-weight: bold;
+      color: white;
+      width: 24px;
+      height: 100%;
+      background-color: #555555;
+      border: 1px outset #555555;
+      padding: 0px;
+    }
+
+    button#closebutton:hover {
+      background-color: #999999;
+      border-color: #999999;
+    }
+
+    button#closebutton:active {
+      background-color: #999999;
+      border-color: #999999;
+      transform: translate(1px, 1px);
+      box-shadow: none;
     }
   </style>
   <style id="pos"></style>
