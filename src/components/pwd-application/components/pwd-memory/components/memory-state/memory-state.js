@@ -45,12 +45,20 @@ template.innerHTML = `
       top: 0px;
       border: 4px outset #222222;
     }
+    h1 {
+      color: white;
+      font-size: 1.25rem;
+      text-align: center;
+    }
   </style>
   <div id="memory-state">
     <div id="game-area">
       <div id="cards-area"></div>
     </div>
-    <div id="ui-area"></div>
+    <div id="ui-area">
+    <h1 id="pairsfoundtext">Pairs found:</h1>
+    <h1 id="pairsfoundcounter"></h1>
+    </div>
   </div>
 `
 //    <flipping-tile><img src="` + imagesPath + `1.png"></flipping-tile>
@@ -78,6 +86,7 @@ customElements.define('memory-state',
       this._memoryState = this.shadowRoot.querySelector('#memory-state')
       this._gameArea = this.shadowRoot.querySelector('#game-area')
       this._cardsArea = this.shadowRoot.querySelector('#cards-area')
+      this._pairsFoundCounter = this.shadowRoot.querySelector('#pairsfoundcounter')
       this._cardMotifs = ['0','1','2','3','4','5','6','7','8','9',
         '10','11','12','13','14','15','16','17','18']
 
@@ -108,6 +117,8 @@ customElements.define('memory-state',
       this._pairsFound = 0
 
       this.cardSize = 96
+
+      this._pairsFoundCounter.textContent = this._pairsFound + ' / ' + (this._startingCardsAmount / 2)
     }
 
     InheritStyle (styleElement) {
@@ -255,6 +266,7 @@ customElements.define('memory-state',
           card1.HideAndInactivate()
           card2.HideAndInactivate()
           this._pairsFound++
+          this._pairsFoundCounter.textContent = this._pairsFound + ' / ' + (this._startingCardsAmount / 2)
           if (this._pairsFound === (this._startingCardsAmount / 2)) {
             this.dispatchEvent(new window.CustomEvent('allpairsfound', { detail: '' }))
           }

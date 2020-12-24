@@ -8,7 +8,6 @@ const pathToModule = import.meta.url
 const imagesPath = new URL('./img/', pathToModule)
 const componentsPath = new URL('./components/', pathToModule)
 
-import './components/countdown-timer/index.js'
 import './components/pwd-window/index.js'
 import './components/pwd-chat/index.js'
 import './components/pwd-memory/index.js'
