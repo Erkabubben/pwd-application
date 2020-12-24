@@ -62,7 +62,7 @@ template.innerHTML = `
       <h1 id="mistakestext">Mistakes:</h1>
       <h1 id="mistakescounter"></h1>
       <h1 id="timertext">Time:</h1>
-      <h1 id="timercounter"><countdown-timer></h1>
+      <h1 id="timercounter"><countdown-timer id="countdown-timer"></h1>
     </div>
   </div>
 `
@@ -94,6 +94,7 @@ customElements.define('memory-state',
       this._pairsFoundCounter = this.shadowRoot.querySelector('#pairsfoundcounter')
       this._mistakesCounter = this.shadowRoot.querySelector('#mistakescounter')
       this._timerCounter = this.shadowRoot.querySelector('#timercounter')
+      this._countdownTimer = this.shadowRoot.querySelector('#countdown-timer')
 
       this._cardMotifs = ['0','1','2','3','4','5','6','7','8','9',
         '10','11','12','13','14','15','16','17','18']
@@ -281,7 +282,8 @@ customElements.define('memory-state',
           this._pairsFound++
           this._pairsFoundCounter.textContent = this._pairsFound + ' / ' + (this._startingCardsAmount / 2)
           if (this._pairsFound === (this._startingCardsAmount / 2)) {
-            this.dispatchEvent(new window.CustomEvent('allpairsfound', { detail: '' }))
+            console.log(this._timerCounter.counterCurrentTime)
+            this.dispatchEvent(new window.CustomEvent('allpairsfound', { detail: { time: this._countdownTimer.counterCurrentTime, mistakes: this._mistakes } }))
           }
         }
       }

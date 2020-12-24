@@ -76,6 +76,7 @@ template.innerHTML = `
   </style>
   <style id="pos"></style>
   <style id="size"></style>
+  <style id="z-index"></style>
   <div id="pwd-window">
     <div id="header">
       <img>
@@ -111,6 +112,7 @@ customElements.define('pwd-window',
       this.icon = this.shadowRoot.querySelector('div#header img')
       this._stylePos = this.shadowRoot.querySelector('style#pos')
       this._styleSize = this.shadowRoot.querySelector('style#size')
+      this._styleZIndex = this.shadowRoot.querySelector('style#z-index')
       this._closeButton = this.shadowRoot.querySelector('#closebutton')
       this._appSlot = this.shadowRoot.querySelector('slot')
       this._headerTitle = this.shadowRoot.querySelector('p#headertitle')
@@ -144,6 +146,15 @@ customElements.define('pwd-window',
 
       this.x = x
       this.y = y
+    }
+
+    SetZIndex (z) {
+      this._styleZIndex.textContent =
+      `#pwd-window {
+        z-index: ` + z + `;
+      }`
+
+      this.zIndex = z
     }
 
     /**

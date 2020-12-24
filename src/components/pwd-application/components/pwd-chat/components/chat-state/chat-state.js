@@ -21,7 +21,33 @@ template.innerHTML = `
     #messages {
       height: 75%;
       width: 100%;
+      overflow: auto;
     }
+
+    #messages div {
+      background-color: white;
+      border: 3px outset grey;
+      border-radius: 6px;
+      padding: 0.5rem;
+      margin: 0.5rem;
+      opacity: 0.85;
+    }
+
+    #messages div p#username {
+      font-weight: bold;
+      opacity: 1;
+    }
+
+    #messages div p#messagetext {
+      font-size: 0.75rem;
+      opacity: 1;
+    }
+
+    #messages div p {
+      margin-top: 0.2rem;
+      margin-bottom: 0.2rem;
+    }
+
     form {
       height: 25%;
     }
@@ -147,9 +173,14 @@ customElements.define('chat-state',
         console.log(msgJSON)
         let newMessageDiv = document.createElement('div')
         newMessageDiv.setAttribute('id', 'message')
-        let newMessageHeader = document.createElement('h2')
-        newMessageHeader.textContent = msgJSON.username
+        let newMessageHeader = document.createElement('p')
+        let date = new Date()
+        newMessageHeader.setAttribute('id', 'username')
+        newMessageHeader.textContent = msgJSON.username + ' (' +
+          date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' +
+          date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + ')'
         let newMessageText = document.createElement('p')
+        newMessageText.setAttribute('id', 'messagetext')
         newMessageText.textContent = msgJSON.data
         newMessageDiv.appendChild(newMessageHeader)
         newMessageDiv.appendChild(newMessageText)

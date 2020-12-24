@@ -18,13 +18,11 @@ template.innerHTML = `
   <style>
     #pwd-app {
       position: absolute;
-      width: 640px;
-      height: 456px;
       background-color: red;
     }
     #chat-nickname-state, #chat-state {
         font-family: Verdana;
-        padding: 0px;
+        padding: 0;
         width: 100%;
         height: 100%;
         background-image: url("`+ imagesPath +`nickname-bg.jpg");

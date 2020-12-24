@@ -100,6 +100,7 @@ template.innerHTML = `
       position: absolute;
       bottom: 0%;
       overflow: hidden;
+      z-index: 10000
     }
 
     #pwd-dock button {
@@ -165,16 +166,31 @@ customElements.define('pwd-application',
           if (event.button === 0) {
             const newWindow = document.createElement('pwd-window')
             newWindow.SetPosition(320, 200)
+            if (this._windowContainer.childElementCount === 0) {
+              newWindow.SetZIndex(0)
+            } else {
+              this.BringWindowToTop(newWindow)
+            }
             this.dragElement(newWindow)
             this._windowContainer.appendChild(newWindow)
             newWindow.SetApp(app)
             newWindow.addEventListener('mousedown', event => {
-              //this._windowContainer.appendChild(newWindow)
+              this.BringWindowToTop(newWindow)
             })
           }
         })
         this._dock.appendChild(newAppIcon)
       })
+    }
+
+    BringWindowToTop (w) {
+      let highestZIndex = -10000
+      this._windowContainer.childNodes.forEach(window => {
+        if (window.zIndex > highestZIndex) {
+          highestZIndex = window.zIndex
+        }
+      })
+      w.SetZIndex(highestZIndex + 1)
     }
 
     dragElement(elmnt) {

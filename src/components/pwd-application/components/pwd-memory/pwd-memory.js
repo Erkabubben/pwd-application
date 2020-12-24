@@ -28,13 +28,17 @@ template.innerHTML = `
       position: absolute;
       background-color: green;
     }
-    #nickname-state, #memory-state {
+    #nickname-state, #memory-state, #message-state {
       position: absolute;
       font-family: Verdana;
       padding: 0px;
       width: 100%;
       height: 100%;
       background-image: url("`+ imagesPath +`wallpaper.jpg");
+    }
+    #message-state h2 {
+      color: orange;
+      text-align: center;
     }
     p, h1, h2 {
       user-select: none;
@@ -117,7 +121,10 @@ customElements.define('pwd-memory',
       this.currentScreen = this._pwdApp.appendChild(memoryState)
       this.currentScreen.InitiateGame(this.gameType)
       this.currentScreen.addEventListener('allpairsfound', (event) => {
-        this.DisplayTimedMessage('CONGRATULATIONS!!', 3000, (e) => { this.DisplayNicknameState() })
+        this.DisplayTimedMessage(
+          'Congratulations ' + this.userNickname + '! You finished the ' + this.gameType + ' difficulty ' +
+          'with ' + event.detail.mistakes + ' mistakes, at ' +  (event.detail.time * 0.001) + ' seconds.'
+          , 3000, (e) => { this.DisplayNicknameState() })
       })
     }
 
