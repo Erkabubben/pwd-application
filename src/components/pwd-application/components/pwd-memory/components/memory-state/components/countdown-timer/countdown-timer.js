@@ -1,5 +1,8 @@
 /**
  * The countdown-timer web component module.
+ * Can be used either as a timer or a stopwatch - set the attribute 'limit' to use
+ * as a timer. By inserting it into a text element, the current time will be displayed
+ * as part of the text content.
  *
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
@@ -35,10 +38,10 @@ customElements.define('countdown-timer',
 
       /* Set up properties */
       this.timeLimitInMS = 0
-      this.countdownCurrentTime = 0
-      this._countdownTimeout = 0
-      this._updateCountdown = 0
-      this._countdownStart = 0
+      this.counterCurrentTime = 0
+      this._counterTimeout = 0
+      this._updateCounter = 0
+      this._counterStart = 0
 
       const textContent = document.createTextNode(' ')
       this._textContent = this.shadowRoot.appendChild(textContent)
@@ -57,23 +60,34 @@ customElements.define('countdown-timer',
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
-      /* Initialize countdown */
-      this._countdownTimeout = setTimeout(() => {
-        if (this != null) {
-          this.dispatchEvent(new window.CustomEvent('countdownzero'))
-        }
-        clearInterval(this._updateCountdown)
-        clearTimeout(this._countdownTimeout)
-      }, this.timeLimitInMS)
+      if (this.hasAttribute('limit')) { // If limit has been set, the element is used as a timer.
+        /* Initialize countdown */
+        this._counterTimeout = setTimeout(() => {
+          if (this != null) {
+            this.dispatchEvent(new window.CustomEvent('countdownzero'))
+          }
+          clearInterval(this._updateCounter)
+          clearTimeout(this._counterTimeout)
+        }, this.timeLimitInMS)
 
-      /* Sets up an interval that regularly updates the element to display the
-         remaining time */
-      this._countdownStart = new Date().getTime()
-      this.countdownCurrentTime = 0
-      this._updateCountdown = setInterval(() => {
-        this.countdownCurrentTime = this.timeLimitInMS - (new Date().getTime() - this._countdownStart)
-        this._textContent.textContent = Math.ceil(this.countdownCurrentTime / 1000)
-      }, 100)
+        /* Sets up an interval that regularly updates the element to display the
+          remaining time */
+        this._counterStart = new Date().getTime()
+        this.counterCurrentTime = 0
+        this._updateCounter = setInterval(() => {
+          this.counterCurrentTime = this.timeLimitInMS - (new Date().getTime() - this._counterStart)
+          this._textContent.textContent = Math.ceil(this.counterCurrentTime / 1000)
+        }, 100)
+      } else {  // If limit has not been set, the element is used as a stopwatch instead.
+        /* Sets up an interval that regularly updates the element */
+        this._counterStart = new Date().getTime()
+        this.counterCurrentTime = 0
+        this._updateCounter = setInterval(() => {
+          this.counterCurrentTime = (new Date().getTime() - this._counterStart)
+          this._textContent.textContent = Math.ceil(this.counterCurrentTime / 1000)
+        }, 100)
+      }
+
     }
 
     /**
@@ -94,8 +108,8 @@ customElements.define('countdown-timer',
      */
     disconnectedCallback () {
       /* Clears any remaining event listeners when element is removed from DOM */
-      clearInterval(this._updateCountdown)
-      clearTimeout(this._countdownTimeout)
+      clearInterval(this._updateCounter)
+      clearTimeout(this._counterTimeout)
     }
   }
 )

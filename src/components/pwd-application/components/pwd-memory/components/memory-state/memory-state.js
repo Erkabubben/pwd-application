@@ -8,6 +8,7 @@ const pathToModule = import.meta.url
 const componentsOfParentPath = new URL('../', pathToModule)
 const imagesPath = new URL('./components/flipping-tile/images/', pathToModule)
 import './components/flipping-tile/index.js'
+import './components/countdown-timer/index.js'
 
 /**
  * Define template.
@@ -56,8 +57,12 @@ template.innerHTML = `
       <div id="cards-area"></div>
     </div>
     <div id="ui-area">
-    <h1 id="pairsfoundtext">Pairs found:</h1>
-    <h1 id="pairsfoundcounter"></h1>
+      <h1 id="pairsfoundtext">Pairs found:</h1>
+      <h1 id="pairsfoundcounter"></h1>
+      <h1 id="mistakestext">Mistakes:</h1>
+      <h1 id="mistakescounter"></h1>
+      <h1 id="timertext">Time:</h1>
+      <h1 id="timercounter"><countdown-timer></h1>
     </div>
   </div>
 `
@@ -87,14 +92,17 @@ customElements.define('memory-state',
       this._gameArea = this.shadowRoot.querySelector('#game-area')
       this._cardsArea = this.shadowRoot.querySelector('#cards-area')
       this._pairsFoundCounter = this.shadowRoot.querySelector('#pairsfoundcounter')
+      this._mistakesCounter = this.shadowRoot.querySelector('#mistakescounter')
+      this._timerCounter = this.shadowRoot.querySelector('#timercounter')
+
       this._cardMotifs = ['0','1','2','3','4','5','6','7','8','9',
         '10','11','12','13','14','15','16','17','18']
 
       this.cardSizes = {
         '2x2': 256,
         '4x2': 128,
-        '4x4': 96,
-        '6x6': 80
+        '4x4': 128,
+        '6x6': 90
       }
 
       this._startingCardsAmount = 0
@@ -115,10 +123,10 @@ customElements.define('memory-state',
       this._cardsPairTimeout = 0
 
       this._pairsFound = 0
+      this._mistakes = 0
 
       this.cardSize = 96
 
-      this._pairsFoundCounter.textContent = this._pairsFound + ' / ' + (this._startingCardsAmount / 2)
     }
 
     InheritStyle (styleElement) {
@@ -136,6 +144,9 @@ customElements.define('memory-state',
       this._linesAmount = gridSize.charAt(2)
 
       this._startingCardsAmount = this._lineLength * this._linesAmount
+
+      this._pairsFoundCounter.textContent = this._pairsFound + ' / ' + (this._startingCardsAmount / 2)
+      this._mistakesCounter.textContent = this._mistakes
 
       let cardMotifs = this._cardMotifs.slice()
       
@@ -259,6 +270,8 @@ customElements.define('memory-state',
             card1.flipTile()
             card2.flipTile()
             this._amountOfCardsOfPairFlipped = 0
+            this._mistakes++
+            this._mistakesCounter.textContent = this._mistakes
             clearTimeout(this._cardsPairTimeout)
           }, 1500)
         } else {  // Cards are a valid pair
