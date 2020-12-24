@@ -13,13 +13,6 @@ const imagesOfParentPath = new URL('../../img/', pathToModule)
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
-    #nickname-state {
-      background-color: white;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
 
     img {
       margin: auto;
@@ -40,10 +33,11 @@ template.innerHTML = `
       width: 50%;
     }
 
-    form input {
-      display: block;
-      margin: auto;
-      font-size: 1.15em;
+    form input#nickname {
+      position: absolute;
+      transform: translate(-50% ,0 );
+      left: 50%;
+      font-size: 1.25rem;
     }
 
     form p {
@@ -55,7 +49,6 @@ template.innerHTML = `
       display: block;
       margin-left: auto;
       margin-right: auto;
-      font-size: 1.15em;
       font-family: Verdana;
       color: white;
       font-weight: bold;
@@ -79,7 +72,7 @@ template.innerHTML = `
     <form>
       <p>Enter a nickname: </p>
       <input type="text" id="nickname" class="selectable" autocomplete="off">
-      <br><br>
+      <br><br><br>
       <div id="alternatives"></div><br>
     </form>
   </div>

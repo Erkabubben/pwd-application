@@ -66,7 +66,6 @@ template.innerHTML = `
       border: 6px outset #333333;
       font-family: Verdana;
       font-size: 1.25em;
-      border-radius: 16px;
       padding: 0.25em;
       margin: 12px;
       box-shadow: 1px 1px 1px black;
@@ -108,7 +107,6 @@ template.innerHTML = `
       height: 48px;
       width: 48px;
       margin: 0px;
-      border-radius: 3px;
       padding: 0;
       box-shadow: none;
       background-color: none;

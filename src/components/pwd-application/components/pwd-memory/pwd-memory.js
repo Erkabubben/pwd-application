@@ -18,11 +18,17 @@ const imagesPath = new URL('./img/', pathToModule)
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
+    :host {
+      margin: 0;
+      padding: 0;
+      top: 0;
+    }
     #pwd-app {
       position: absolute;
       background-color: green;
     }
     #nickname-state, #memory-state {
+      position: absolute;
       font-family: Verdana;
       padding: 0px;
       width: 100%;

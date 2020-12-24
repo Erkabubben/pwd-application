@@ -79,7 +79,7 @@ template.innerHTML = `
   <div id="pwd-window">
     <div id="header">
       <img>
-      <p id="headertitle">HEJ!</p>
+      <p id="headertitle"></p>
       <button id="closebutton">X</button>
     </div>
     <div id="app"><slot name="app"></slot></div>
