@@ -26,7 +26,6 @@ template.innerHTML = `
     }
     #pwd-app {
       position: absolute;
-      background-color: green;
     }
     #nickname-state, #memory-state, #message-state {
       position: absolute;

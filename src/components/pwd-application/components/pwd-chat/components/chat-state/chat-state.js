@@ -48,6 +48,16 @@ template.innerHTML = `
       margin-bottom: 0.2rem;
     }
 
+    #messageinput {
+      width: 100%;
+      height: auto;
+    }
+
+    #sendbutton {
+      width: 48px;
+      height: 24px;
+    }
+
     form {
       height: 25%;
     }
@@ -59,7 +69,6 @@ template.innerHTML = `
     <div id="messages"></div><p></p>
     <form>
       <input type="textarea" Rows="5" id="messageinput" class="selectable" autocomplete="off">
-      <br>
       <button type="button" id="sendbutton">Send</button> 
     </form>
   </div>

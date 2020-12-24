@@ -48,12 +48,9 @@ template.innerHTML = `
     }
 
     #pwd-application {
-      max-width: 1280px;
-      height: 800px;
       background-image: url("` + imagesPath + `mosaic.jpg");
       position: relative;
       display: block;
-      border: 0px outset red;
     }
 
     div#alternatives {
@@ -120,6 +117,7 @@ template.innerHTML = `
       padding: 0;
     }
   </style>
+  <style id="size"></style>
   <div id="pwd-application">
     <div id="pwd-window-container"></div>
     <div id="pwd-dock"></div>
@@ -155,6 +153,11 @@ customElements.define('pwd-application',
         'pwd-unity'
       ]
 
+      this._styleSize = this.shadowRoot.querySelector('style#size')
+      this.width = 0
+      this.height = 0
+      this.SetSize(1280, 800)
+
       /* Initiates the dock */
       this._applications.forEach(app => {
         const newAppIcon = document.createElement('button')
@@ -165,7 +168,6 @@ customElements.define('pwd-application',
         newAppIcon.addEventListener('click', event => {
           if (event.button === 0) {
             const newWindow = document.createElement('pwd-window')
-            newWindow.SetPosition(320, 200)
             if (this._windowContainer.childElementCount === 0) {
               newWindow.SetZIndex(0)
             } else {
@@ -174,6 +176,7 @@ customElements.define('pwd-application',
             this.dragElement(newWindow)
             this._windowContainer.appendChild(newWindow)
             newWindow.SetApp(app)
+            newWindow.SetPosition((this.width / 2) - (newWindow.width / 2), (this.height / 2) - (newWindow.height / 2))
             newWindow.addEventListener('mousedown', event => {
               this.BringWindowToTop(newWindow)
             })
@@ -193,36 +196,77 @@ customElements.define('pwd-application',
       w.SetZIndex(highestZIndex + 1)
     }
 
+    /**
+     * Sets the size of the application, ensuring that the width/height
+     * properties and the width/height set in the CSS element are always the same.
+     *
+     * @param {number} width - The application's width in pixels.
+     * @param {number} height - The application's height in pixels.
+     */
+    SetSize (width, height) {
+      this.width = width
+      this.height = height
+      this._styleSize.textContent =
+      `#pwd-application {
+        width: ` + width + `px;
+        height: ` + height + `px;
+      }`
+    }
+
+    /**
+     * Allows for a HTML element to be dragged by the mouse, within the boundaries of
+     * the parent element.
+     *
+     * @param {HTMLElement} elmnt - The element that should have drag functionality.
+     */
     dragElement(elmnt) {
-      var mouseDiffX = 0, mouseDiffY = 0
+      let mouseDiffX = 0, mouseDiffY = 0
+      let applicationWidth = this.width, applicationHeight = this.height
       if (elmnt.header != null) {
-        // if present, the header is where you move the DIV from:
+        // If present, the header is where you move the DIV from:
         elmnt.header.onmousedown = dragMouseDown;
       } else {
-        // otherwise, move the DIV from anywhere inside the DIV:
+        // Otherwise, move the DIV from anywhere inside the DIV:
         elmnt.onmousedown = dragMouseDown;
       }
     
       function dragMouseDown(e) {
         e = e || window.event;
         e.preventDefault();
-        // get the mouse cursor position at startup:
+        // Get the mouse cursor position at startup:
         mouseDiffX = e.clientX - elmnt.x
         mouseDiffY = e.clientY - elmnt.y
         document.onmouseup = closeDragElement;
-        // call a function whenever the cursor moves:
+        // Call a function whenever the cursor moves:
         document.onmousemove = elementDrag;
       }
-    
+
       function elementDrag(e) {
         e = e || window.event;
         e.preventDefault();
-        // set the element's new position:
-        elmnt.SetPosition(e.clientX - mouseDiffX, e.clientY - mouseDiffY)
+        // Adjust to parent boundaries
+        let x = e.clientX - mouseDiffX
+        let y = e.clientY - mouseDiffY
+        console.log(x + elmnt.width)
+        console.log(applicationWidth)
+        if (x + elmnt.width >= applicationWidth) {
+          x = applicationWidth - elmnt.width
+        }
+        if (x < 0) {
+          x = 0
+        }
+        if (y + elmnt.height >= applicationHeight) {
+          y = applicationHeight - elmnt.height
+        }
+        if (y < 0) {
+          y = 0
+        }
+        // Set the element's new position:
+        elmnt.SetPosition(x, y)
       }
     
       function closeDragElement() {
-        // stop moving when mouse button is released:
+        // Stop moving when mouse button is released:
         document.onmouseup = null;
         document.onmousemove = null;
       }
