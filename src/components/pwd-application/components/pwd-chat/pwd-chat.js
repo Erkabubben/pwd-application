@@ -4,6 +4,7 @@
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
  */
+import './components/emoji-collection/index.js'
 import './components/chat-nickname-state/index.js'
 import './components/chat-state/index.js'
 
@@ -69,7 +70,8 @@ customElements.define('pwd-chat',
       this.userNickname = ''
 
       /* Initiates the nickname screen */
-      this.DisplayNicknameState()
+      //this.DisplayNicknameState()
+      this.DisplayChatState()
     }
 
     /**

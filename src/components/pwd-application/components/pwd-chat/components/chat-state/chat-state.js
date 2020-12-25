@@ -107,6 +107,12 @@ template.innerHTML = `
       width: 64px;
     }
 
+    #user-ui-mid {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+
     #user-ui-bottom {
       width: 100%;
       height: 24px;
@@ -140,11 +146,10 @@ template.innerHTML = `
       <div id="user-ui-top">
         <p id="username">USER</p>
         <button type="button" id="emojis">&#x1F642</button>
-        <div id="emojicollection">
-          
-        </div>
       </div>
-      <textarea rows="3" autofocus id="messageinput" class="selectable" autocomplete="off"></textarea>
+      <div id="user-ui-mid">
+        <textarea rows="3" autofocus id="messageinput" class="selectable" autocomplete="off"></textarea>
+      </div>
       <div id="user-ui-bottom">
         <button type="button" id="logoutbutton">Log out</button>
         <button type="button" id="sendbutton">Send</button>
@@ -152,7 +157,8 @@ template.innerHTML = `
     </div>
   </div>
 `
-
+//<div id="emojicollection"></div>
+//<emoji-collection id="emoji-c"></emoji-collection>
 /**
  * Define custom element.
  */
@@ -178,8 +184,38 @@ customElements.define('chat-state',
       this._sendbutton = this.shadowRoot.querySelector('#sendbutton')
       this._messageInput = this.shadowRoot.querySelector('#messageinput')
       
+      this._emojiButton = this.shadowRoot.querySelector('button#emojis')
+      this._emojiButton.addEventListener('click', (event) => {
+        this._emojiCollection.ToggleDisplay()
+      })
+      
       this.messageAPIKey = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
       this.userNickname = ''
+
+      this._userUITop = this.shadowRoot.querySelector('#user-ui-top')
+      this._userUIMid = this.shadowRoot.querySelector('#user-ui-mid')
+      //this._emojiCollection = this.shadowRoot.querySelector('#emoji-c')
+      
+      this._emojiCollection = document.createElement('emoji-collection')
+      this._emojiCollection.SetSize(256, 80)
+      //this._emojiCollection.SetPosition(this.width - this._emojiCollection.width, 0)
+      this._userUIMid.appendChild(this._emojiCollection)
+
+      this._emojiCollection.addEventListener('emoji', (event) => {
+        this._messageInput.textContent += event.detail
+      })
+
+
+      
+      /*this._emojiPicker = new EmojiButton({rootElement: this.shadowRoot.querySelector('button#emojis'), rows: '5'})
+
+      this._emojiPicker.on('emoji', emoji => {
+        document.querySelector('input').value += emoji;
+      })
+
+      this._emojiButton.addEventListener('click', () => {
+        this._emojiPicker.pickerVisible ? this._emojiPicker.hidePicker() : this._emojiPicker.showPicker(this._emojiButton)
+      })*/
 
       //this._selectedElement = 0
       //this._selectables = this._chatNicknameState.querySelectorAll('.selectable')
@@ -191,13 +227,13 @@ customElements.define('chat-state',
           event.preventDefault()
           this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
         }
-      })*/
+      })
 
       this._messageInput.addEventListener('keydown', (event) => { // Checks if the Enter button has been pressed
         if (event.keyCode === 13) {
           event.preventDefault()
         }
-      })
+      })*/
 
 
       this.serverURL = 'wss://cscloud6-127.lnu.se/socket/'
@@ -277,6 +313,7 @@ customElements.define('chat-state',
         newMessageDiv.appendChild(newMessageText)
         this._messages.appendChild(newMessageDiv)
       }
+
     }
 
     /**

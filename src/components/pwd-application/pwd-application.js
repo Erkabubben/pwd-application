@@ -193,7 +193,7 @@ customElements.define('pwd-application',
           highestZIndex = window.zIndex
         }
       })
-      w.SetZIndex(highestZIndex + 1)
+      w.SetZIndex(highestZIndex + 1000)
     }
 
     /**
