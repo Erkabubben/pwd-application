@@ -64,7 +64,7 @@ template.innerHTML = `
     <form>
       <br>
       <img src="` + imagesOfParentPath + `icon.png">
-      <p>Enter a nickname: </p>
+      <p>Enter a nickname: &#x1F981;</p>
       <input type="text" id="nickname" class="selectable" autocomplete="off">
       <br><br>
       <div id="alternatives"></div><br>

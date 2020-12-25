@@ -18,6 +18,7 @@ template.innerHTML = `
       left: 50%;
       transform: translate(-50%, -50%);
     }
+
     #messages {
       height: 75%;
       width: 100%;
@@ -48,29 +49,107 @@ template.innerHTML = `
       margin-bottom: 0.2rem;
     }
 
+    #user-ui {
+      height: 25%;
+      width: 100%;
+      background-color: black;
+    }
+
     #messageinput {
       width: 100%;
       height: auto;
     }
 
     #sendbutton {
+      position: absolute;
       width: 48px;
       height: 24px;
+      right: 0px;
+    }
+
+    #user-ui-top {
+      width: 100%;
+      height: 24px;
+      position: relative;
+    }
+
+    #user-ui-top p {
+      position: absolute;
+      height: 100%;
+      width: auto;
+      display: inline;
+      color: white;
+      font-style: Verdana;
+      padding: auto 0.5rem;
+    }
+
+    button#emojis {
+      position: absolute;
+      height: 100%;
+      padding: 0;
+      width: min-content;
+      right: 0px;
+    }
+
+    #emojicollection {
+      position: absolute;
+      right: 0px;
+      top: 24px;
+      height: 80px;
+      width: 256px;
+      background: white;
+      border: 1px black solid;
+      z-index: 1;
+    }
+
+    #logoutbutton {
+      height: 100%;
+      width: 64px;
+    }
+
+    #user-ui-bottom {
+      width: 100%;
+      height: 24px;
+      position: relative;
     }
 
     form {
-      height: 25%;
+      height: auto;
+      width: 100%;
+      margin: 0;
     }
+
+    textarea {
+      resize: none;
+      background-color: white;
+      border: 3px outset grey;
+      border-radius: 6px;
+      padding: 0.5rem;
+      margin: 0;
+      width: 100%;
+      opacity: 0.85;
+    }
+
     ::part(selected) {
       box-shadow: 0px 0px 2px 8px grey;
     }
   </style>
   <div id="chat-state">
-    <div id="messages"></div><p></p>
-    <form>
-      <input type="textarea" Rows="5" id="messageinput" class="selectable" autocomplete="off">
-      <button type="button" id="sendbutton">Send</button> 
-    </form>
+    <div id="messages"></div>
+    <div id="user-ui">
+      <div id="user-ui-top">
+        <p id="username">USER</p>
+        <button type="button" id="emojis">&#x1F642</button>
+        <div id="emojicollection">
+          
+        </div>
+      </div>
+      <textarea rows="3" autofocus id="messageinput" class="selectable" autocomplete="off"></textarea>
+      <div id="user-ui-bottom">
+        <button type="button" id="logoutbutton">Log out</button>
+        <button type="button" id="sendbutton">Send</button>
+      </div>
+    </div>
   </div>
 `
 
@@ -147,6 +226,9 @@ customElements.define('chat-state',
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
+
+      this.shadowRoot.querySelector('#username').textContent = this.userNickname
+
       this._messageInput.focus() // Sets the text input to have focus from the start
 
       this.webSocket = new WebSocket(this.serverURL);
