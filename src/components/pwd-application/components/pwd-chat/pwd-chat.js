@@ -66,12 +66,12 @@ customElements.define('pwd-chat',
       this.SetSize(this.width, this.height)
 
       /* Set up app-specific properties */
-      this.currentScreen = null
+      this.currentState = null
       this.userNickname = ''
 
       /* Initiates the nickname screen */
-      //this.DisplayNicknameState()
-      this.DisplayChatState()
+      this.DisplayNicknameState()
+      //this.DisplayChatState()
     }
 
     /**
@@ -87,34 +87,36 @@ customElements.define('pwd-chat',
      * Displays the start screen where the user is asked to input a nickname.
      */
     DisplayNicknameState () {
-      /* Resets the user's total time and removes any previously displayed screen or message */
-      this.totalTime = 0
-      if (this.currentScreen !== null) {
-        this._pwdApp.removeChild(this.currentScreen)
+      /* Removes any previously displayed screen or message */
+      if (this.currentState !== null) {
+        this._pwdApp.removeChild(this.currentState)
       }
       /* Creates a new nickname screen with inherited CSS style */
       const nicknameState = document.createElement('chat-nickname-state')
       nicknameState.InheritStyle(this.shadowRoot.querySelector('style'))
       nicknameState.setAttribute('nickname', this.userNickname)
-      this.currentScreen = this._pwdApp.appendChild(nicknameState)
-      /* Starts the game when a valid nickname has been submitted */
-      this.currentScreen.addEventListener('nicknameSet', (e) => {
+      this.currentState = this._pwdApp.appendChild(nicknameState)
+      /* Proceed to the next state when a valid nickname has been submitted */
+      this.currentState.addEventListener('nicknameSet', (e) => {
         this.userNickname = e.detail
-        console.log(this.userNickname)
         this.totalTime = 0
         this.DisplayChatState()
       })
     }
 
+    /**
+     * Displays the chat state.
+     */
     DisplayChatState() {
-      if (this.currentScreen !== null) {
-        this._pwdApp.removeChild(this.currentScreen)
+      /* Removes any previously displayed state */
+      if (this.currentState !== null) {
+        this._pwdApp.removeChild(this.currentState)
       }
       /* Creates a new Chat state with inherited CSS style */
       const chatState = document.createElement('chat-state')
       chatState.InheritStyle(this.shadowRoot.querySelector('style'))
       chatState.userNickname = this.userNickname
-      this.currentScreen = this._pwdApp.appendChild(chatState)
+      this.currentState = this._pwdApp.appendChild(chatState)
     }
 
     /**

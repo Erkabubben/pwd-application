@@ -124,7 +124,7 @@ customElements.define('nickname-state',
 
       this.keyDownFunction = (event) => {
         let selectedBefore = this._selectedElement
-        if (event.keyCode === 40 || (event.keyCode === 13 && this._selectedElement === 0)) {  // Down arrowkey
+        if (event.keyCode === 40 || (event.keyCode === 13 && this._selectedElement === 0)) {  // Down arrowkey, or Enter while on the Input element
           event.preventDefault()
           this._selectables[this._selectedElement].removeAttribute('part')
           this._selectedElement++

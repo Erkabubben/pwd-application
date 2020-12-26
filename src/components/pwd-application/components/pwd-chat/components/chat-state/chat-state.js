@@ -20,7 +20,7 @@ template.innerHTML = `
     }
 
     #messages {
-      height: 75%;
+      height: auto;
       width: 100%;
       overflow: auto;
     }
@@ -50,9 +50,11 @@ template.innerHTML = `
     }
 
     #user-ui {
-      height: 25%;
+      height: max-content;
       width: 100%;
       background-color: black;
+      position: absolute;
+      bottom: 0px;
     }
 
     #messageinput {
@@ -62,25 +64,34 @@ template.innerHTML = `
 
     #sendbutton {
       position: absolute;
-      width: 48px;
-      height: 24px;
+      width: 64px;
+      height: 100%;
       right: 0px;
+      padding-right: 0.5rem;
+      padding-left: 0.5rem;
+    }
+
+    #logoutbutton {
+      height: 100%;
+      width: 80px;
     }
 
     #user-ui-top {
       width: 100%;
       height: 24px;
       position: relative;
+      display: block;
     }
 
     #user-ui-top p {
       position: absolute;
       height: 100%;
       width: auto;
-      display: inline;
       color: white;
       font-style: Verdana;
-      padding: auto 0.5rem;
+      font-weight: bold;
+      padding: 4px 0px 4px 6px;
+      margin: 0px;
     }
 
     button#emojis {
@@ -102,15 +113,24 @@ template.innerHTML = `
       z-index: 1;
     }
 
-    #logoutbutton {
-      height: 100%;
-      width: 64px;
-    }
-
     #user-ui-mid {
       width: 100%;
       height: auto;
       position: relative;
+      padding: 0px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: none;
+      background-color: white;
+      border: 3px outset grey;
+      border-radius: 6px;
+      width: 100%;
+      height: 100%;
+      opacity: 0.85;
+      padding: 0.25rem;
+      box-sizing: border-box;
     }
 
     #user-ui-bottom {
@@ -119,25 +139,17 @@ template.innerHTML = `
       position: relative;
     }
 
-    form {
-      height: auto;
-      width: 100%;
-      margin: 0;
+    button {
+      font-family: Verdana;
+      color: white;
+      font-weight: bold;
+      background-color: #444444;
+      border: 2px outset #444444;
     }
 
-    textarea {
-      resize: none;
-      background-color: white;
-      border: 3px outset grey;
-      border-radius: 6px;
-      padding: 0.5rem;
-      margin: 0;
-      width: 100%;
-      opacity: 0.85;
-    }
-
-    ::part(selected) {
-      box-shadow: 0px 0px 2px 8px grey;
+    button:hover {
+      background-color: #999999;
+      border-color: #999999;
     }
   </style>
   <div id="chat-state">
@@ -157,8 +169,7 @@ template.innerHTML = `
     </div>
   </div>
 `
-//<div id="emojicollection"></div>
-//<emoji-collection id="emoji-c"></emoji-collection>
+
 /**
  * Define custom element.
  */
@@ -183,7 +194,8 @@ customElements.define('chat-state',
       this._messages = this.shadowRoot.querySelector('#messages')
       this._sendbutton = this.shadowRoot.querySelector('#sendbutton')
       this._messageInput = this.shadowRoot.querySelector('#messageinput')
-      
+
+      /* Create Emoji button and emoji-collection element */
       this._emojiButton = this.shadowRoot.querySelector('button#emojis')
       this._emojiButton.addEventListener('click', (event) => {
         this._emojiCollection.ToggleDisplay()
@@ -194,52 +206,26 @@ customElements.define('chat-state',
 
       this._userUITop = this.shadowRoot.querySelector('#user-ui-top')
       this._userUIMid = this.shadowRoot.querySelector('#user-ui-mid')
-      //this._emojiCollection = this.shadowRoot.querySelector('#emoji-c')
       
       this._emojiCollection = document.createElement('emoji-collection')
       this._emojiCollection.SetSize(256, 80)
-      //this._emojiCollection.SetPosition(this.width - this._emojiCollection.width, 0)
+
       this._userUIMid.appendChild(this._emojiCollection)
 
       this._emojiCollection.addEventListener('emoji', (event) => {
-        this._messageInput.textContent += event.detail
+        this._messageInput.value = this._messageInput.value + event.detail
       })
 
-
-      
-      /*this._emojiPicker = new EmojiButton({rootElement: this.shadowRoot.querySelector('button#emojis'), rows: '5'})
-
-      this._emojiPicker.on('emoji', emoji => {
-        document.querySelector('input').value += emoji;
-      })
-
-      this._emojiButton.addEventListener('click', () => {
-        this._emojiPicker.pickerVisible ? this._emojiPicker.hidePicker() : this._emojiPicker.showPicker(this._emojiButton)
-      })*/
-
-      //this._selectedElement = 0
-      //this._selectables = this._chatNicknameState.querySelectorAll('.selectable')
-      //this._selectables[this._selectedElement].setAttribute('part', 'selected')
-
-      /* Event listeners for determining when a nickname has been submitted */
-      /*this._input.addEventListener('keydown', (event) => { // Checks if the Enter button has been pressed
-        if (event.keyCode === 13) {
-          event.preventDefault()
-          this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
-        }
-      })
-
+      /* Event listener for sending message by pressing Enter */
       this._messageInput.addEventListener('keydown', (event) => { // Checks if the Enter button has been pressed
         if (event.keyCode === 13) {
           event.preventDefault()
+          this.SendMessage()
         }
-      })*/
-
-
+      })
+  
       this.serverURL = 'wss://cscloud6-127.lnu.se/socket/'
       this.webSocket = 0
-
-
     }
 
     /**
@@ -258,6 +244,21 @@ customElements.define('chat-state',
       this.shadowRoot.appendChild(style)
     }
 
+    SendMessage () {
+      if (this._messageInput.value.length > 0) {
+        let newMessageJSON = {
+          type: 'message',
+          username: this.userNickname,
+          data: this._messageInput.value,
+          channel: 'my, not so secret, channel',
+          key: this.messageAPIKey
+        }
+        let newMessageString = JSON.stringify(newMessageJSON)
+        this.webSocket.send(newMessageString)
+        this._messageInput.value = ''
+      }
+    }
+
     /**
      * Called after the element is inserted into the DOM.
      */
@@ -270,28 +271,18 @@ customElements.define('chat-state',
       this.webSocket = new WebSocket(this.serverURL);
 
       this._sendbutton.addEventListener('click', () => { // Checks if the Send button has been clicked
-        if (this._messageInput.value.length > 0) {
-          let newMessageJSON = {
-            type: 'message',
-            username: this.userNickname,
-            data: this._messageInput.value,
-            channel: 'my, not so secret, channel',
-            key: this.messageAPIKey
-          }
-          let newMessageString = JSON.stringify(newMessageJSON)
-          this.webSocket.send(newMessageString)
-          this._messageInput.value = ''
-        }
+        this.SendMessage()
       })
       
+      /* Set up WebSocket Event Listeners */
       this.webSocket.onopen = (event) => {
-        console.log('WEBSOCKET IS OPEN')
-        console.log(this.webSocket.readyState)
+        //console.log('WEBSOCKET IS OPEN')
+        //console.log(this.webSocket.readyState)
       }
 
       this.webSocket.onclose = (event) => {
-        console.log('WEBSOCKET IS CLOSED')
-        console.log(this.webSocket.readyState)
+        //console.log('WEBSOCKET IS CLOSED')
+        //console.log(this.webSocket.readyState)
       }
 
       this.webSocket.onmessage = (event) => {

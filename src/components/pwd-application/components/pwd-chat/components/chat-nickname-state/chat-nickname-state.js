@@ -64,7 +64,7 @@ template.innerHTML = `
     <form>
       <br>
       <img src="` + imagesOfParentPath + `icon.png">
-      <p>Enter a nickname: &#x1F981;</p>
+      <p>Enter a nickname:</p>
       <input type="text" id="nickname" class="selectable" autocomplete="off">
       <br><br>
       <div id="alternatives"></div><br>
@@ -103,15 +103,22 @@ customElements.define('chat-nickname-state',
       //this._selectables[this._selectedElement].setAttribute('part', 'selected')
 
       /* Event listeners for determining when a nickname has been submitted */
-      /*this._input.addEventListener('keydown', (event) => { // Checks if the Enter button has been pressed
-        if (event.keyCode === 13) {
+      this._input.addEventListener('keydown', (event) => {
+        if (event.keyCode === 13) { // Checks if the Enter button has been pressed
           event.preventDefault()
+          if (this._input.value.length > 2) {
+            this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
+          }
+        }
+      })
+
+      this._button.addEventListener('click', () => { // Checks if the mouse has been clicked
+        if (this._input.value.length > 2) {
           this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
         }
-      })*/
-      this._button.addEventListener('click', () => { // Checks if the mouse has been clicked
-        if (this._input.value.length > 2) this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
       })
+
+
     }
 
     /**

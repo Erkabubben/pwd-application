@@ -77,7 +77,7 @@ customElements.define('emoji-collection',
       this.x = 0
       this.y = 0
 
-      this.columns = 8
+      this.columns = 9
 
       this.width = 0
       this.height = 0
@@ -91,7 +91,6 @@ customElements.define('emoji-collection',
         if (!isTD) {
           return;
         } else {
-          console.log(event.target.textContent)
           this.dispatchEvent(new window.CustomEvent('emoji', { detail: event.target.textContent}))
         }
       })
@@ -111,9 +110,6 @@ customElements.define('emoji-collection',
           }
           let newEmojiButton = document.createElement('td')
           newEmojiButton.innerHTML = '&#x' + emoji + ';'
-          //newEmojiButton.addEventListener('click', (event) => {
-          //  console.log(newEmojiButton.nodeName)
-          //})
           newTableRow.appendChild(newEmojiButton)
           i++
         })
