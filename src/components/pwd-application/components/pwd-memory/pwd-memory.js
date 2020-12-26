@@ -108,6 +108,9 @@ customElements.define('pwd-memory',
       })
     }
 
+    /**
+     * Displays in-game state.
+     */
     DisplayMemoryGameState () {
       if (this.currentState !== null) {
         this._pwdApp.removeChild(this.currentState)

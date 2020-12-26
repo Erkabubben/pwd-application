@@ -185,6 +185,12 @@ customElements.define('pwd-application',
       })
     }
 
+    /**
+     * Determines the highest z-index of all current pwd-windows, then sets the
+     * z-index of the given pwd-window to be even higher, placing it on top visually.
+     *
+     * @param {HTMLElement} w - The pwd-window to be brought to the top.
+     */
     BringWindowToTop (w) {
       let highestZIndex = -10000
       this._windowContainer.childNodes.forEach(window => {
@@ -214,7 +220,8 @@ customElements.define('pwd-application',
 
     /**
      * Allows for a HTML element to be dragged by the mouse, within the boundaries of
-     * the parent element.
+     * the parent element. Modified version of code found at:
+     * https://www.w3schools.com/howto/howto_js_draggable.asp.
      *
      * @param {HTMLElement} elmnt - The element that should have drag functionality.
      */
@@ -232,6 +239,12 @@ customElements.define('pwd-application',
         elmnt.onmousedown = dragMouseDown
       }
 
+      /**
+       * Called when initiating the drag motion by clicking the element.
+       * Sets up Event Listeners for the elementDrag and closeDragElement functions.
+       *
+       * @param {event} e - The 'mousedown' event.
+       */
       function dragMouseDown (e) {
         e = e || window.event
         e.preventDefault()
@@ -243,14 +256,19 @@ customElements.define('pwd-application',
         document.onmousemove = elementDrag
       }
 
+      /**
+       * Called whenever the mouse is moved while the element is set to being dragged.
+       * The element will change position in relation to the mouse pointer, but will
+       * not be moved outside the boundaries of its parent.
+       *
+       * @param {event} e - The 'mousemove' event.
+       */
       function elementDrag (e) {
         e = e || window.event
         e.preventDefault()
         // Adjust to parent boundaries
         let x = e.clientX - mouseDiffX
         let y = e.clientY - mouseDiffY
-        console.log(x + elmnt.width)
-        console.log(applicationWidth)
         if (x + elmnt.width >= applicationWidth) {
           x = applicationWidth - elmnt.width
         }
@@ -267,6 +285,9 @@ customElements.define('pwd-application',
         elmnt.SetPosition(x, y)
       }
 
+      /**
+       * Removes the registered Event Listeners when the mouse button is released.
+       */
       function closeDragElement () {
         // Stop moving when mouse button is released:
         document.onmouseup = null

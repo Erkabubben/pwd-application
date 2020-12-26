@@ -125,7 +125,11 @@ customElements.define('nickname-state',
       this._selectables = this._nicknameState.querySelectorAll('.selectable')
       this._selectables[this._selectedElement].setAttribute('part', 'selected')
 
-      /* Function to be called whenever a key on the keyboard is pressed */
+      /**
+       * Function to be called whenever a key on the keyboard is pressed.
+       *
+       * @param {event} event - The 'keydown' event.
+       */
       this.keyDownFunction = (event) => {
         /* Using keyboard buttons to navigate the nickname input and game buttons */
         if (event.keyCode === 40 || (event.keyCode === 13 && this._selectedElement === 0)) { // Down arrowkey, or Enter while on the Input element
@@ -164,7 +168,11 @@ customElements.define('nickname-state',
         }
       }
 
-      /* Function to be called whenever a key on the keyboard is released */
+      /**
+       * Function to be called whenever a key on the keyboard is released.
+       *
+       * @param {event} event - The 'keyup' event.
+       */
       this.keyUpFunction = (event) => {
         document.addEventListener('keydown', this.keyDownFunction)
       }
