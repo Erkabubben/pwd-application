@@ -27,7 +27,7 @@ template.innerHTML = `
     #pwd-app {
       position: absolute;
     }
-    #nickname-state, #memory-state, #message-state {
+    #nickname-state, #memory-state, #message-state, #highscore-state {
       position: absolute;
       font-family: Verdana;
       padding: 0px;
@@ -38,6 +38,12 @@ template.innerHTML = `
     #message-state h2 {
       color: orange;
       text-align: center;
+    }
+    #highscore-state table {
+      font-family: Verdana;
+      font-size: 1.25em;
+      margin: auto;
+      user-select: none;
     }
     p, h1, h2 {
       user-select: none;
@@ -127,12 +133,14 @@ customElements.define('pwd-memory',
           'Congratulations ' + this.userNickname + '! You finished the ' + this.gameType + ' difficulty ' +
           'with ' + event.detail.mistakes + ' mistakes, at ' + (event.detail.time * 0.001) + ' seconds.'
           , 3000, (e) => { this.DisplayNicknameState() }) */
-
       })
     }
 
     /**
      * Creates and displays the highscore screen when the player has finished the game.
+     * 
+     * @param {number} mistakes - The number of mismatches the player made during the game.
+     * @param {number} time - The time it took for the player to finish the game, in milliseconds.
      */
     DisplayHighscoreState (mistakes, time) {
       this._pwdApp.removeChild(this.currentState)
@@ -147,7 +155,7 @@ customElements.define('pwd-memory',
       /* Add event listener that sends the player back to the nickname screen
          after pressing enter or clicking the mouse */
       this.currentState.addEventListener('proceedfromhighscores', () => {
-        //this.DisplayNicknameState()
+        this.DisplayNicknameState()
       })
     }
 

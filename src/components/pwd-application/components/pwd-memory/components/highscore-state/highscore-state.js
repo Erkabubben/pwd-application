@@ -17,6 +17,17 @@ template.innerHTML = `
       left: 50%;
       transform: translate(-50%, -50%);
     }
+    h1, h2, #highscoretable {
+      display: block;
+      margin: auto;
+      color: orange;
+    }
+    #highscoretable {
+      
+    }
+    th, td {
+      padding: 0.2em;
+    }
   </style>
   <div id="highscore-state">
     <h1>HIGHSCORES<h1>
@@ -24,6 +35,7 @@ template.innerHTML = `
     <table id="highscoretable">
       <tr>
         <th>Nickname</th>
+        <th>Mistakes</th>
         <th>Time</th>
       </tr>
     </table> 
@@ -77,9 +89,6 @@ customElements.define('highscore-state',
         }
       }
 
-      /* Add event listeners that checks if the user has clicked the mouse or pressed Enter */
-      this._clicklistener = document.addEventListener('click', this.dispatchClickEvent)
-      this._keylistener = document.addEventListener('keydown', this.dispatchKeyEvent)
     }
 
     /**
@@ -115,6 +124,15 @@ customElements.define('highscore-state',
         this.UpdateHighscoreData()
       }
       this.DisplayHighscores()
+      
+      /* Adds a slight delay to adding the Event Listeners, so that input from the previous
+         state won't be registered */
+      this._delayProceed = setTimeout(() => {
+        /* Add event listeners that checks if the user has clicked the mouse or pressed Enter */
+        this._clicklistener = document.addEventListener('click', this.dispatchClickEvent)
+        this._keylistener = document.addEventListener('keydown', this.dispatchKeyEvent)
+        clearTimeout(this._delayProceed)
+      }, 10)
     }
 
     /**

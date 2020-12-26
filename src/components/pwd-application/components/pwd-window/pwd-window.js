@@ -178,7 +178,7 @@ customElements.define('pwd-window',
      */
     SetSize (width, height) {
       this.width = width
-      this.height = height
+      this.height = height + 24
       this._styleSize.textContent =
       `#pwd-window {
         width: ` + width + `px;
