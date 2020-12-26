@@ -230,7 +230,7 @@ customElements.define('chat-state',
           this.SendMessage()
         }
       })
-  
+
       this.serverURL = 'wss://cscloud6-127.lnu.se/socket/'
       this.webSocket = 0
     }
@@ -241,9 +241,9 @@ customElements.define('chat-state',
      * @returns {string[]} A string array of attributes to monitor.
      */
     static get observedAttributes () {
-      return ['nickname']
+      return []
     }
-    
+
     /**
      * Creates a style tag from a given parameter tag and appends it to the shadow DOM.
      * Intended for inheriting CSS styles from a parent element.
@@ -257,16 +257,21 @@ customElements.define('chat-state',
       this.shadowRoot.appendChild(style)
     }
 
+    /**
+     * Creates a JSON object from the username and contents of the message input,
+     * stringifies the object and sends it to the WebSocket, then resets the
+     * message input.
+     */
     SendMessage () {
       if (this._messageInput.value.length > 0) {
-        let newMessageJSON = {
+        const newMessageJSON = {
           type: 'message',
           username: this.userNickname,
           data: this._messageInput.value,
           channel: 'my, not so secret, channel',
           key: this.messageAPIKey
         }
-        let newMessageString = JSON.stringify(newMessageJSON)
+        const newMessageString = JSON.stringify(newMessageJSON)
         this.webSocket.send(newMessageString)
         this._messageInput.value = ''
       }
@@ -276,48 +281,52 @@ customElements.define('chat-state',
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
-
+      /* Sets the current username to be displayed above the message input */
       this.shadowRoot.querySelector('#username').textContent = this.userNickname
 
-      this._messageInput.focus() // Sets the text input to have focus from the start
+      /* Sets the text input to have focus from the start */
+      this._messageInput.focus()
 
-      this.webSocket = new WebSocket(this.serverURL);
+      /* Initiates WebSocket */
+      this.webSocket = new WebSocket(this.serverURL)
 
-      this._sendbutton.addEventListener('click', () => { // Checks if the Send button has been clicked
+      /* Event Listener for checking if the Send button has been clicked */
+      this._sendbutton.addEventListener('click', () => {
         this.SendMessage()
       })
-      
+
       /* Set up WebSocket Event Listeners */
       this.webSocket.onopen = (event) => {
-        //console.log('WEBSOCKET IS OPEN')
-        //console.log(this.webSocket.readyState)
+        // console.log('WEBSOCKET IS OPEN')
+        // console.log(this.webSocket.readyState)
       }
 
       this.webSocket.onclose = (event) => {
-        //console.log('WEBSOCKET IS CLOSED')
-        //console.log(this.webSocket.readyState)
+        // console.log('WEBSOCKET IS CLOSED')
+        // console.log(this.webSocket.readyState)
       }
 
       this.webSocket.onmessage = (event) => {
-        let received_msg = event.data
-        let msgJSON = JSON.parse(received_msg)
-        console.log(msgJSON)
-        let newMessageDiv = document.createElement('div')
+        /* Parses the received message to JSON */
+        const receivedMsg = event.data
+        const msgJSON = JSON.parse(receivedMsg)
+        /* Creates a message div element from the content */
+        const newMessageDiv = document.createElement('div')
         newMessageDiv.setAttribute('id', 'message')
-        let newMessageHeader = document.createElement('p')
-        let date = new Date()
+        const newMessageHeader = document.createElement('p')
+        const date = new Date()
         newMessageHeader.setAttribute('id', 'username')
         newMessageHeader.textContent = msgJSON.username + ' (' +
           date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' +
           date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + ')'
-        let newMessageText = document.createElement('p')
+        const newMessageText = document.createElement('p')
         newMessageText.setAttribute('id', 'messagetext')
         newMessageText.textContent = msgJSON.data
+        /* Assembles the message div element and appends it to the messages section */
         newMessageDiv.appendChild(newMessageHeader)
         newMessageDiv.appendChild(newMessageText)
         this._messages.appendChild(newMessageDiv)
       }
-
     }
 
     /**

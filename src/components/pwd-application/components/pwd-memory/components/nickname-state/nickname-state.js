@@ -103,8 +103,10 @@ customElements.define('nickname-state',
       this._input = this.shadowRoot.querySelector('input')
       this._alternatives = this.shadowRoot.querySelector('#alternatives')
 
-      let gameTypes = ['2x2', '4x2', '4x4', '6x6']
+      /* Sets up the game difficulties to choose from */
+      const gameTypes = ['2x2', '4x2', '4x4', '6x6']
 
+      /* Creates a button for each element in the gameTypes array */
       gameTypes.forEach(element => {
         const newAlternative = document.createElement('button')
         newAlternative.setAttribute('value', element)
@@ -113,41 +115,45 @@ customElements.define('nickname-state',
         this._alternatives.appendChild(newAlternative)
         newAlternative.addEventListener('click', (event) => { // Checks if the mouse has been clicked
           event.preventDefault()
-          if (this._input.value.length > 2) this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: { nickname: this._input.value, game: newAlternative.value }}))
+          if (this._input.value.length > 2) this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: { nickname: this._input.value, game: newAlternative.value } }))
         })
         this._alternatives.appendChild(document.createElement('br'))
       })
 
+      /* Properties for determining which element is currently selected */
       this._selectedElement = 0
       this._selectables = this._nicknameState.querySelectorAll('.selectable')
       this._selectables[this._selectedElement].setAttribute('part', 'selected')
 
+      /* Function to be called whenever a key on the keyboard is pressed */
       this.keyDownFunction = (event) => {
-        let selectedBefore = this._selectedElement
-        if (event.keyCode === 40 || (event.keyCode === 13 && this._selectedElement === 0)) {  // Down arrowkey, or Enter while on the Input element
+        /* Using keyboard buttons to navigate the nickname input and game buttons */
+        if (event.keyCode === 40 || (event.keyCode === 13 && this._selectedElement === 0)) { // Down arrowkey, or Enter while on the Input element
           event.preventDefault()
           this._selectables[this._selectedElement].removeAttribute('part')
           this._selectedElement++
           if (this._selectedElement >= this._selectables.length) {
             this._selectedElement = 0
-          } else if (this._selectedElement < 0 ) {
+          } else if (this._selectedElement < 0) {
             this._selectedElement = (this._selectables.length - 1)
           }
           this._selectables[this._selectedElement].setAttribute('part', 'selected')
-        } else if (event.keyCode === 38) {  // Up arrowkey
+        } else if (event.keyCode === 38) { // Up arrowkey
           event.preventDefault()
           this._selectables[this._selectedElement].removeAttribute('part')
           this._selectedElement--
           if (this._selectedElement >= this._selectables.length) {
             this._selectedElement = 0
-          } else if (this._selectedElement < 0 ) {
+          } else if (this._selectedElement < 0) {
             this._selectedElement = (this._selectables.length - 1)
           }
           this._selectables[this._selectedElement].setAttribute('part', 'selected')
-        } else if (event.keyCode === 13 && this._selectedElement !== 0) { // Enter when button is selected...
+        /* Dispatches nicknameSet event to proceed to memory-state when pressing Enter,
+           if game button is highlighted and nickname has been set */
+        } else if (event.keyCode === 13 && this._selectedElement !== 0) { // Enter, when game button is selected...
           event.preventDefault()
           if (this._input.value.length > 2) { // ...and a valid nickname is set.
-            this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: { nickname: this._input.value, game: this._selectables[this._selectedElement].value }}))
+            this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: { nickname: this._input.value, game: this._selectables[this._selectedElement].value } }))
           }
         }
         // Focus or blur text input field depending on wether it is selected
@@ -158,10 +164,12 @@ customElements.define('nickname-state',
         }
       }
 
+      /* Function to be called whenever a key on the keyboard is released */
       this.keyUpFunction = (event) => {
         document.addEventListener('keydown', this.keyDownFunction)
       }
 
+      /* Sets up initial keyboard event listeners */
       document.addEventListener('keydown', this.keyDownFunction)
       document.addEventListener('keyup', this.keyUpFunction)
     }
@@ -174,7 +182,7 @@ customElements.define('nickname-state',
     static get observedAttributes () {
       return ['nickname']
     }
-    
+
     /**
      * Creates a style tag from a given parameter tag and appends it to the shadow DOM.
      * Intended for inheriting CSS styles from a parent element.
@@ -213,6 +221,7 @@ customElements.define('nickname-state',
      * Called after the element has been removed from the DOM.
      */
     disconnectedCallback () {
+      /* Removes keyboard event listeners */
       document.removeEventListener('keydown', this.keyDownFunction)
       document.removeEventListener('keyup', this.keyUpFunction)
     }

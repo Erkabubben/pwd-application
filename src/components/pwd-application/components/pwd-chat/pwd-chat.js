@@ -7,10 +7,9 @@
 import './components/emoji-collection/index.js'
 import './components/chat-nickname-state/index.js'
 import './components/chat-state/index.js'
-
 const pathToModule = import.meta.url
 const imagesPath = new URL('./img/', pathToModule)
-const componentsPath = new URL('./components/', pathToModule)
+
 /**
  * Define template.
  */
@@ -26,7 +25,7 @@ template.innerHTML = `
         padding: 0;
         width: 100%;
         height: 100%;
-        background-image: url("`+ imagesPath +`nickname-bg.jpg");
+        background-image: url("` + imagesPath + `nickname-bg.jpg");
     }
     p, h1, h2, img {
       user-select: none;
@@ -112,7 +111,7 @@ customElements.define('pwd-chat',
     /**
      * Displays the chat state.
      */
-    DisplayChatState() {
+    DisplayChatState () {
       /* Removes any previously displayed state */
       if (this.currentState !== null) {
         this._pwdApp.removeChild(this.currentState)

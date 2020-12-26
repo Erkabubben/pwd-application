@@ -78,7 +78,7 @@ customElements.define('countdown-timer',
           this.counterCurrentTime = this.timeLimitInMS - (new Date().getTime() - this._counterStart)
           this._textContent.textContent = Math.ceil(this.counterCurrentTime / 1000)
         }, 100)
-      } else {  // If limit has not been set, the element is used as a stopwatch instead.
+      } else { // If limit has not been set, the element is used as a stopwatch instead.
         /* Sets up an interval that regularly updates the element */
         this._counterStart = new Date().getTime()
         this.counterCurrentTime = 0
@@ -87,7 +87,6 @@ customElements.define('countdown-timer',
           this._textContent.textContent = Math.ceil(this.counterCurrentTime / 1000)
         }, 100)
       }
-
     }
 
     /**

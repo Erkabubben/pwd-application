@@ -4,14 +4,14 @@
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
  */
-const pathToModule = import.meta.url
-const imagesPath = new URL('./img/', pathToModule)
-const componentsPath = new URL('./components/', pathToModule)
-
 import './components/pwd-window/index.js'
 import './components/pwd-chat/index.js'
 import './components/pwd-memory/index.js'
 import './components/pwd-unity/index.js'
+
+const pathToModule = import.meta.url
+const imagesPath = new URL('./img/', pathToModule)
+const componentsPath = new URL('./components/', pathToModule)
 
 /**
  * Define template.
@@ -218,31 +218,34 @@ customElements.define('pwd-application',
      *
      * @param {HTMLElement} elmnt - The element that should have drag functionality.
      */
-    dragElement(elmnt) {
-      let mouseDiffX = 0, mouseDiffY = 0
-      let applicationWidth = this.width, applicationHeight = this.height
+    dragElement (elmnt) {
+      let mouseDiffX = 0
+      let mouseDiffY = 0
+      const applicationWidth = this.width
+      const applicationHeight = this.height
+
       if (elmnt.header != null) {
         // If present, the header is where you move the DIV from:
-        elmnt.header.onmousedown = dragMouseDown;
+        elmnt.header.onmousedown = dragMouseDown
       } else {
         // Otherwise, move the DIV from anywhere inside the DIV:
-        elmnt.onmousedown = dragMouseDown;
+        elmnt.onmousedown = dragMouseDown
       }
-    
-      function dragMouseDown(e) {
-        e = e || window.event;
-        e.preventDefault();
+
+      function dragMouseDown (e) {
+        e = e || window.event
+        e.preventDefault()
         // Get the mouse cursor position at startup:
         mouseDiffX = e.clientX - elmnt.x
         mouseDiffY = e.clientY - elmnt.y
-        document.onmouseup = closeDragElement;
+        document.onmouseup = closeDragElement
         // Call a function whenever the cursor moves:
-        document.onmousemove = elementDrag;
+        document.onmousemove = elementDrag
       }
 
-      function elementDrag(e) {
-        e = e || window.event;
-        e.preventDefault();
+      function elementDrag (e) {
+        e = e || window.event
+        e.preventDefault()
         // Adjust to parent boundaries
         let x = e.clientX - mouseDiffX
         let y = e.clientY - mouseDiffY
@@ -263,11 +266,11 @@ customElements.define('pwd-application',
         // Set the element's new position:
         elmnt.SetPosition(x, y)
       }
-    
-      function closeDragElement() {
+
+      function closeDragElement () {
         // Stop moving when mouse button is released:
-        document.onmouseup = null;
-        document.onmousemove = null;
+        document.onmouseup = null
+        document.onmousemove = null
       }
     }
 
@@ -279,8 +282,6 @@ customElements.define('pwd-application',
     static get observedAttributes () {
       return []
     }
-
-    
 
     /**
      * Called after the element is inserted into the DOM.

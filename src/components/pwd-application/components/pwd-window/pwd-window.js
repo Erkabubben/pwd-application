@@ -5,7 +5,6 @@
  * @version 1.0.0
  */
 const pathToModule = import.meta.url
-const imagesPath = new URL('./images/', pathToModule)
 const componentsOfParentPath = new URL('../', pathToModule)
 
 /**
@@ -220,12 +219,7 @@ customElements.define('pwd-window',
      * @param {*} newValue - The new value.
      */
     attributeChangedCallback (name, oldValue, newValue) {
-      /*if (name === 'isDragged') {
-        console.log('GRAAAH!')
-        this.addEventListener('mousemove', (event) => {
-          console.log('ISDRAGGED!')
-        })
-      }*/
+
     }
 
     /**

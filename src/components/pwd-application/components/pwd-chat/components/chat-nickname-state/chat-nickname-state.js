@@ -5,7 +5,6 @@
  * @version 1.0.0
  */
 const pathToModule = import.meta.url
-const imagesPath = new URL('./img/', pathToModule)
 const imagesOfParentPath = new URL('../../img/', pathToModule)
 
 /**
@@ -98,10 +97,6 @@ customElements.define('chat-nickname-state',
       this._input = this.shadowRoot.querySelector('input')
       this._alternatives = this.shadowRoot.querySelector('#alternatives')
 
-      //this._selectedElement = 0
-      //this._selectables = this._chatNicknameState.querySelectorAll('.selectable')
-      //this._selectables[this._selectedElement].setAttribute('part', 'selected')
-
       /* Event listeners for determining when a nickname has been submitted */
       this._input.addEventListener('keydown', (event) => {
         if (event.keyCode === 13) { // Checks if the Enter button has been pressed
@@ -111,14 +106,11 @@ customElements.define('chat-nickname-state',
           }
         }
       })
-
       this._button.addEventListener('click', () => { // Checks if the mouse has been clicked
         if (this._input.value.length > 2) {
           this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
         }
       })
-
-
     }
 
     /**

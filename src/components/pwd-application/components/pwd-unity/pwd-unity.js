@@ -1,12 +1,13 @@
 /**
  * The pwd-unity web component module.
+ * Takes a Unity WebGL build and displays it as an iframe in a pwd-app.
+ * Copy the build into the folder named "game" in the pwd-unity directory.
  *
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
  */
 
 const pathToModule = import.meta.url
-//const componentsOfParentPath = new URL('../', pathToModule)
 const gamePath = new URL('./game/index.html', pathToModule)
 
 /**
@@ -27,7 +28,6 @@ template.innerHTML = `
   </div>
 `
 
-//<iframe src="` + gamePath + `" style="width:800px; height:600px">
 /**
  * Define custom element.
  */
@@ -55,10 +55,6 @@ customElements.define('pwd-unity',
       this.height = 580
 
       this.SetSize(this.width, this.height)
-      //this._pwdChat.querySelector('iframe').setAttribute('tabindex', 0)
-      //this._pwdChat.querySelector('iframe').focus()
-      //this._pwdChat.querySelector('iframe').contentWindow.document.body.focus()
-      //document.querySelector('#unity-container').focus()
     }
 
     /**
@@ -90,7 +86,7 @@ customElements.define('pwd-unity',
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
-      
+
     }
 
     /**

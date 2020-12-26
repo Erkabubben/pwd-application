@@ -116,10 +116,12 @@ customElements.define('flipping-tile',
       this.cardID = 0
       this.motif = 0
 
-      //this._div.setAttribute('tabindex', 0)
       this.updateImageSrcAttribute()
     }
 
+    /**
+     * Sets the tile to be both hidden and deactivated.
+     */
     HideAndInactivate () {
       this._div.classList.add('inactive')
       this._div.classList.add('hidden')
@@ -182,31 +184,6 @@ customElements.define('flipping-tile',
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
-      /*// Flips the tile upon being clicked
-      this.addEventListener('click', event => {
-        if (event.button === 0 && !this._div.classList.contains('inactive')) {
-          this.flipTile()
-        }
-      })
-      this.addEventListener('keydown', event => {
-        // Flips the tile if Enter is pressed while it has focus and is active
-        if (event.keyCode === 13 && !this._div.classList.contains('inactive')) this.flipTile()
-        // Activates/deactivates the tile that has focus if the user presses 'i'
-        else if (event.keyCode === 73) {
-          if (this._div.classList.contains('inactive')) {
-            this._div.classList.remove('inactive')
-          } else {
-            this._div.classList.add('inactive')
-          }
-        // Hides/shows the tile that has focus if the user presses 'h'
-        } else if (event.keyCode === 72) {
-          if (this._div.classList.contains('hidden')) {
-            this._div.classList.remove('hidden')
-          } else {
-            this._div.classList.add('hidden')
-          }
-        }
-      })*/
       // Change backside color if backsideColor attribute has been set
       if (this.hasAttribute('backsideColor')) {
         this._backsideStyle.textContent = `div.backsideUp {

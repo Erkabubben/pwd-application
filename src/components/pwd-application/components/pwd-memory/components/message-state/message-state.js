@@ -61,7 +61,7 @@ customElements.define('message-state',
         'message',
         'limit']
     }
-    
+
     /**
      * Creates a style tag from a given parameter tag and appends it to the shadow DOM.
      * Intended for inheriting CSS styles from a parent element.
@@ -98,12 +98,7 @@ customElements.define('message-state',
         this._message.textContent = newValue
       } else if (name === 'limit') {
         this._timeLimitInMS = newValue
-      /* Inherit style from parent element */
-      }/* else if (name === 'style') {
-        const style = document.createElement('style')
-        style.innerHTML = newValue
-        this.shadowRoot.appendChild(style)
-      }*/
+      }
     }
 
     /**

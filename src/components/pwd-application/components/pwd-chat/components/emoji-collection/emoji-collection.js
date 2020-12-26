@@ -1,12 +1,16 @@
 /**
  * The emoji-collection web component module.
+ * Displays a collection of emojis inside a div-element, that can be shown or hidden by
+ * calling the ToggleDisplay() method. Emojis are stored by their hexadecimal reference
+ * numbers in the emojis.js file - add objects to the emojis-array to create separate
+ * categories.
+ * When the user selects an emoji, a custom 'emoji' event is dispatched with the emoji's
+ * hexadecimal reference number.
  *
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
  */
-const pathToModule = import.meta.url
-
-import {emojis} from './emojis.js'
+import { emojis } from './emojis.js'
 
 /**
  * Define template.
@@ -84,22 +88,18 @@ customElements.define('emoji-collection',
 
       this.SetSize(256, 48)
 
-      console.log(emojis)
-
       this._emojiCollection.addEventListener('click', (event) => {
-        const isTD = event.target.nodeName === 'TD';
-        if (!isTD) {
-          return;
-        } else {
-          this.dispatchEvent(new window.CustomEvent('emoji', { detail: event.target.textContent}))
+        const isTD = event.target.nodeName === 'TD'
+        if (isTD) {
+          this.dispatchEvent(new window.CustomEvent('emoji', { detail: event.target.textContent }))
         }
       })
 
       emojis.forEach(element => {
-        let newHeader = document.createElement('p')
+        const newHeader = document.createElement('p')
         newHeader.textContent = element.name
         this._emojiCollection.appendChild(newHeader)
-        let newTable = document.createElement('table')
+        const newTable = document.createElement('table')
         let newTableRow = document.createElement('tr')
         let i = 0
         element.content.forEach(emoji => {
@@ -108,7 +108,7 @@ customElements.define('emoji-collection',
             newTableRow = document.createElement('tr')
             i = 0
           }
-          let newEmojiButton = document.createElement('td')
+          const newEmojiButton = document.createElement('td')
           newEmojiButton.innerHTML = '&#x' + emoji + ';'
           newTableRow.appendChild(newEmojiButton)
           i++
@@ -127,6 +127,9 @@ customElements.define('emoji-collection',
       return []
     }
 
+    /**
+     * Toggles the element's visibility by setting display: none in the CSS style.
+     */
     ToggleDisplay () {
       if (this._emojiCollection.hasAttribute('part')) {
         this._emojiCollection.removeAttribute('part')
