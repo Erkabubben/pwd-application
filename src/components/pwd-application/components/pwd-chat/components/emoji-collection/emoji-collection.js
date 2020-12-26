@@ -135,6 +135,12 @@ customElements.define('emoji-collection',
       }
     }
 
+    /**
+     * Creates a style tag from a given parameter tag and appends it to the shadow DOM.
+     * Intended for inheriting CSS styles from a parent element.
+     *
+     * @param {HTMLElement} styleElement - The style tag to be inherited.
+     */
     InheritStyle (styleElement) {
       const style = document.createElement('style')
       style.id = 'inherited'
@@ -142,6 +148,13 @@ customElements.define('emoji-collection',
       this.shadowRoot.appendChild(style)
     }
 
+    /**
+     * Sets the position of the element relative to its parent, ensuring that the x/y
+     * properties and the left/top coordinates set in the CSS element are always the same.
+     *
+     * @param {number} x - The number to be set as the element's x position relative to its parent.
+     * @param {number} y - The number to be set as the element's y position relative to its parent.
+     */
     SetPosition (x, y) {
       this._stylePos.textContent =
       `#emoji-collection {
@@ -154,11 +167,11 @@ customElements.define('emoji-collection',
     }
 
     /**
-     * Sets the size of the window and its contained app, ensuring that the width/height
-     * properties and the width/height set in the CSS element are always the same.
+     * Sets the size of the element, ensuring that the width/height properties
+     * and the width/height set in the CSS element are always the same.
      *
-     * @param {number} width - The app's width in pixels.
-     * @param {number} height - The app's height in pixels.
+     * @param {number} width - The element's width in pixels.
+     * @param {number} height - The element's height in pixels.
      */
     SetSize (width, height) {
       this.width = width
@@ -170,6 +183,12 @@ customElements.define('emoji-collection',
       }`
     }
 
+    /**
+     * Sets the z-index of the element, ensuring that the zIndex property and
+     * the z-index rule set in the CSS element are always the same.
+     *
+     * @param {number} z - The number to be assigned to the element's z index.
+     */
     SetZIndex (z) {
       this._styleZIndex.textContent =
       `#pwd-window {

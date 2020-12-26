@@ -137,6 +137,13 @@ customElements.define('pwd-window',
       return []
     }
 
+    /**
+     * Sets the position of the element relative to its parent, ensuring that the x/y
+     * properties and the left/top coordinates set in the CSS element are always the same.
+     *
+     * @param {number} x - The number to be set as the element's x position relative to its parent.
+     * @param {number} y - The number to be set as the element's y position relative to its parent.
+     */
     SetPosition (x, y) {
       this._stylePos.textContent =
       `#pwd-window {
@@ -148,6 +155,12 @@ customElements.define('pwd-window',
       this.y = y
     }
 
+    /**
+     * Sets the z-index of the element, ensuring that the zIndex property and
+     * the z-index rule set in the CSS element are always the same.
+     *
+     * @param {number} z - The number to be assigned to the element's z index.
+     */
     SetZIndex (z) {
       this._styleZIndex.textContent =
       `#pwd-window {

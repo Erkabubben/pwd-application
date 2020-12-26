@@ -243,7 +243,13 @@ customElements.define('chat-state',
     static get observedAttributes () {
       return ['nickname']
     }
-
+    
+    /**
+     * Creates a style tag from a given parameter tag and appends it to the shadow DOM.
+     * Intended for inheriting CSS styles from a parent element.
+     *
+     * @param {HTMLElement} styleElement - The style tag to be inherited.
+     */
     InheritStyle (styleElement) {
       const style = document.createElement('style')
       style.id = 'inherited'
