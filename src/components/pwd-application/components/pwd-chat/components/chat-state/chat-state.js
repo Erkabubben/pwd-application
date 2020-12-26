@@ -190,28 +190,35 @@ customElements.define('chat-state',
         .appendChild(template.content.cloneNode(true))
 
       /* Chat screen properties */
+      this.messageAPIKey = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+      this.userNickname = ''
+
+      /* Set up element references */
       this._chatState = this.shadowRoot.querySelector('#chat-state')
       this._messages = this.shadowRoot.querySelector('#messages')
-      this._sendbutton = this.shadowRoot.querySelector('#sendbutton')
-      this._messageInput = this.shadowRoot.querySelector('#messageinput')
 
-      /* Create Emoji button and emoji-collection element */
+      /* User-UI section */
+      this._userUITop = this.shadowRoot.querySelector('#user-ui-top')
+      this._userUIMid = this.shadowRoot.querySelector('#user-ui-mid')
+      this._messageInput = this.shadowRoot.querySelector('#messageinput')
+      this._sendbutton = this.shadowRoot.querySelector('#sendbutton')
+
+      /* Create Logout button */
+      this._logoutbutton = this.shadowRoot.querySelector('#logoutbutton')
+      this._logoutbutton.addEventListener('click', (event) => {
+        this.dispatchEvent(new window.CustomEvent('logout'))
+      })
+
+      /* Create Emoji button */
       this._emojiButton = this.shadowRoot.querySelector('button#emojis')
       this._emojiButton.addEventListener('click', (event) => {
         this._emojiCollection.ToggleDisplay()
       })
-      
-      this.messageAPIKey = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
-      this.userNickname = ''
 
-      this._userUITop = this.shadowRoot.querySelector('#user-ui-top')
-      this._userUIMid = this.shadowRoot.querySelector('#user-ui-mid')
-      
+      /* Create emoji-collection element */
       this._emojiCollection = document.createElement('emoji-collection')
-      this._emojiCollection.SetSize(256, 80)
-
+      this._emojiCollection.SetSize(256, 74)
       this._userUIMid.appendChild(this._emojiCollection)
-
       this._emojiCollection.addEventListener('emoji', (event) => {
         this._messageInput.value = this._messageInput.value + event.detail
       })
@@ -240,7 +247,7 @@ customElements.define('chat-state',
     InheritStyle (styleElement) {
       const style = document.createElement('style')
       style.id = 'inherited'
-      style.innerHTML = styleElement.innerHTML
+      style.textContent = styleElement.textContent
       this.shadowRoot.appendChild(style)
     }
 

@@ -178,6 +178,11 @@ customElements.define('pwd-window',
       }`
     }
 
+    /**
+     * Sets the pwd-app to be displayed as content in the window.
+     *
+     * @param {HTMLElement} app - The app to be displayed.
+     */
     SetApp (app) {
       const newAppElement = document.createElement(app)
       this._appSlot.appendChild(newAppElement)

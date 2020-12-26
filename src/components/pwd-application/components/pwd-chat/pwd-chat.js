@@ -69,9 +69,14 @@ customElements.define('pwd-chat',
       this.currentState = null
       this.userNickname = ''
 
-      /* Initiates the nickname screen */
-      this.DisplayNicknameState()
-      //this.DisplayChatState()
+      /* Proceeds directly to chat state if nickname is found in storage */
+      if (localStorage.getItem('elimk06_pwd-chat_nickname') !== null) {
+        this.userNickname = localStorage.getItem('elimk06_pwd-chat_nickname')
+        this.DisplayChatState()
+      /* Otherwise displays the nickname state */
+      } else {
+        this.DisplayNicknameState()
+      }
     }
 
     /**
@@ -98,8 +103,8 @@ customElements.define('pwd-chat',
       this.currentState = this._pwdApp.appendChild(nicknameState)
       /* Proceed to the next state when a valid nickname has been submitted */
       this.currentState.addEventListener('nicknameSet', (e) => {
+        localStorage.setItem('elimk06_pwd-chat_nickname', e.detail)
         this.userNickname = e.detail
-        this.totalTime = 0
         this.DisplayChatState()
       })
     }
@@ -117,6 +122,9 @@ customElements.define('pwd-chat',
       chatState.InheritStyle(this.shadowRoot.querySelector('style'))
       chatState.userNickname = this.userNickname
       this.currentState = this._pwdApp.appendChild(chatState)
+      this.currentState.addEventListener('logout', (e) => {
+        this.DisplayNicknameState()
+      })
     }
 
     /**

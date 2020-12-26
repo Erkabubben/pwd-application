@@ -101,8 +101,7 @@ template.innerHTML = `
     }
 
     #pwd-dock button {
-      height: 48px;
-      width: 48px;
+      height: 100%;
       margin: 0px;
       padding: 0;
       box-shadow: none;

@@ -65,7 +65,7 @@ customElements.define('message-state',
     InheritStyle (styleElement) {
       const style = document.createElement('style')
       style.id = 'inherited'
-      style.innerHTML = styleElement.innerHTML
+      style.textContent = styleElement.textContent
       this.shadowRoot.appendChild(style)
     }
 
