@@ -8,6 +8,7 @@
 import './components/nickname-state/index.js'
 import './components/memory-state/index.js'
 import './components/message-state/index.js'
+import './components/highscore-state/index.js'
 
 const pathToModule = import.meta.url
 const imagesPath = new URL('./img/', pathToModule)
@@ -121,10 +122,32 @@ customElements.define('pwd-memory',
       this.currentState = this._pwdApp.appendChild(memoryState)
       this.currentState.InitiateGame(this.gameType)
       this.currentState.addEventListener('allpairsfound', (event) => {
-        this.DisplayTimedMessage(
+        this.DisplayHighscoreState(event.detail.mistakes, event.detail.time)
+        /* this.DisplayTimedMessage(
           'Congratulations ' + this.userNickname + '! You finished the ' + this.gameType + ' difficulty ' +
           'with ' + event.detail.mistakes + ' mistakes, at ' + (event.detail.time * 0.001) + ' seconds.'
-          , 3000, (e) => { this.DisplayNicknameState() })
+          , 3000, (e) => { this.DisplayNicknameState() }) */
+
+      })
+    }
+
+    /**
+     * Creates and displays the highscore screen when the player has finished the game.
+     */
+    DisplayHighscoreState (mistakes, time) {
+      this._pwdApp.removeChild(this.currentState)
+      /* Create highscore screen */
+      const highscoreState = document.createElement('highscore-state')
+      highscoreState.setAttribute('name', this.userNickname)
+      highscoreState.setAttribute('mistakes', mistakes)
+      highscoreState.setAttribute('time', time)
+      highscoreState.setAttribute('game', this.gameType)
+      highscoreState.InheritStyle(this.shadowRoot.querySelector('style'))
+      this.currentState = this._pwdApp.appendChild(highscoreState)
+      /* Add event listener that sends the player back to the nickname screen
+         after pressing enter or clicking the mouse */
+      this.currentState.addEventListener('proceedfromhighscores', () => {
+        //this.DisplayNicknameState()
       })
     }
 

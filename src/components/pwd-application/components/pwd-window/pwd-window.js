@@ -200,7 +200,6 @@ customElements.define('pwd-window',
       this._appSlot.appendChild(newAppElement)
       this.icon.setAttribute('src', componentsOfParentPath + '/' + app + '/img/icon.png')
       this._headerTitle.textContent = newAppElement.name
-      console.log(componentsOfParentPath + '/' + app + '/img/icon.png')
       this.SetSize(newAppElement.width, newAppElement.height)
     }
 

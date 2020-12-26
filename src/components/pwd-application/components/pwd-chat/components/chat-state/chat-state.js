@@ -18,13 +18,11 @@ template.innerHTML = `
       left: 50%;
       transform: translate(-50%, -50%);
     }
-
     #messages {
       height: auto;
       width: 100%;
       overflow: auto;
     }
-
     #messages div {
       background-color: white;
       border: 3px outset grey;
@@ -33,22 +31,18 @@ template.innerHTML = `
       margin: 0.5rem;
       opacity: 0.85;
     }
-
     #messages div p#username {
       font-weight: bold;
       opacity: 1;
     }
-
     #messages div p#messagetext {
       font-size: 0.75rem;
       opacity: 1;
     }
-
     #messages div p {
       margin-top: 0.2rem;
       margin-bottom: 0.2rem;
     }
-
     #user-ui {
       height: max-content;
       width: 100%;
@@ -56,12 +50,10 @@ template.innerHTML = `
       position: absolute;
       bottom: 0px;
     }
-
     #messageinput {
       width: 100%;
       height: auto;
     }
-
     #sendbutton {
       position: absolute;
       width: 64px;
@@ -70,19 +62,16 @@ template.innerHTML = `
       padding-right: 0.5rem;
       padding-left: 0.5rem;
     }
-
     #logoutbutton {
       height: 100%;
       width: 80px;
     }
-
     #user-ui-top {
       width: 100%;
       height: 24px;
       position: relative;
       display: block;
     }
-
     #user-ui-top p {
       position: absolute;
       height: 100%;
@@ -93,7 +82,6 @@ template.innerHTML = `
       padding: 4px 0px 4px 6px;
       margin: 0px;
     }
-
     button#emojis {
       position: absolute;
       height: 100%;
@@ -101,7 +89,6 @@ template.innerHTML = `
       width: min-content;
       right: 0px;
     }
-
     #emojicollection {
       position: absolute;
       right: 0px;
@@ -112,7 +99,6 @@ template.innerHTML = `
       border: 1px black solid;
       z-index: 1;
     }
-
     #user-ui-mid {
       width: 100%;
       height: auto;
@@ -120,7 +106,6 @@ template.innerHTML = `
       padding: 0px;
       box-sizing: border-box;
     }
-
     textarea {
       resize: none;
       background-color: white;
@@ -132,13 +117,11 @@ template.innerHTML = `
       padding: 0.25rem;
       box-sizing: border-box;
     }
-
     #user-ui-bottom {
       width: 100%;
       height: 24px;
       position: relative;
     }
-
     button {
       font-family: Verdana;
       color: white;
@@ -146,7 +129,6 @@ template.innerHTML = `
       background-color: #444444;
       border: 2px outset #444444;
     }
-
     button:hover {
       background-color: #999999;
       border-color: #999999;
@@ -296,16 +278,32 @@ customElements.define('chat-state',
       })
 
       /* Set up WebSocket Event Listeners */
+
+      /**
+       * Called whenever the WebSocket connection is opened.
+       *
+       * @param {event} event - A WebSocket event.
+       */
       this.webSocket.onopen = (event) => {
         // console.log('WEBSOCKET IS OPEN')
         // console.log(this.webSocket.readyState)
       }
 
+      /**
+       * Called whenever the WebSocket connection is closed.
+       *
+       * @param {event} event - A WebSocket closing event.
+       */
       this.webSocket.onclose = (event) => {
         // console.log('WEBSOCKET IS CLOSED')
         // console.log(this.webSocket.readyState)
       }
 
+      /**
+       * Called whenever a new message is received by the WebSocket.
+       *
+       * @param {MessageEvent} event - The message event received by the WebSocket.
+       */
       this.webSocket.onmessage = (event) => {
         /* Parses the received message to JSON */
         const receivedMsg = event.data
@@ -314,8 +312,9 @@ customElements.define('chat-state',
         const newMessageDiv = document.createElement('div')
         newMessageDiv.setAttribute('id', 'message')
         const newMessageHeader = document.createElement('p')
-        const date = new Date()
+        const date = new Date() // Create new Date object for retrieving current date and time
         newMessageHeader.setAttribute('id', 'username')
+        /* Set header textContent to include current username and date/time data from Date object */
         newMessageHeader.textContent = msgJSON.username + ' (' +
           date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' +
           date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + ')'

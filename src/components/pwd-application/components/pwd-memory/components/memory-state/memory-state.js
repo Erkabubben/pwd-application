@@ -111,7 +111,7 @@ customElements.define('memory-state',
       }
 
       /* The total amount of cards, rows and columns at the start of the game  - set from
-         the gridSize parameter by InitiateGame() */
+         the gameType parameter by InitiateGame() */
       this._startingCardsAmount = 0
       this._lineLength = 0
       this._linesAmount = 0
@@ -152,9 +152,14 @@ customElements.define('memory-state',
       this.shadowRoot.appendChild(style)
     }
 
-    InitiateGame (gridSize) {
-      this._lineLength = gridSize.charAt(0)
-      this._linesAmount = gridSize.charAt(2)
+    /**
+     * Called by pwd-memory to set up a new game after the element has been created.
+     *
+     * @param {string} gameType - The game type selected in the nickname state.
+     */
+    InitiateGame (gameType) {
+      this._lineLength = gameType.charAt(0)
+      this._linesAmount = gameType.charAt(2)
 
       this._startingCardsAmount = this._lineLength * this._linesAmount
 
@@ -183,7 +188,7 @@ customElements.define('memory-state',
           const newCardImg = document.createElement('img')
           newCard.setAttribute('backsideColor', 'yellow')
           newCard.setAttribute('backsideImage', 'backside')
-          newCard.SetSize(this.cardSizes[gridSize], this.cardSizes[gridSize])
+          newCard.SetSize(this.cardSizes[gameType], this.cardSizes[gameType])
           newCard.motif = cards.pop()
           newCardImg.setAttribute('src', imagesPath + newCard.motif + '.jpg')
           newCard.appendChild(newCardImg)
@@ -196,7 +201,7 @@ customElements.define('memory-state',
               this._selectedCardColumn = newCard.column
               this._selectedCardRow = newCard.row
               this._selectedCard = newCard.cardID
-              this.UpdateCardFocus()
+              this.UpdateCardSelection()
               this.FlipCard()
             }
           })
@@ -209,9 +214,13 @@ customElements.define('memory-state',
         this._cardsArea.appendChild(newCardLine)
       }
 
-      this.UpdateCardFocus()
+      this.UpdateCardSelection()
 
-      /* Function to be called whenever a key on the keyboard is pressed */
+      /**
+       * Function to be called whenever a key on the keyboard is pressed.
+       *
+       * @param {event} event - The 'keydown' event.
+       */
       this.keyDownFunction = (event) => {
         if (event.keyCode === 39 || event.keyCode === 68) { // Right arrowkey
           event.preventDefault()
@@ -234,16 +243,20 @@ customElements.define('memory-state',
         }
 
         this._selectedCard = this._cardsColumnRowToID[this._selectedCardColumn + ',' + this._selectedCardRow]
-        this.UpdateCardFocus()
+        this.UpdateCardSelection()
         if (event.keyCode === 13) {
           event.preventDefault()
-          this.UpdateCardFocus()
+          this.UpdateCardSelection()
           this.FlipCard()
         }
         document.removeEventListener('keydown', this.keyDownFunction)
       }
 
-      /* Function to be called whenever a key on the keyboard is released */
+      /**
+       * Function to be called whenever a key on the keyboard is released.
+       *
+       * @param {event} event - The 'keyup' event.
+       */
       this.keyUpFunction = (event) => {
         document.addEventListener('keydown', this.keyDownFunction)
       }
@@ -253,17 +266,26 @@ customElements.define('memory-state',
       document.addEventListener('keyup', this.keyUpFunction)
     }
 
-    UpdateCardFocus () {
+    /**
+     * Updates the 'part' attribute of each card, so that only the card whose cardID
+     * is equal to the _selectedCard property will be displayed as selected.
+     */
+    UpdateCardSelection () {
       for (let i = 0; i < this._activeCards.length; i++) {
         const card = this._activeCards[i]
         if (card.cardID === this._selectedCard) {
-          card._div.setAttribute('part', 'focus')
+          card._div.setAttribute('part', 'selected')
         } else {
           card._div.removeAttribute('part')
         }
       }
     }
 
+    /**
+     * Flips the selected card if it is set to active and not already flipped.
+     * If one card has already been flipped, the method will check whether the
+     * the two cards are a match.
+     */
     FlipCard () {
       const card = this._activeCards[this._selectedCard]
       if (this._amountOfCardsOfPairFlipped === 0 && card.hasAttribute('flipped')) {
@@ -292,7 +314,6 @@ customElements.define('memory-state',
           this._pairsFound++
           this._pairsFoundCounter.textContent = this._pairsFound + ' / ' + (this._startingCardsAmount / 2)
           if (this._pairsFound === (this._startingCardsAmount / 2)) {
-            console.log(this._timerCounter.counterCurrentTime)
             this.dispatchEvent(new window.CustomEvent('allpairsfound', { detail: { time: this._countdownTimer.counterCurrentTime, mistakes: this._mistakes } }))
           }
         }

@@ -61,7 +61,7 @@ template.innerHTML = `
     flipping-tile::part(hide) {
       display: none;
     }
-    flipping-tile::part(focus) {
+    flipping-tile::part(selected) {
       box-shadow: 0px 0px 2px 2px yellow;
     }
   </style>
