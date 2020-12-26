@@ -22,14 +22,6 @@ const template = document.createElement('template')
    below will be passed to the sub-components. */
 template.innerHTML = `
   <style>
-
-    h1#quizheader {
-      margin: 48px;
-      font-size: 48px;
-      text-shadow: 0 0 3px #3399FF, 0 0 5px #3399FF;
-      user-select: none;
-    }
-
     h1, h2 {
       font-family: Verdana;
       text-align: center;
@@ -37,7 +29,6 @@ template.innerHTML = `
       margin: 16px;
       user-select: none;
     }
-
     #memory-question, #nickname-state, #memory-message, #memory-highscore {
       border-radius: 32px;
       background-color: #3399FF;
@@ -46,17 +37,14 @@ template.innerHTML = `
       width: min-width(480px);
       height: min-content;
     }
-
     #pwd-application {
       background-image: url("` + imagesPath + `mosaic.jpg");
       position: relative;
       display: block;
     }
-
     div#alternatives {
       text-align: left;
     }
-
     button {
       background-color: rgba(0, 0, 0, 0);
       border: 6px outset #333333;
@@ -66,29 +54,24 @@ template.innerHTML = `
       margin: 12px;
       box-shadow: 1px 1px 1px black;
     }
-
     button:active {
       border: 6px outset #333333;
       transform: translate(1px, 1px);
       box-shadow: 0px 0px 0px black;
     }
-
     button:hover {
       background-color: #999999;
       border-color: #999999;
     }
-
     #pwd-application {
       position: relative;
     }
-
     #pwd-window-container {
       position: relative;
       height: 100%;
       width: 100%;
       overflow: hidden;
     }
-
     #pwd-dock {
       height: 48px;
       width: 100%;
@@ -99,7 +82,6 @@ template.innerHTML = `
       overflow: hidden;
       z-index: 10000
     }
-
     #pwd-dock button {
       height: 100%;
       margin: 0px;
@@ -108,7 +90,6 @@ template.innerHTML = `
       background-color: none;
       border: 0px outset #333333;
     }
-
     #pwd-dock button img {
       height: 100%;
       width: 100%;
