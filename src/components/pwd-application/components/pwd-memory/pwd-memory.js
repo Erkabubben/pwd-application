@@ -128,17 +128,18 @@ customElements.define('pwd-memory',
       this.currentState = this._pwdApp.appendChild(memoryState)
       this.currentState.InitiateGame(this.gameType)
       this.currentState.addEventListener('allpairsfound', (event) => {
-        this.DisplayHighscoreState(event.detail.mistakes, event.detail.time)
-        /* this.DisplayTimedMessage(
-          'Congratulations ' + this.userNickname + '! You finished the ' + this.gameType + ' difficulty ' +
-          'with ' + event.detail.mistakes + ' mistakes, at ' + (event.detail.time * 0.001) + ' seconds.'
-          , 3000, (e) => { this.DisplayNicknameState() }) */
+        const message = [
+          'Congratulations ' + this.userNickname + '!',
+          'You finished the ' + this.gameType + ' difficulty ' + 'with ' + event.detail.mistakes + ' mistakes,',
+          'at ' + (event.detail.time * 0.001) + ' seconds.'
+        ]
+        this.DisplayTimedMessage(message, 3000, (e) => { this.DisplayHighscoreState(event.detail.mistakes, event.detail.time) })
       })
     }
 
     /**
      * Creates and displays the highscore screen when the player has finished the game.
-     * 
+     *
      * @param {number} mistakes - The number of mismatches the player made during the game.
      * @param {number} time - The time it took for the player to finish the game, in milliseconds.
      */
@@ -170,8 +171,8 @@ customElements.define('pwd-memory',
       this._pwdApp.removeChild(this.currentState)
       /* Creates a new message screen with inherited CSS style */
       const messageState = document.createElement('message-state')
-      messageState.setAttribute('message', message)
       messageState.setAttribute('limit', time)
+      messageState.CreateMessageFromStringArray(message)
       messageState.InheritStyle(this.shadowRoot.querySelector('style'))
       this.currentState = this._pwdApp.appendChild(messageState)
       this.currentState.addEventListener('messagetimerzero', fn)

@@ -17,28 +17,40 @@ template.innerHTML = `
       left: 50%;
       transform: translate(-50%, -50%);
     }
+    h1, h2 {
+      text-align: center;
+    }
     h1, h2, #highscoretable {
       display: block;
       margin: auto;
       color: orange;
     }
-    #highscoretable {
-      
-    }
     th, td {
       padding: 0.2em;
     }
+    #hs {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #222222;
+      border: 6px outset #666666;
+      width: max-content;
+      padding: 24px;
+    }
   </style>
   <div id="highscore-state">
-    <h1>HIGHSCORES<h1>
-    <h2></h2>
-    <table id="highscoretable">
-      <tr>
-        <th>Nickname</th>
-        <th>Mistakes</th>
-        <th>Time</th>
-      </tr>
-    </table> 
+    <div id="hs">
+      <h1>HIGHSCORES<h1>
+      <h2></h2>
+      <table id="highscoretable">
+        <tr>
+          <th>Nickname</th>
+          <th>Mistakes</th>
+          <th>Time</th>
+        </tr>
+      </table> 
+    </div>
   </div>
 `
 
@@ -88,7 +100,6 @@ customElements.define('highscore-state',
           this.Proceed()
         }
       }
-
     }
 
     /**
@@ -124,7 +135,7 @@ customElements.define('highscore-state',
         this.UpdateHighscoreData()
       }
       this.DisplayHighscores()
-      
+
       /* Adds a slight delay to adding the Event Listeners, so that input from the previous
          state won't be registered */
       this._delayProceed = setTimeout(() => {

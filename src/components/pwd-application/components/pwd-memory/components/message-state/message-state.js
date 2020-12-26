@@ -17,9 +17,21 @@ template.innerHTML = `
       left: 50%;
       transform: translate(-50%, -50%);
     }
+    #message-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 80%;
+      background-color: #222222;
+      border: 6px outset #666666;
+      padding: 24px;
+    }
   </style>
   <div id="message-state">
-  <h2></h2>
+    <div id="message-container">
+      <h2></h2>
+    </div>
   </div>
 `
 
@@ -44,11 +56,27 @@ customElements.define('message-state',
 
       /* Set up properties */
       this._messageState = this.shadowRoot.querySelector('#message-state')
+      this._messageContainer = this.shadowRoot.querySelector('#message-container')
       this._message = this._messageState.querySelector('h2')
 
       /* Countdown properties */
       this._timeLimitInMS = 4000
       this._countdownTimeout = 0
+    }
+
+    /**
+     * Creates a number of text elements from the contents of a string array
+     * and appends them to the messageContainer.
+     *
+     * @param {string[]} msg - The string array to create the message from.
+     */
+    CreateMessageFromStringArray (msg) {
+      this._messageContainer.removeChild(this._message)
+      msg.forEach(element => {
+        const msgLine = document.createElement('h2')
+        msgLine.textContent = element
+        this._messageContainer.appendChild(msgLine)
+      })
     }
 
     /**
