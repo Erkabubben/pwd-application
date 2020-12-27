@@ -3,7 +3,7 @@ The pwd-application component is a single-page application representing a Person
 
 ## Installing pwd-apps
 PWD-apps are easily installed by doing the following:
-1. Copy the app's folder into the main application's 'components'   folder
+1. Copy the app's folder into the main application's 'components' folder
 2. Update the pwd-app-list.js file to include an import-statement for the pwd-app, as well as adding the pwd-app folder's name to the 'pwdApps' array. This array also determines the order of the pwd-app icons in the dock.
 
 ## Public methods

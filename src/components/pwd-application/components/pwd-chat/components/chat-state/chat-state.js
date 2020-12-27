@@ -18,10 +18,10 @@ template.innerHTML = `
       left: 50%;
       transform: translate(-50%, -50%);
     }
-    #messages {
-      height: auto;
+    #chat-state div#messages {
+      height: 75%;
       width: 100%;
-      overflow-v: scroll;
+      overflow-y: auto;
     }
     #messages div {
       background-color: white;
@@ -325,6 +325,7 @@ customElements.define('chat-state',
         newMessageDiv.appendChild(newMessageHeader)
         newMessageDiv.appendChild(newMessageText)
         this._messages.appendChild(newMessageDiv)
+        this._messages.scrollTop = this._messages.scrollHeight;
       }
     }
 
