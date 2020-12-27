@@ -1,12 +1,10 @@
 /**
  * The pwd-unity web component module.
- * Takes a Unity WebGL build and displays it as an iframe in a pwd-app.
- * Copy the build into the folder named "game" in the pwd-unity directory.
  *
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0
  */
-
+import { gameInfo } from './game-info.js'
 const pathToModule = import.meta.url
 const gamePath = new URL('./game/index.html', pathToModule)
 
@@ -49,7 +47,7 @@ customElements.define('pwd-unity',
 
       /* Set up properties */
       this._pwdChat = this.shadowRoot.querySelector('#pwd-app')
-      this.name = 'Bounce Dungeon'
+      this.name = gameInfo.name
       this._styleSize = this.shadowRoot.querySelector('style#size')
       this.width = 800
       this.height = 580

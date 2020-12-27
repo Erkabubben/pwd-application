@@ -1,11 +1,5 @@
 /**
  * The emoji-collection web component module.
- * Displays a collection of emojis inside a div-element, that can be shown or hidden by
- * calling the ToggleDisplay() method. Emojis are stored by their hexadecimal reference
- * numbers in the emojis.js file - add objects to the emojis-array to create separate
- * categories.
- * When the user selects an emoji, a custom 'emoji' event is dispatched with the emoji's
- * hexadecimal reference number.
  *
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0

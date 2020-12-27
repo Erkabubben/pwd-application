@@ -1,8 +1,5 @@
 /**
  * The countdown-timer web component module.
- * Can be used either as a timer or a stopwatch - set the attribute 'limit' to use
- * as a timer. By inserting it into a text element, the current time will be displayed
- * as part of the text content.
  *
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @version 1.0.0

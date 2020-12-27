@@ -5,9 +5,8 @@
  * @version 1.0.0
  */
 import './components/pwd-window/index.js'
-import './components/pwd-chat/index.js'
-import './components/pwd-memory/index.js'
-import './components/pwd-unity/index.js'
+import './pwd-app-list.js'
+import { pwdApps } from './pwd-app-list.js'
 
 const pathToModule = import.meta.url
 const imagesPath = new URL('./img/', pathToModule)
@@ -127,11 +126,7 @@ customElements.define('pwd-application',
       this._pwd = this.shadowRoot.querySelector('#pwd-application')
       this._windowContainer = this.shadowRoot.querySelector('#pwd-window-container')
       this._dock = this.shadowRoot.querySelector('#pwd-dock')
-      this._applications = [
-        'pwd-chat',
-        'pwd-memory',
-        'pwd-unity'
-      ]
+      this._applications = pwdApps
 
       this._styleSize = this.shadowRoot.querySelector('style#size')
       this.width = 0
@@ -140,11 +135,14 @@ customElements.define('pwd-application',
 
       /* Initiates the dock */
       this._applications.forEach(app => {
+        /* Creates an icon for each app listed in pwd-app-list */
         const newAppIcon = document.createElement('button')
         const newAppIconImg = document.createElement('img')
         newAppIconImg.setAttribute('src', componentsPath + app + '/img/icon.png')
         newAppIcon.appendChild(newAppIconImg)
         newAppIcon.setAttribute('value', app)
+        /* Adds an Event Listener that sets up a pwd-window containing the app when
+           the icon is clicked */
         newAppIcon.addEventListener('click', event => {
           if (event.button === 0) {
             const newWindow = document.createElement('pwd-window')
@@ -153,9 +151,9 @@ customElements.define('pwd-application',
             } else {
               this.BringWindowToTop(newWindow)
             }
-            this.dragElement(newWindow)
+            this.dragElement(newWindow) // Sets the pwd-window to be draggable
             this._windowContainer.appendChild(newWindow)
-            newWindow.SetApp(app)
+            newWindow.SetApp(app) // Set the app to be contained in the window
             newWindow.SetPosition((this.width / 2) - (newWindow.width / 2), (this.height / 2) - (newWindow.height / 2))
             newWindow.addEventListener('mousedown', event => {
               this.BringWindowToTop(newWindow)
@@ -282,7 +280,7 @@ customElements.define('pwd-application',
      * @returns {string[]} A string array of attributes to monitor.
      */
     static get observedAttributes () {
-      return []
+      return ['size']
     }
 
     /**
@@ -297,7 +295,12 @@ customElements.define('pwd-application',
      * @param {*} oldValue - The old value.
      * @param {*} newValue - The new value.
      */
-    attributeChangedCallback (name, oldValue, newValue) {}
+    attributeChangedCallback (name, oldValue, newValue) {
+      if (name === 'size') {
+        const xy = newValue.split(',')
+        this.SetSize(xy[0], xy[1])
+      }
+    }
 
     /**
      * Called after the element has been removed from the DOM.

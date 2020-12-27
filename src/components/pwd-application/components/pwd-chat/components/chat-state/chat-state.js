@@ -21,7 +21,7 @@ template.innerHTML = `
     #messages {
       height: auto;
       width: 100%;
-      overflow: auto;
+      overflow-v: scroll;
     }
     #messages div {
       background-color: white;

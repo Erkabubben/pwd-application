@@ -187,7 +187,7 @@ customElements.define('memory-state',
           const newCard = document.createElement('flipping-tile')
           const newCardImg = document.createElement('img')
           newCard.setAttribute('backsideColor', 'yellow')
-          newCard.setAttribute('backsideImage', 'backside')
+          newCard.setAttribute('backsideImage', 'backside.jpg')
           newCard.SetSize(this.cardSizes[gameType], this.cardSizes[gameType])
           newCard.motif = cards.pop()
           newCardImg.setAttribute('src', imagesPath + newCard.motif + '.jpg')
@@ -309,8 +309,8 @@ customElements.define('memory-state',
           }, 1500)
         } else { // Cards are a valid pair
           this._amountOfCardsOfPairFlipped = 0
-          card1.HideAndInactivate()
-          card2.HideAndInactivate()
+          card1.HideAndDeactivate()
+          card2.HideAndDeactivate()
           this._pairsFound++
           this._pairsFoundCounter.textContent = this._pairsFound + ' / ' + (this._startingCardsAmount / 2)
           if (this._pairsFound === (this._startingCardsAmount / 2)) {

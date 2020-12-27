@@ -122,7 +122,7 @@ customElements.define('flipping-tile',
     /**
      * Sets the tile to be both hidden and deactivated.
      */
-    HideAndInactivate () {
+    HideAndDeactivate () {
       this._div.classList.add('inactive')
       this._div.classList.add('hidden')
     }
@@ -192,7 +192,7 @@ customElements.define('flipping-tile',
       }
       // Change backside image if backsideImage attribute has been set
       if (this.hasAttribute('backsideImage')) {
-        this._backside.setAttribute('src', imagesPath + this.getAttribute('backsideImage') + '.jpg')
+        this._backside.setAttribute('src', imagesPath + this.getAttribute('backsideImage'))
       }
     }
 
