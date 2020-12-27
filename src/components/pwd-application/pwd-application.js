@@ -94,11 +94,25 @@ template.innerHTML = `
       margin: 0;
       padding: 0;
     }
+    #pwd-dock button#resetbutton {
+      position: absolute;
+      right: 0px;
+      font-family: Verdana;
+      font-size: 75%;
+      color: white;
+      background-color: #444444;
+      border: 2px outset #333333;
+      padding: 8px;
+      margin: auto;
+    }
+
+    #pwd-dock #resetbutton:hover {
+      background-color: #999999;
+      border-color: #999999;
+    }
   </style>
   <style id="size"></style>
   <div id="pwd-application">
-    <div id="pwd-window-container"></div>
-    <div id="pwd-dock"></div>
   </div>
 `
 
@@ -123,8 +137,8 @@ customElements.define('pwd-application',
 
       /* PWD application properties */
       this._pwd = this.shadowRoot.querySelector('#pwd-application')
-      this._windowContainer = this.shadowRoot.querySelector('#pwd-window-container')
-      this._dock = this.shadowRoot.querySelector('#pwd-dock')
+      this._windowContainer = ''
+      this._dock = ''
       this._applications = pwdApps
 
       this._styleSize = this.shadowRoot.querySelector('style#size')
@@ -133,6 +147,41 @@ customElements.define('pwd-application',
       this.SetSize(1280, 800)
 
       /* Initiates the dock */
+      this.InitiateWindowContainer()
+      this.InitiateDock()
+    }
+
+    /**
+     * Initiates the Window Container. Called when initiating the pwd-application,
+     * and when clicking the reset button.
+     */
+    InitiateWindowContainer () {
+      this._windowContainer = document.createElement('div')
+      this._windowContainer.setAttribute('id', '#pwd-window-container')
+      this._pwd.appendChild(this._windowContainer)
+    }
+
+    /**
+     * Initiates the dock. Called when initiating the pwd-application,
+     * and when clicking the reset button.
+     */
+    InitiateDock () {
+      /* Create dock div */
+      this._dock = document.createElement('div')
+      this._dock.setAttribute('id', 'pwd-dock')
+      /* Create reset button */
+      const resetButton = document.createElement('button')
+      resetButton.setAttribute('id', 'resetbutton')
+      const resetButtonImg = document.createElement('img')
+      resetButtonImg.setAttribute('src', imagesPath + 'reset.png')
+      resetButton.appendChild(resetButtonImg)
+      resetButton.addEventListener('click', event => {
+        this._pwd.removeChild(this._dock)
+        this._pwd.removeChild(this._windowContainer)
+        this.InitiateDock()
+        this.InitiateWindowContainer()
+      })
+      this._dock.appendChild(resetButton)
       this._applications.forEach(app => {
         /* Creates an icon for each app listed in pwd-app-list */
         const newAppIcon = document.createElement('button')
@@ -161,6 +210,7 @@ customElements.define('pwd-application',
         })
         this._dock.appendChild(newAppIcon)
       })
+      this._pwd.appendChild(this._dock)
     }
 
     /**
