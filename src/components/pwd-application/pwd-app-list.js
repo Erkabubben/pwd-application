@@ -7,7 +7,7 @@ import './components/pwd-memory/index.js'
 import './components/pwd-unity/index.js'
 
 export const pwdApps = [
-    'pwd-chat',
-    'pwd-memory',
-    'pwd-unity'
+  'pwd-chat',
+  'pwd-memory',
+  'pwd-unity'
 ]

@@ -3,5 +3,5 @@
    Set the 'name' property below to change the title of the pwd-app. The icon
    of the pwd-app can be changed by replacing the file 'img/icon.png'. */
 export const gameInfo = {
-    name: 'Bounce Dungeon'
+  name: 'Bounce Dungeon'
 }

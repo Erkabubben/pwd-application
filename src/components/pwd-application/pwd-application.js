@@ -5,7 +5,6 @@
  * @version 1.0.0
  */
 import './components/pwd-window/index.js'
-import './pwd-app-list.js'
 import { pwdApps } from './pwd-app-list.js'
 
 const pathToModule = import.meta.url
