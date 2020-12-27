@@ -5,6 +5,7 @@
  * @version 1.0.0
  */
 const pathToModule = import.meta.url
+const imagesPath = new URL('./img/', pathToModule)
 const componentsOfParentPath = new URL('../', pathToModule)
 
 /**
@@ -49,9 +50,21 @@ template.innerHTML = `
       height: 100%;
       overflow: hidden;
     }
+
     #closebutton {
-      position: absolute;
       right: 0px;
+    }
+
+    #resetbutton {
+      right: 26px;
+    }
+
+    button#resetbutton img {
+      height: 60%;
+    }
+
+    #closebutton, #resetbutton {
+      position: absolute;
       font-family: Verdana;
       font-weight: bold;
       color: white;
@@ -62,12 +75,12 @@ template.innerHTML = `
       padding: 0px;
     }
 
-    #closebutton:hover {
+    #closebutton:hover, #resetbutton:hover {
       background-color: #999999;
       border-color: #999999;
     }
 
-    #closebutton:active {
+    #closebutton:active, #resetbutton:active {
       transform: translate(1px, 1px);
       box-shadow: none;
       border-style: inset;
@@ -80,10 +93,10 @@ template.innerHTML = `
     <div id="header">
       <img>
       <p id="headertitle"></p>
+      <button id="resetbutton"></button>
       <button id="closebutton">X</button>
     </div>
     <div id="app"><slot name="app"></slot></div>
-    
   </div>
 `
 
@@ -113,11 +126,21 @@ customElements.define('pwd-window',
       this._styleSize = this.shadowRoot.querySelector('style#size')
       this._styleZIndex = this.shadowRoot.querySelector('style#z-index')
       this._closeButton = this.shadowRoot.querySelector('#closebutton')
+      this._resetButton = this.shadowRoot.querySelector('#resetbutton')
       this._appSlot = this.shadowRoot.querySelector('slot')
       this._headerTitle = this.shadowRoot.querySelector('p#headertitle')
 
       this._closeButton.addEventListener('click', event => {
         this.parentElement.removeChild(this)
+      })
+
+      const resetButtonImg = document.createElement('img')
+      resetButtonImg.setAttribute('src', imagesPath + 'reset.png')
+      this._resetButton.appendChild(resetButtonImg)
+
+      this._resetButton.addEventListener('click', event => {
+        const currentApp = this._appSlot.lastChild.nodeName
+        this.SetApp(currentApp)
       })
 
       this.x = 0
@@ -196,6 +219,9 @@ customElements.define('pwd-window',
      * @param {HTMLElement} app - The app to be displayed.
      */
     SetApp (app) {
+      if (this._appSlot.lastChild !== null) {
+        this._appSlot.removeChild(this._appSlot.lastChild)
+      }
       const newAppElement = document.createElement(app)
       this._appSlot.appendChild(newAppElement)
       this.icon.setAttribute('src', componentsOfParentPath + '/' + app + '/img/icon.png')
