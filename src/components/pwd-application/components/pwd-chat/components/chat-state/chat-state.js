@@ -316,24 +316,36 @@ customElements.define('chat-state',
         /* Parses the received message to JSON */
         const receivedMsg = event.data
         const msgJSON = JSON.parse(receivedMsg)
+
         /* Creates a message div element from the content */
         const newMessageDiv = document.createElement('div')
         newMessageDiv.setAttribute('id', 'message')
         const newMessageHeader = document.createElement('p')
         const date = new Date() // Create new Date object for retrieving current date and time
         newMessageHeader.setAttribute('id', 'username')
+
         /* Set header textContent to include current username and date/time data from Date object */
-        const pad = (num, size) => { return ('000000000' + num).substr(-size) } // Function for padding with leading zeroes
+        /**
+         * Adds leading zeroes to any number passed as an argument,
+         * as long as the number is shorter than ten digits.
+         *
+         * @param {number} num - The number you wish to pad with leading zeroes.
+         * @param {number} size - The number of leading zeroes you wish to add.
+         * @returns {string} The argument number padded with leading zeroes.
+         */
+        const pad = (num, size) => { return ('000000000' + num).substr(-size) }
         newMessageHeader.textContent = msgJSON.username + ' (' +
           date.getFullYear() + '-' + pad((date.getMonth() + 1), 2) + '-' + pad(date.getDate(), 2) + ' ' +
           pad(date.getHours(), 2) + ':' + pad(date.getMinutes(), 2) + ':' + pad(date.getSeconds(), 2) + ')'
         const newMessageText = document.createElement('p')
         newMessageText.setAttribute('id', 'messagetext')
         newMessageText.textContent = msgJSON.data
+
         /* Assembles the message div element and appends it to the messages section */
         newMessageDiv.appendChild(newMessageHeader)
         newMessageDiv.appendChild(newMessageText)
         this._messages.appendChild(newMessageDiv)
+
         /* Automatically scrolls the Messages div to the bottom */
         this._messages.scrollTop = this._messages.scrollHeight
       }

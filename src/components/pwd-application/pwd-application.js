@@ -172,10 +172,18 @@ customElements.define('pwd-application',
       /* Create clock */
       this.clock = document.createElement('p')
       this.clock.setAttribute('id', 'clock')
-      this.pad = (num, size) => { return ('000000000' + num).substr(-size) } // Function for padding with leading zeroes
+      /**
+       * Adds leading zeroes to any number passed as an argument,
+       * as long as the number is shorter than ten digits.
+       *
+       * @param {number} num - The number you wish to pad with leading zeroes.
+       * @param {number} size - The number of leading zeroes you wish to add.
+       * @returns {string} The argument number padded with leading zeroes.
+       */
+      this.pad = (num, size) => { return ('000000000' + num).substr(-size) }
       this._clockUpdateInterval = setInterval(() => {
         const date = new Date()
-        this.clock.textContent = this.pad(date.getHours(), 2) + ':' + this.pad(date.getMinutes(), 2) /*+ ':' + this.pad(date.getSeconds(), 2)*/
+        this.clock.textContent = this.pad(date.getHours(), 2) + ':' + this.pad(date.getMinutes(), 2)
       }, 100)
 
       /* Initiates the dock */

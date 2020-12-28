@@ -141,8 +141,6 @@ customElements.define('nickname-state',
        */
       this.keyDownFunction = (event) => {
         /* Using keyboard buttons to navigate the nickname input and game buttons */
-        console.log(document.activeElement.tagName)
-
         if (event.keyCode === 40 || (event.keyCode === 13 && this._selectedElement === 0)) { // Down arrowkey, or Enter while on the Input element
           event.preventDefault()
           this._selectables[this._selectedElement].blur()
@@ -191,11 +189,6 @@ customElements.define('nickname-state',
       /* Sets up initial keyboard event listeners */
       this.addEventListener('keydown', this.keyDownFunction)
       this.addEventListener('keyup', this.keyUpFunction)
-    }
-
-    SetFocus(element) {
-      element.focus()
-      this.dispatchEvent(new window.CustomEvent('setFocus', { detail: element }))
     }
 
     /**
