@@ -34,10 +34,12 @@ template.innerHTML = `
     #messages div p#username {
       font-weight: bold;
       opacity: 1;
+      user-select: auto;
     }
     #messages div p#messagetext {
       font-size: 0.75rem;
       opacity: 1;
+      user-select: auto;
     }
     #messages div p {
       margin-top: 0.2rem;
@@ -213,6 +215,12 @@ customElements.define('chat-state',
         }
       })
 
+      /* Event Listener that will set focus to the previously selected element when
+        clicking inside the state */
+      this.addEventListener('click', () => {
+        this._messageInput.focus()
+      })
+
       this.serverURL = 'wss://cscloud6-127.lnu.se/socket/'
       this.webSocket = 0
     }
@@ -315,9 +323,10 @@ customElements.define('chat-state',
         const date = new Date() // Create new Date object for retrieving current date and time
         newMessageHeader.setAttribute('id', 'username')
         /* Set header textContent to include current username and date/time data from Date object */
+        const pad = (num, size) => { return ('000000000' + num).substr(-size) } // Function for padding with leading zeroes
         newMessageHeader.textContent = msgJSON.username + ' (' +
-          date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' +
-          date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + ')'
+          date.getFullYear() + '-' + pad((date.getMonth() + 1), 2) + '-' + pad(date.getDate(), 2) + ' ' +
+          pad(date.getHours(), 2) + ':' + pad(date.getMinutes(), 2) + ':' + pad(date.getSeconds(), 2) + ')'
         const newMessageText = document.createElement('p')
         newMessageText.setAttribute('id', 'messagetext')
         newMessageText.textContent = msgJSON.data

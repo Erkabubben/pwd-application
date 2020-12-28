@@ -61,6 +61,10 @@ template.innerHTML = `
       border-color: #999999;
     }
 
+    :focus {
+      box-shadow: 0px 0px 1px 4px yellow;
+    }
+
     ::part(selected) {
       box-shadow: 0px 0px 1px 4px yellow;
     }
@@ -123,7 +127,12 @@ customElements.define('nickname-state',
       /* Properties for determining which element is currently selected */
       this._selectedElement = 0
       this._selectables = this._nicknameState.querySelectorAll('.selectable')
-      this._selectables[this._selectedElement].setAttribute('part', 'selected')
+
+      /* Event Listener that will set focus to the previously selected element when
+         clicking inside the state */
+      this.addEventListener('click', () => {
+        this._selectables[this._selectedElement].focus()
+      })
 
       /**
        * Function to be called whenever a key on the keyboard is pressed.
@@ -132,16 +141,18 @@ customElements.define('nickname-state',
        */
       this.keyDownFunction = (event) => {
         /* Using keyboard buttons to navigate the nickname input and game buttons */
+        console.log(document.activeElement.tagName)
+
         if (event.keyCode === 40 || (event.keyCode === 13 && this._selectedElement === 0)) { // Down arrowkey, or Enter while on the Input element
           event.preventDefault()
-          this._selectables[this._selectedElement].removeAttribute('part')
+          this._selectables[this._selectedElement].blur()
           this._selectedElement++
           if (this._selectedElement >= this._selectables.length) {
             this._selectedElement = 0
           } else if (this._selectedElement < 0) {
             this._selectedElement = (this._selectables.length - 1)
           }
-          this._selectables[this._selectedElement].setAttribute('part', 'selected')
+          this._selectables[this._selectedElement].focus()
         } else if (event.keyCode === 38) { // Up arrowkey
           event.preventDefault()
           this._selectables[this._selectedElement].removeAttribute('part')
@@ -151,7 +162,7 @@ customElements.define('nickname-state',
           } else if (this._selectedElement < 0) {
             this._selectedElement = (this._selectables.length - 1)
           }
-          this._selectables[this._selectedElement].setAttribute('part', 'selected')
+          this._selectables[this._selectedElement].focus()
         /* Dispatches nicknameSet event to proceed to memory-state when pressing Enter,
            if game button is highlighted and nickname has been set */
         } else if (event.keyCode === 13 && this._selectedElement !== 0) { // Enter, when game button is selected...
@@ -174,12 +185,17 @@ customElements.define('nickname-state',
        * @param {event} event - The 'keyup' event.
        */
       this.keyUpFunction = (event) => {
-        document.addEventListener('keydown', this.keyDownFunction)
+        this.addEventListener('keydown', this.keyDownFunction)
       }
 
       /* Sets up initial keyboard event listeners */
-      document.addEventListener('keydown', this.keyDownFunction)
-      document.addEventListener('keyup', this.keyUpFunction)
+      this.addEventListener('keydown', this.keyDownFunction)
+      this.addEventListener('keyup', this.keyUpFunction)
+    }
+
+    SetFocus(element) {
+      element.focus()
+      this.dispatchEvent(new window.CustomEvent('setFocus', { detail: element }))
     }
 
     /**
@@ -230,8 +246,8 @@ customElements.define('nickname-state',
      */
     disconnectedCallback () {
       /* Removes keyboard event listeners */
-      document.removeEventListener('keydown', this.keyDownFunction)
-      document.removeEventListener('keyup', this.keyUpFunction)
+      this.removeEventListener('keydown', this.keyDownFunction)
+      this.removeEventListener('keyup', this.keyUpFunction)
     }
 
     /**

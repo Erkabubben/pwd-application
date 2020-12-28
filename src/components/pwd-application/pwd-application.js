@@ -97,7 +97,7 @@ template.innerHTML = `
     }
     #pwd-dock button#resetbutton {
       position: absolute;
-      right: 0px;
+      right: 6px;
       font-family: Verdana;
       font-size: 75%;
       color: white;
@@ -105,6 +105,28 @@ template.innerHTML = `
       border: 2px outset #333333;
       padding: 8px;
       margin: auto;
+      height: 75%;
+      top: 50%;
+      transform: translate(0, -50%);
+      border-radius: 6px;
+    }
+
+    #clock {
+      position: absolute;
+      top: 50%;
+      right: 48px;
+      transform: translate(0, -50%);
+      text-align: center;
+      width: 48px;
+      font-family: Verdana;
+      font-size: 75%;
+      color: white;
+      background-color: #444444;
+      border: 2px outset #333333;
+      border-radius: 6px;
+      padding: 8px;
+      margin: auto;
+      user-select: none;
     }
 
     #pwd-dock #resetbutton:hover {
@@ -147,6 +169,15 @@ customElements.define('pwd-application',
       this.height = 0
       this.SetSize(1280, 800)
 
+      /* Create clock */
+      this.clock = document.createElement('p')
+      this.clock.setAttribute('id', 'clock')
+      this.pad = (num, size) => { return ('000000000' + num).substr(-size) } // Function for padding with leading zeroes
+      this._clockUpdateInterval = setInterval(() => {
+        const date = new Date()
+        this.clock.textContent = this.pad(date.getHours(), 2) + ':' + this.pad(date.getMinutes(), 2) /*+ ':' + this.pad(date.getSeconds(), 2)*/
+      }, 100)
+
       /* Initiates the dock */
       this.InitiateWindowContainer()
       this.InitiateDock()
@@ -183,6 +214,9 @@ customElements.define('pwd-application',
         this.InitiateWindowContainer()
       })
       this._dock.appendChild(resetButton)
+      /* Append clock */
+      this._dock.appendChild(this.clock)
+      /* Create app icons */
       this._applications.forEach(app => {
         /* Creates an icon for each app listed in pwd-app-list */
         const newAppIcon = document.createElement('button')
@@ -355,7 +389,10 @@ customElements.define('pwd-application',
     /**
      * Called after the element has been removed from the DOM.
      */
-    disconnectedCallback () {}
+    disconnectedCallback () {
+      /* Clears any remaining event listeners when element is removed from DOM */
+      clearInterval(this._clockUpdateInterval)
+    }
 
     /**
      * Run the specified instance property

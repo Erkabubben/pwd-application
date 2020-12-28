@@ -50,6 +50,9 @@ template.innerHTML = `
       font-size: 1.25rem;
       text-align: center;
     }
+    :focus {
+      box-shadow: 0px 0px 2px 2px red;
+    }
   </style>
   <div id="memory-state">
     <div id="game-area">
@@ -137,6 +140,12 @@ customElements.define('memory-state',
       /* Game progress properties */
       this._pairsFound = 0
       this._mistakes = 0
+
+      /* Event Listener that will set focus to the previously selected element when
+         clicking inside the state */
+      this.addEventListener('click', () => {
+        this.UpdateCardSelection()
+      })
     }
 
     /**
@@ -190,6 +199,7 @@ customElements.define('memory-state',
           newCard.setAttribute('backsideImage', 'backside.jpg')
           newCard.SetSize(this.cardSizes[gameType], this.cardSizes[gameType])
           newCard.motif = cards.pop()
+          newCard.setAttribute('tabindex', '-1')
           newCardImg.setAttribute('src', imagesPath + newCard.motif + '.jpg')
           newCard.appendChild(newCardImg)
           newCard.flipTile()
@@ -249,7 +259,7 @@ customElements.define('memory-state',
           this.UpdateCardSelection()
           this.FlipCard()
         }
-        document.removeEventListener('keydown', this.keyDownFunction)
+        this.removeEventListener('keydown', this.keyDownFunction)
       }
 
       /**
@@ -258,12 +268,12 @@ customElements.define('memory-state',
        * @param {event} event - The 'keyup' event.
        */
       this.keyUpFunction = (event) => {
-        document.addEventListener('keydown', this.keyDownFunction)
+        this.addEventListener('keydown', this.keyDownFunction)
       }
 
       /* Sets up initial keyboard event listeners */
-      document.addEventListener('keydown', this.keyDownFunction)
-      document.addEventListener('keyup', this.keyUpFunction)
+      this.addEventListener('keydown', this.keyDownFunction)
+      this.addEventListener('keyup', this.keyUpFunction)
     }
 
     /**
@@ -274,9 +284,7 @@ customElements.define('memory-state',
       for (let i = 0; i < this._activeCards.length; i++) {
         const card = this._activeCards[i]
         if (card.cardID === this._selectedCard) {
-          card._div.setAttribute('part', 'selected')
-        } else {
-          card._div.removeAttribute('part')
+          card._div.focus()
         }
       }
     }
@@ -372,8 +380,8 @@ customElements.define('memory-state',
      * Called after the element has been removed from the DOM.
      */
     disconnectedCallback () {
-      document.removeEventListener('keydown', this.keyDownFunction)
-      document.removeEventListener('keyup', this.keyUpFunction)
+      this.removeEventListener('keydown', this.keyDownFunction)
+      this.removeEventListener('keyup', this.keyUpFunction)
     }
 
     /**

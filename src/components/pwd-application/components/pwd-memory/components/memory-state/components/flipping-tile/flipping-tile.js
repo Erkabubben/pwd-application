@@ -25,9 +25,7 @@ template.innerHTML = `
       position: relative;
       overflow: hidden;
     }
-    div:focus  {      
-      box-shadow: 0px 0px 8px 8px grey;
-    }
+
     div.hidden, div.inactive.hidden {      
       border-style: dashed;
       border-color: grey;
@@ -61,8 +59,8 @@ template.innerHTML = `
     flipping-tile::part(hide) {
       display: none;
     }
-    flipping-tile::part(selected) {
-      box-shadow: 0px 0px 2px 2px yellow;
+    :focus {
+      box-shadow: 0px 0px 0px 2px yellow;
     }
   </style>
   <style id="backsideStyle">
@@ -70,7 +68,7 @@ template.innerHTML = `
       background-color: yellow;
     }
   </style>
-  <div id="content">
+  <div tabindex="-1" id="content">
     <slot>
     </slot>
     <img id="backside" src="` + imagesPath + `lnu-symbol.png">

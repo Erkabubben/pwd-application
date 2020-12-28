@@ -111,6 +111,12 @@ customElements.define('chat-nickname-state',
           this.dispatchEvent(new window.CustomEvent('nicknameSet', { detail: this._input.value }))
         }
       })
+
+      /* Event Listener that will set focus to the previously selected element when
+        clicking inside the state */
+      this.addEventListener('click', () => {
+        this._input.focus()
+      })
     }
 
     /**
