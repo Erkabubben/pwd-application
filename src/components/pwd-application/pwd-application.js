@@ -39,6 +39,7 @@ template.innerHTML = `
       background-image: url("` + imagesPath + `mosaic.jpg");
       position: relative;
       display: block;
+      overflow: hidden;
     }
     div#alternatives {
       text-align: left;
