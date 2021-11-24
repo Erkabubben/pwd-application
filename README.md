@@ -1,5 +1,28 @@
 # Personal Web Desktop (PWD)
 
+https://user-images.githubusercontent.com/57233721/143280498-af59b33b-33d6-4a39-8407-78fdf06fc978.mp4
+
+For more info about the finished application, see the [README.md file of the main pwd-application component.](https://github.com/Erkabubben/pwd-application/tree/master/src/components/pwd-application#readme)
+
+README.md files are also available for the following sub-components:
+
+[pwd-chat](https://github.com/Erkabubben/pwd-application/tree/master/src/components/pwd-application/components/pwd-chat#readme)
+
+[emoji-collection](https://github.com/Erkabubben/pwd-application/tree/master/src/components/pwd-application/components/pwd-chat/components/emoji-collection#readme)
+
+[pwd-unity](https://github.com/Erkabubben/pwd-application/tree/master/src/components/pwd-application/components/pwd-unity#readme)
+
+[pwd-memory](https://github.com/Erkabubben/pwd-application/tree/master/src/components/pwd-application/components/pwd-memory#readme)
+
+[countdown-timer](https://github.com/Erkabubben/pwd-application/tree/master/src/components/pwd-application/components/pwd-memory/components/memory-state/components/countdown-timer#readme)
+
+[flipping-tile](
+https://github.com/Erkabubben/pwd-application/tree/master/src/components/pwd-application/components/pwd-memory/components/memory-state/components/flipping-tile#readme)
+
+[pwd-window](https://github.com/Erkabubben/pwd-application/tree/master/src/components/pwd-application/components/pwd-window#readme)
+
+# Assignment Instructions
+
 ## Introduction
 
 In this examination assignment, you will focus on building a single page application (SPA) with chat integration against a web socket server. The backend (server-side code) of this assignment will be given, and your assignment is to write the client-side code.
